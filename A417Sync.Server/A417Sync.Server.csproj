@@ -8,6 +8,6 @@
     <PackageReference Include="System.Xml.XmlSerializer" Version="4.3.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\417Sync.Core\A417Sync.Core.csproj" />
+    <ProjectReference Include="..\A417Sync.Core\A417Sync.Core.csproj" />
   </ItemGroup>
 </Project>

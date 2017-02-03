@@ -4,6 +4,8 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Net.Http;
+    using System.Threading.Tasks;
 
     using A417Sync.Core.Models;
 
@@ -17,9 +19,19 @@
             this.RepoRootUri = repoRootUri;
         }
 
-        public DirectoryInfo Local { get; }
+        private DirectoryInfo Local { get; }
 
-        public Uri RepoRootUri { get; }
+        private Uri RepoRootUri { get; }
+
+        public static async Task<Repo> DownloadRepo(Uri repoUri)
+        {
+            var httpClient = new HttpClient();
+            var request = new HttpRequestMessage(HttpMethod.Get, repoUri);
+            var response = await httpClient.SendAsync(request).ConfigureAwait(false);
+            var contentStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+            var repo = RepoFactory.LoadRepo(contentStream);
+            return repo;
+        }
 
         public void Update(Modpack modpack,Repo repo)
         {

@@ -1,0 +1,10 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System.Xml.XmlSerializer">
+      <HintPath>C:\Users\j200g\.nuget\packages\system.xml.xmlserializer\4.3.0\ref\netstandard1.3\System.Xml.XmlSerializer.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

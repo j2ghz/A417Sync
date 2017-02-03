@@ -19,5 +19,10 @@
             this.File.Delete();
             return Task.CompletedTask;
         }
+
+        public override string ToString()
+        {
+            return "Delete " + this.File.FullName;
+        }
     }
 }

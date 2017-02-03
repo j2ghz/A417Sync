@@ -32,7 +32,7 @@
             return RepoFactory.LoadRepo(contentStream);
         }
 
-        public void Update(Modpack modpack,Repo repo)
+        public void Update(Modpack modpack, Repo repo)
         {
             Update(repo.Addons.Where(x => modpack.Addons.Contains(x.Name)));
         }
@@ -44,6 +44,7 @@
             {
                 actions.AddRange(DecideAddon(addon));
             }
+            actions.ForEach(x => Console.WriteLine(x.ToString()));
         }
 
         private IEnumerable<IFileAction> DecideAddon(Addon addon)
@@ -56,9 +57,11 @@
                 {
                     localFiles.RemoveAll(x => x.FullName == local.FullName);
                 }
+
                 yield return DecideFile(local, file, addon);
             }
-            localFiles.ForEach(f => f.Delete()); //Delete files found in filesystem but not in index
+
+            localFiles.ForEach(f => f.Delete()); // Delete files found in filesystem but not in index
         }
 
         private IFileAction DecideFile(FileInfo local, File remote, Addon addon)

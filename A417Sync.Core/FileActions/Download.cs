@@ -31,5 +31,10 @@
 
             await contentStream.CopyToAsync(stream);
         }
+
+        public override string ToString()
+        {
+            return "Download " + this.requestUri;
+        }
     }
 }

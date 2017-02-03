@@ -12,7 +12,7 @@
         {
             if (string.IsNullOrWhiteSpace(args.First()))
             {
-                var client = new Client(new DirectoryInfo("addons"), new Uri(@"https://addons.j2ghz.com/"));
+                var client = new Client(new DirectoryInfo(@"D:\417Launcher\417Launcher\417addons"), new Uri(@"https://addons.j2ghz.com/"));
                 var repo = Client.DownloadRepo(new Uri(@"https://addons.j2ghz.com/index.xml")).Result;
                 client.Update(repo.Addons);
             }

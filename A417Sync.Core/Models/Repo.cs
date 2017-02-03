@@ -4,7 +4,6 @@
 
     public class Repo
     {
-        
         public List<Addon> Addons { get; set; }
 
         public List<Modpack> Modpacks { get; set; }

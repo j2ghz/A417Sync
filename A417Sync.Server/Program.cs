@@ -1,12 +1,9 @@
 ﻿namespace A417Sync.Server
 {
-    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Xml.Serialization;
 
     using A417Sync.Core;
-    using A417Sync.Core.Models;
 
     class Program
     {
@@ -29,20 +26,9 @@
             ////item.Files.Add(file);
             ////item.Name = "Addon1";
             ////r.Addons.Add(item);
-            var r = RepoFactory.MakeRepo(new DirectoryInfo(args.First()));
+            var r = RepoFactory.MakeRepoDefaultModpack(new DirectoryInfo(args.First()));
 
-            r.Modpacks = new List<Modpack>
-                             {
-                                 new Modpack()
-                                     {
-                                         Name = "417",
-                                         Addons = r.Addons.Select(x => x.Name).ToList()
-                                     }
-                             };
-
-            var xml = new XmlSerializer(typeof(Repo));
-
-            xml.Serialize(new StreamWriter(System.IO.File.CreateText(Path.Combine(args.First(),"index.xml")).BaseStream), r);
+            RepoFactory.SaveRepo(r, Path.Combine(args.First(), "index.xml"));
         }
     }
 }

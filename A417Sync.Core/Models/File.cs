@@ -9,5 +9,7 @@
         public DateTime LastChange { get; set; }
         [XmlAttribute]
         public string Path { get; set; }
+        [XmlAttribute]
+        public long Size { get; set; }
     }
 }

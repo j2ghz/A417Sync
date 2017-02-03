@@ -42,7 +42,7 @@
 
             var xml = new XmlSerializer(typeof(Repo));
 
-            xml.Serialize(new StreamWriter(System.IO.File.CreateText("index.xml").BaseStream), r);
+            xml.Serialize(new StreamWriter(System.IO.File.CreateText(Path.Combine(args.First(),"index.xml")).BaseStream), r);
         }
     }
 }

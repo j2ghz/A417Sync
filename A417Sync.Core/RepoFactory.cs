@@ -29,7 +29,7 @@
                                         x =>
                                             new File()
                                                 {
-                                                    Path = x.FullName,
+                                                    Path = x.FullName.Substring(path.FullName.Length),
                                                     LastChange = x.LastWriteTimeUtc,
                                                     Size = x.Length
                                                 })

@@ -48,7 +48,7 @@
 
         private IEnumerable<IFileAction> DecideAddon(Addon addon)
         {
-            var localFiles = new DirectoryInfo(Path.Combine(this.Local.FullName, addon.Name)).EnumerateFiles().ToList());
+            var localFiles = new DirectoryInfo(Path.Combine(this.Local.FullName, addon.Name)).EnumerateFiles().ToList();
             foreach (var file in addon.Files)
             {
                 var local = new FileInfo(Path.Combine(this.Local.FullName, addon.Name, file.Path));

@@ -29,8 +29,7 @@
             var request = new HttpRequestMessage(HttpMethod.Get, repoUri);
             var response = await httpClient.SendAsync(request).ConfigureAwait(false);
             var contentStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-            var repo = RepoFactory.LoadRepo(contentStream);
-            return repo;
+            return RepoFactory.LoadRepo(contentStream);
         }
 
         public void Update(Modpack modpack,Repo repo)
@@ -60,7 +59,6 @@
                 yield return DecideFile(local, file, addon);
             }
             localFiles.ForEach(f => f.Delete()); //Delete files found in filesystem but not in index
-            
         }
 
         private IFileAction DecideFile(FileInfo local, File remote, Addon addon)

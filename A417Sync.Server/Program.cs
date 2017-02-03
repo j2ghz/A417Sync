@@ -1,5 +1,6 @@
 ﻿namespace A417Sync.Server
 {
+    using System;
     using System.IO;
     using System.Linq;
 
@@ -26,9 +27,16 @@
             ////item.Files.Add(file);
             ////item.Name = "Addon1";
             ////r.Addons.Add(item);
-            var r = RepoFactory.MakeRepoDefaultModpack(new DirectoryInfo(args.First()));
-
-            RepoFactory.SaveRepo(r, Path.Combine(args.First(), "index.xml"));
+            if (string.IsNullOrWhiteSpace(args.First()))
+            {
+                var client = new Client(new DirectoryInfo("addons"), @"https://addons.j2ghz.com/");
+                
+            }
+            else
+            {
+                var r = RepoFactory.MakeRepoDefaultModpack(new DirectoryInfo(args.First()));
+                RepoFactory.SaveRepo(r, Path.Combine(args.First(), "index.xml"));
+            }
         }
     }
 }

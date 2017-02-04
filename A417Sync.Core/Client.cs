@@ -44,7 +44,11 @@
             {
                 actions.AddRange(DecideAddon(addon));
             }
-            actions.ForEach(x => Console.WriteLine(x.ToString()));
+            foreach (var fileAction in actions)
+            {
+                Console.WriteLine(fileAction);
+                fileAction.DoAsync().GetAwaiter().GetResult();
+            }
         }
 
         private IEnumerable<IFileAction> DecideAddon(Addon addon)

@@ -10,11 +10,12 @@
     {
         static void Main(string[] args)
         {
-            if (string.IsNullOrWhiteSpace(args.First()))
+            if (string.IsNullOrWhiteSpace(args.FirstOrDefault()))
             {
                 var client = new Client(new DirectoryInfo(@"D:\417Launcher\417Launcher\417addons"), new Uri(@"https://addons.j2ghz.com/"));
                 var repo = Client.DownloadRepo(new Uri(@"https://addons.j2ghz.com/index.xml")).Result;
                 client.Update(repo.Addons);
+                
             }
             else
             {

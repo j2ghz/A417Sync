@@ -18,7 +18,7 @@
         public Download(FileInfo local, File file, Addon addon, Uri remote)
         {
             this.path = local.FullName;
-            this.requestUri = new Uri(new Uri(remote, new Uri(addon.Name)), new Uri(file.Path));
+            this.requestUri = new Uri(remote, addon.Name + file.Path);
         }
 
         public async Task DoAsync()

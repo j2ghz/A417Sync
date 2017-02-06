@@ -44,10 +44,11 @@
             {
                 actions.AddRange(DecideAddon(addon));
             }
+
             foreach (var fileAction in actions)
             {
                 Console.WriteLine(fileAction);
-                fileAction.DoAsync().GetAwaiter().GetResult();
+                fileAction?.DoAsync().GetAwaiter().GetResult();
             }
         }
 
@@ -56,7 +57,7 @@
             var localFiles = new DirectoryInfo(Path.Combine(this.Local.FullName, addon.Name)).EnumerateFiles().ToList();
             foreach (var file in addon.Files)
             {
-                var local = new FileInfo(Path.Combine(this.Local.FullName, addon.Name, file.Path));
+                var local = new FileInfo(Path.Combine(this.Local.FullName, addon.Name, file.Path.Trim('/', '\\')));
                 if (local.Exists)
                 {
                     localFiles.RemoveAll(x => x.FullName == local.FullName);

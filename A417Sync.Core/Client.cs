@@ -55,9 +55,7 @@
                 }
 
                 Console.WriteLine(fileAction);
-                var p = new Progress<double>();
-                p.ProgressChanged += (sender, d) => Console.WriteLine(d);
-                await fileAction.DoAsync(p, CancellationToken.None).ConfigureAwait(false);
+                await fileAction.DoAsync(CancellationToken.None).ConfigureAwait(false);
             }
         }
 

@@ -13,17 +13,22 @@
 
     public class Download : IFileAction
     {
-        private readonly string path;
+
+        public string Action => "Download";
+
+        public string Path { get; }
+
+        public double Progress { get; private set; } = 0;
 
         private readonly Uri requestUri;
 
         public Download(FileInfo local, File file, Addon addon, Uri remote)
         {
-            this.path = local.FullName;
+            this.Path = local.FullName;
             this.requestUri = new Uri(remote, addon.Name + file.Path);
         }
 
-        public async Task DoAsync(IProgress<double> progress, CancellationToken token)
+        public async Task DoAsync(CancellationToken token)
         {
             var client = new HttpClient();
 
@@ -38,7 +43,7 @@
             }
 
             var total = response.Content.Headers.ContentLength ?? -1L;
-            var canReportProgress = total != -1 && progress != null;
+            var canReportProgress = total != -1;
 
             using (var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
             {
@@ -46,7 +51,7 @@
                 var buffer = new byte[4096];
                 var isMoreToRead = true;
                 var fileStream = new FileStream(
-                    this.path,
+                    this.Path,
                     FileMode.Create,
                     FileAccess.Write,
                     FileShare.None,
@@ -75,7 +80,7 @@
 
                         if (canReportProgress)
                         {
-                            progress.Report((totalRead * 1d) / (total * 1d) * 100);
+                            Progress = (totalRead * 1d) / (total * 1d) * 100;
                         }
                     }
                 }

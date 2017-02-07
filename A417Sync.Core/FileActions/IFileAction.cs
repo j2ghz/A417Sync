@@ -1,11 +1,13 @@
 ﻿namespace A417Sync.Core.Models
 {
-    using System;
     using System.Threading;
     using System.Threading.Tasks;
 
-    public interface IFileAction
+    public abstract class FileAction
     {
-        Task DoAsync(IProgress<double> progress, CancellationToken token);
+        string Path { get;}
+        string Action { get; }
+        double Progress { get; }
+        abstract Task DoAsync(CancellationToken token);
     }
 }

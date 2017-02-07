@@ -4,9 +4,42 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:A417Sync.Client"
+        xmlns:models="clr-namespace:A417Sync.Core.Models;assembly=A417Sync.Core"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBox Grid.Column="0" Text="http://addons.417rct.org/index.xml" Margin="10" Padding="5"/>
+            <Button Grid.Column="1" Content="Load" Margin="10" Padding="5"/>
+        </Grid>
+        <ListView Grid.Row="1" Name="queueListView" d:DataContext="{d:DesignInstance models:IFileAction }">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Path" DisplayMemberBinding="{Binding Path}" Width="Auto"/>
+                    <GridViewColumn Header="Action" DisplayMemberBinding="{Binding Action}" Width="Auto"/>
+                    <GridViewColumn Header="Progress">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <ProgressBar Value="{Binding Progress}"></ProgressBar>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
     </Grid>
 </Window>

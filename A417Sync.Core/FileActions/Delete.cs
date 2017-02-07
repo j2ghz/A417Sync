@@ -1,6 +1,8 @@
 ﻿namespace A417Sync.Core
 {
+    using System;
     using System.IO;
+    using System.Threading;
     using System.Threading.Tasks;
 
     using A417Sync.Core.Models;
@@ -14,9 +16,13 @@
 
         private FileInfo File { get; set; }
 
-        public Task DoAsync()
+        public Task DoAsync(IProgress<double> progress, CancellationToken token)
         {
-            this.File.Delete();
+            if (!token.IsCancellationRequested)
+            {
+                this.File.Delete();
+            }
+
             return Task.CompletedTask;
         }
 

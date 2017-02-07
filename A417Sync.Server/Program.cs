@@ -6,21 +6,22 @@
 
     using A417Sync.Core;
 
-    class Program
+    public static class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             if (string.IsNullOrWhiteSpace(args.FirstOrDefault()))
             {
-                var client = new Client(new DirectoryInfo(@"D:\417Launcher\417Launcher\417addons"), new Uri(@"https://addons.j2ghz.com/"));
+                var client = new Client(
+                    new DirectoryInfo(@"D:\417Launcher\417Launcher\417addons"),
+                    new Uri(@"https://addons.j2ghz.com/"));
                 var repo = Client.DownloadRepo(new Uri(@"https://addons.j2ghz.com/index.xml")).Result;
-                client.Update(repo.Addons);
-                
+                client.Update(repo.Addons).GetAwaiter().GetResult();
             }
             else
             {
-                var r = RepoFactory.MakeRepoDefaultModpack(new DirectoryInfo(args.First()));
-                RepoFactory.SaveRepo(r, Path.Combine(args.First(), "index.xml"));
+                var r = RepoFactory.MakeRepoDefaultModpack(new DirectoryInfo(args[0]));
+                RepoFactory.SaveRepo(r, Path.Combine(args[0], "index.xml"));
             }
         }
     }

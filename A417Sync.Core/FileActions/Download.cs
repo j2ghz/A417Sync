@@ -11,7 +11,7 @@
 
     using File = A417Sync.Core.Models.File;
 
-    class Download : IFileAction
+    public class Download : IFileAction
     {
         private readonly string path;
 
@@ -23,47 +23,41 @@
             this.requestUri = new Uri(remote, addon.Name + file.Path);
         }
 
-        public async Task DoAsync()
-        {
-            ////var httpClient = new HttpClient();
-            ////var request = new HttpRequestMessage(HttpMethod.Get, this.requestUri);
-            ////var response = await httpClient.SendAsync(request).ConfigureAwait(false);
-            ////var contentStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-            ////var stream = new FileStream(this.path, FileMode.Create, FileAccess.Write, FileShare.None, 4096, true);
-
-            ////await contentStream.CopyToAsync(stream);
-            var p = new Progress<double>();
-            p.ProgressChanged += (sender, d) => Console.WriteLine(d);
-            await DownloadFileAsync(this.requestUri, p, CancellationToken.None);
-
-        }
-
-        private async Task DownloadFileAsync(Uri url, IProgress<double> progress, CancellationToken token)
+        public async Task DoAsync(IProgress<double> progress, CancellationToken token)
         {
             var client = new HttpClient();
 
-            var response = await client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, token);
+            var response =
+                await client.GetAsync(this.requestUri, HttpCompletionOption.ResponseHeadersRead, token)
+                    .ConfigureAwait(false);
 
             if (!response.IsSuccessStatusCode)
             {
-                throw new Exception(string.Format("The request returned with HTTP status code {0}", response.StatusCode));
+                throw new Exception(
+                    string.Format("The request returned with HTTP status code {0}", response.StatusCode));
             }
 
             var total = response.Content.Headers.ContentLength ?? -1L;
             var canReportProgress = total != -1 && progress != null;
 
-            using (var stream = await response.Content.ReadAsStreamAsync())
+            using (var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
             {
                 var totalRead = 0L;
                 var buffer = new byte[4096];
                 var isMoreToRead = true;
-                var fileStream = new FileStream(this.path, FileMode.Create, FileAccess.Write, FileShare.None, 4096, true);
+                var fileStream = new FileStream(
+                    this.path,
+                    FileMode.Create,
+                    FileAccess.Write,
+                    FileShare.None,
+                    4096,
+                    true);
 
                 do
                 {
                     token.ThrowIfCancellationRequested();
 
-                    var read = await stream.ReadAsync(buffer, 0, buffer.Length, token);
+                    var read = await stream.ReadAsync(buffer, 0, buffer.Length, token).ConfigureAwait(false);
 
                     if (read == 0)
                     {
@@ -75,7 +69,7 @@
                         buffer.ToList().CopyTo(0, data, 0, read);
 
                         // TODO: put here the code to write the file to disk
-                        await fileStream.WriteAsync(data, 0, read, token);
+                        await fileStream.WriteAsync(data, 0, read, token).ConfigureAwait(false);
 
                         totalRead += read;
 

@@ -5,6 +5,7 @@
     using System.IO;
     using System.Linq;
     using System.Net.Http;
+    using System.Threading;
     using System.Threading.Tasks;
 
     using A417Sync.Core.Models;
@@ -32,13 +33,14 @@
             return RepoFactory.LoadRepo(contentStream);
         }
 
-        public void Update(Modpack modpack, Repo repo)
+        public async Task Update(Modpack modpack, Repo repo)
         {
-            Update(repo.Addons.Where(x => modpack.Addons.Contains(x.Name)));
+            await Update(repo.Addons.Where(x => modpack.Addons.Contains(x.Name))).ConfigureAwait(false);
         }
 
-        public void Update(IEnumerable<Addon> addons)
+        public async Task Update(IEnumerable<Addon> addons)
         {
+            var tasks = new List<Task>();
             var actions = new List<IFileAction>();
             foreach (var addon in addons)
             {
@@ -47,8 +49,15 @@
 
             foreach (var fileAction in actions)
             {
+                if (fileAction == null)
+                {
+                    continue;
+                }
+
                 Console.WriteLine(fileAction);
-                fileAction?.DoAsync().GetAwaiter().GetResult();
+                var p = new Progress<double>();
+                p.ProgressChanged += (sender, d) => Console.WriteLine(d);
+                await fileAction.DoAsync(p, CancellationToken.None).ConfigureAwait(false);
             }
         }
 
@@ -71,9 +80,27 @@
 
         private IFileAction DecideFile(FileInfo local, File remote, Addon addon)
         {
-            if (!local.Exists) return new Download(local, remote, addon, this.RepoRootUri);
-            if (local.Length != remote.Size) return new Download(local, remote, addon, this.RepoRootUri);
-            if (local.LastWriteTimeUtc != remote.LastChange) return new Download(local, remote, addon, this.RepoRootUri);
+            if (!local.Exists)
+            {
+                Console.WriteLine($"File {local.FullName} does not exist, scheduling download.");
+                return new Download(local, remote, addon, this.RepoRootUri);
+            }
+
+            if (local.Length != remote.Size)
+            {
+                Console.WriteLine(
+                    $"File {local.FullName} size is differrent, local: {local.Length}, remote: {remote.Size}");
+                return new Download(local, remote, addon, this.RepoRootUri);
+            }
+
+            if (local.LastWriteTimeUtc.CompareTo(remote.LastChange) != 0)
+            {
+                Console.WriteLine(
+                    $"File {local.FullName} date is different, local: {local.LastWriteTimeUtc}, remote: {remote.LastChange}");
+                return new Download(local, remote, addon, this.RepoRootUri);
+            }
+
+            Console.WriteLine($"File {local.FullName} OK");
             return null;
         }
     }

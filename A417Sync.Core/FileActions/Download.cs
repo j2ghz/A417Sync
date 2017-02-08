@@ -47,6 +47,8 @@
 
         public async Task DoAsync(CancellationToken token)
         {
+            Directory.CreateDirectory(System.IO.Path.GetDirectoryName(this.Path));
+
             var client = new HttpClient();
 
             var response =

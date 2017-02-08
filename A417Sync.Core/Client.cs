@@ -33,7 +33,7 @@
             return RepoFactory.LoadRepo(contentStream);
         }
 
-        public List<IFileAction> CollectActions(IEnumerable<Addon> addons)
+        public IEnumerable<IFileAction> CollectActions(IEnumerable<Addon> addons)
         {
             var actions = new List<IFileAction>();
             foreach (var addon in addons)
@@ -41,7 +41,7 @@
                 actions.AddRange(DecideAddon(addon));
             }
 
-            return actions;
+            return actions.Where(x => x != null);
         }
 
         ////public async Task Update(Modpack modpack, Repo repo, CancellationToken token)
@@ -70,19 +70,25 @@
 
         private IEnumerable<IFileAction> DecideAddon(Addon addon)
         {
-            var localFiles = new DirectoryInfo(Path.Combine(this.Local.FullName, addon.Name)).EnumerateFiles().ToList();
+            var localFolder = new DirectoryInfo(Path.Combine(this.Local.FullName, addon.Name));
+            List<FileInfo> localFiles = null;
+            if (localFolder.Exists)
+            {
+                localFiles = localFolder.EnumerateFiles().ToList();
+            }
+
             foreach (var file in addon.Files)
             {
                 var local = new FileInfo(Path.Combine(this.Local.FullName, addon.Name, file.Path.Trim('/', '\\')));
                 if (local.Exists)
                 {
-                    localFiles.RemoveAll(x => x.FullName == local.FullName);
+                    localFiles?.RemoveAll(x => x.FullName == local.FullName);
                 }
 
                 yield return DecideFile(local, file, addon);
             }
 
-            localFiles.ForEach(f => f.Delete()); // Delete files found in filesystem but not in index
+            localFiles?.ForEach(f => f.Delete()); // Delete files found in filesystem but not in index
         }
 
         private IFileAction DecideFile(FileInfo local, File remote, Addon addon)

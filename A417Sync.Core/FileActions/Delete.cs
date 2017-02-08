@@ -1,6 +1,5 @@
 ﻿namespace A417Sync.Core
 {
-    using System;
     using System.ComponentModel;
     using System.IO;
     using System.Runtime.CompilerServices;
@@ -11,15 +10,31 @@
 
     public class Delete : IFileAction
     {
-        public string Action => "Delete";
-
-        public string Path => File.FullName;
-
-        public double Progress { get; private set; } = 0;
+        private double progress = 0;
 
         public Delete(FileInfo file)
         {
             this.File = file;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public string Action => "Delete";
+
+        public string Path => this.File.FullName;
+
+        public double Progress
+        {
+            get
+            {
+                return this.progress;
+            }
+
+            private set
+            {
+                this.progress = value;
+                OnPropertyChanged();
+            }
         }
 
         private FileInfo File { get; set; }
@@ -31,14 +46,19 @@
                 this.File.Delete();
             }
 
-            Progress = 100;
-            
+            this.Progress = 100;
+
             return Task.CompletedTask;
         }
 
         public override string ToString()
         {
             return "Delete " + this.File.FullName;
+        }
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

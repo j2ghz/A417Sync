@@ -3,6 +3,7 @@
     using System;
     using System.IO;
     using System.Linq;
+    using System.Threading;
 
     using A417Sync.Core;
 
@@ -16,7 +17,8 @@
                     new DirectoryInfo(@"D:\417Launcher\417Launcher\417addons"),
                     new Uri(@"https://addons.j2ghz.com/"));
                 var repo = Client.DownloadRepo(new Uri(@"https://addons.j2ghz.com/index.xml")).Result;
-                client.Update(repo.Addons).GetAwaiter().GetResult();
+                var actions = client.CollectActions(repo.Addons);
+                client.Update(actions, CancellationToken.None).GetAwaiter().GetResult();
             }
             else
             {

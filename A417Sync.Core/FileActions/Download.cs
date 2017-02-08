@@ -1,9 +1,11 @@
 ﻿namespace A417Sync.Core
 {
     using System;
+    using System.ComponentModel;
     using System.IO;
     using System.Linq;
     using System.Net.Http;
+    using System.Runtime.CompilerServices;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -13,19 +15,34 @@
 
     public class Download : IFileAction
     {
-
-        public string Action => "Download";
-
-        public string Path { get; }
-
-        public double Progress { get; private set; } = 0;
-
         private readonly Uri requestUri;
+
+        private double progress = 0;
 
         public Download(FileInfo local, File file, Addon addon, Uri remote)
         {
             this.Path = local.FullName;
             this.requestUri = new Uri(remote, addon.Name + file.Path);
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public string Action => "Download";
+
+        public string Path { get; }
+
+        public double Progress
+        {
+            get
+            {
+                return this.progress;
+            }
+
+            private set
+            {
+                this.progress = value;
+                OnPropertyChanged();
+            }
         }
 
         public async Task DoAsync(CancellationToken token)
@@ -80,7 +97,7 @@
 
                         if (canReportProgress)
                         {
-                            Progress = (totalRead * 1d) / (total * 1d) * 100;
+                            this.Progress = (totalRead * 1d) / (total * 1d) * 100;
                         }
                     }
                 }
@@ -91,6 +108,11 @@
         public override string ToString()
         {
             return "Download " + this.requestUri;
+        }
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

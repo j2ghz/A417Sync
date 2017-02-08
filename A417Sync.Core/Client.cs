@@ -33,20 +33,29 @@
             return RepoFactory.LoadRepo(contentStream);
         }
 
-        public async Task Update(Modpack modpack, Repo repo)
+        public List<IFileAction> CollectActions(IEnumerable<Addon> addons)
         {
-            await Update(repo.Addons.Where(x => modpack.Addons.Contains(x.Name))).ConfigureAwait(false);
-        }
-
-        public async Task Update(IEnumerable<Addon> addons)
-        {
-            var tasks = new List<Task>();
             var actions = new List<IFileAction>();
             foreach (var addon in addons)
             {
                 actions.AddRange(DecideAddon(addon));
             }
 
+            return actions;
+        }
+
+        ////public async Task Update(Modpack modpack, Repo repo, CancellationToken token)
+        ////{
+        ////    await Update(repo.Addons.Where(x => modpack.Addons.Contains(x.Name)), token).ConfigureAwait(false);
+        ////}
+
+        ////public async Task Update(IEnumerable<Addon> addons, CancellationToken token)
+        ////{
+        ////    List<IFileAction> actions = CollectActions(addons);
+        ////    await Update(actions, token);
+        ////}
+        public async Task Update(IEnumerable<IFileAction> actions, CancellationToken token)
+        {
             foreach (var fileAction in actions)
             {
                 if (fileAction == null)
@@ -55,7 +64,7 @@
                 }
 
                 Console.WriteLine(fileAction);
-                await fileAction.DoAsync(CancellationToken.None).ConfigureAwait(false);
+                await fileAction.DoAsync(token).ConfigureAwait(false);
             }
         }
 

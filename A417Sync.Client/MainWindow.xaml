@@ -17,18 +17,24 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <TextBox Grid.Column="0" Text="http://addons.417rct.org/index.xml" Margin="10" Padding="5"/>
-            <Button Grid.Column="1" Content="Load" Margin="10" Padding="5"/>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBox Grid.Column="0" Grid.Row="0" Text="http://addons.j2ghz.com/index.xml"  Padding="5" Name="InputUrl"/>
+            <TextBox Grid.Column="0" Grid.Row="1" Text="D:\417Launcher\417Launcher\417addons" Padding="5" Name="InputPath"/>
+            <Button Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Content="Load" Padding="5" Click="LoadRepo"/>
         </Grid>
-        <ListView Grid.Row="1" Name="queueListView" d:DataContext="{d:DesignInstance models:IFileAction }">
+        <ListView Grid.Row="1" Name="queueListView" d:DataContext="{d:DesignInstance models:IFileAction }"  VerticalContentAlignment="Stretch">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Path" DisplayMemberBinding="{Binding Path}" Width="Auto"/>
-                    <GridViewColumn Header="Action" DisplayMemberBinding="{Binding Action}" Width="Auto"/>
-                    <GridViewColumn Header="Progress">
+                    <GridViewColumn Header="Path" DisplayMemberBinding="{Binding Path, Mode=OneWay}" Width="Auto"/>
+                    <GridViewColumn Header="Action" DisplayMemberBinding="{Binding Action, Mode=OneWay}" Width="Auto"/>
+                    <GridViewColumn Header="Progress" DisplayMemberBinding="{Binding Progress, Mode=OneWay}" Width="Auto"/>
+                    <GridViewColumn Header="Progress" Width="300">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <ProgressBar Value="{Binding Progress}"></ProgressBar>
+                                <ProgressBar Value="{Binding Progress, Mode=OneWay}" Height="23" Width="300"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

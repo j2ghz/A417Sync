@@ -1,19 +1,30 @@
-@model IEnumerable<A417Sync.Core.Models.Modpack>
+@model A417Sync.Core.Models.Repo
 @{
     ViewData["Title"] = "Modpacks";
 }
 @section Scripts {
-    <script src="~/js/modpacks.min.js" asp-append-version="true"></script>
+    <script src="~/js/modpacks.js" asp-append-version="true"></script>
 }
 
+<h2>Addons</h2>
+
+        <ul>
+            @foreach (var addon in Model.Addons)
+            {
+                <li id="@addon.Name" draggable="true" ondragstart="drag(event)">@addon.Name</li>
+            }
+        </ul>
+
 <h2>Modpacks</h2>
-@foreach (var modpack in Model)
+@foreach (var modpack in Model.Modpacks)
 {
     <div>
         <h3>@modpack.Name</h3>
-        @foreach (var addon in modpack.Addons)
-        {
-            <p>@addon</p>
-        }
+        <ul ondrop="drop(event)" ondragover="allowDrop(event)">
+            @foreach (var addon in modpack.Addons)
+            {
+                <li>@addon</li>
+            }
+        </ul>
     </div>
 }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using A417Sync.Server.Services;
 
 namespace A417Sync.Server
 {
@@ -29,6 +30,12 @@ namespace A417Sync.Server
         {
             // Add framework services.
             services.AddMvc();
+
+            services.AddOptions();
+
+            services.Configure<RepoOptions>(Configuration.GetSection("Repo"));
+
+            services.AddSingleton(typeof(RepoProvider));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

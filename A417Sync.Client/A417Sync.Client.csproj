@@ -135,6 +135,9 @@
     <PackageReference Include="HockeySDK.WPF">
       <Version>4.1.6</Version>
     </PackageReference>
+    <PackageReference Include="HockeySDK.WPF.TelemetryWorkaround">
+      <Version>0.1.0-workaround</Version>
+    </PackageReference>
     <PackageReference Include="NETStandard.Library">
       <Version>1.6.1</Version>
     </PackageReference>

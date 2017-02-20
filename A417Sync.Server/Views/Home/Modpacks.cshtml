@@ -1,0 +1,19 @@
+@model IEnumerable<A417Sync.Core.Models.Modpack>
+@{
+    ViewData["Title"] = "Modpacks";
+}
+@section Scripts {
+    <script src="~/js/modpacks.min.js" asp-append-version="true"></script>
+}
+
+<h2>Modpacks</h2>
+@foreach (var modpack in Model)
+{
+    <div>
+        <h3>@modpack.Name</h3>
+        @foreach (var addon in modpack.Addons)
+        {
+            <p>@addon</p>
+        }
+    </div>
+}

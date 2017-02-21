@@ -7,7 +7,6 @@
     using System.Windows;
 
     using A417Sync.Core;
-    using Microsoft.HockeyApp;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -21,7 +20,6 @@
 
         private void LoadRepo(object sender, RoutedEventArgs e)
         {
-            HockeyClient.Current.TrackEvent("Download");
             LoadRepo().GetAwaiter();
         }
 

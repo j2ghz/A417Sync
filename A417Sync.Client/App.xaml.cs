@@ -5,6 +5,8 @@ using System.Windows;
 
 namespace A417Sync.Client
 {
+    using System.Security.Permissions;
+
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
@@ -22,19 +24,16 @@ namespace A417Sync.Client
                 Environment = "Release"
 #endif
             });
-            Rollbar.PersonData(() => new Person($"{Environment.UserName}@{Environment.CurrentDirectory}@{Environment.MachineName}")
-                {
+            Rollbar.PersonData(() => new Person($"{Environment.UserName}@{Environment.CurrentDirectory}@{Environment.MachineName}".GetHashCode().ToString())
+            {
                     UserName = Environment.UserName,
                     Email = $"{Environment.UserName}@{Environment.UserDomainName}"
-                }
-            );
-            AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
-            {
-                Rollbar.Report(args.ExceptionObject as System.Exception);
-            };
+            });
+            Rollbar.Report("Launch");
+            AppDomain.CurrentDomain.UnhandledException += (sender, args) => Rollbar.Report(args.ExceptionObject as System.Exception);
 
             HockeyClient.Current.Configure("fcc1c7f687e344eb8e805ae492daf0c2");
-            HockeyClient.Current.SendCrashesAsync(true).GetAwaiter().GetResult();
+            HockeyClient.Current.SendCrashesAsync(true).GetAwaiter();
             HockeyAppWorkaroundInitializer.InitializeAsync().GetAwaiter().GetResult();
             HockeyClient.Current.TrackEvent("Launch");
 

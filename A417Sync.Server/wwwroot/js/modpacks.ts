@@ -11,15 +11,15 @@ function drag(ev: DragEvent) {
 
 function drop(ev: DragEvent) {
     ev.preventDefault();
-    var data = ev.dataTransfer.getData("text");
-    var target = $(<HTMLElement>event.target);
-    var elementChildren = target.children;
-    var newElement = document.getElementById(data);
+    //var data = ev.dataTransfer.getData("text");
+    //var target = <HTMLElement>event.target;
+    //var elementChildren = target.children;
+    //var newElement = document.getElementById(data);
     //for (var i = 0; i < elementChildren.length; i++) {
     //    if (elementChildren[i].id == ) {
     //        return;
     //    }
     //}
     //TODO use jquery to get ul parent, look at html when dropping  if not sure
-    target.appendChild(newElement.cloneNode());
+    //target.appendChild(newElement.cloneNode());
 }

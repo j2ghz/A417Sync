@@ -53,7 +53,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>28E3C43A168A0DEC8DD9001D6BAE6F6B9305DA02</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>B223568DC6A5F407AFFE3A7B7D493965DD665D0A</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>A417Sync.Client_TemporaryKey.pfx</ManifestKeyFile>
@@ -74,7 +74,8 @@
     <TargetZone>Internet</TargetZone>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>A417Sync.Client_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -379,8 +380,6 @@
     </PublishFile>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="ResolveNuGetPackageAssets"
-         DependsOnTargets="$(ResolveNuGetPackageAssetsDependsOn)"
-         Condition="'$(ResolveNuGetPackages)' == 'true' and exists('$(ProjectLockFile)')">
+  <Target Name="ResolveNuGetPackageAssets" DependsOnTargets="$(ResolveNuGetPackageAssetsDependsOn)" Condition="'$(ResolveNuGetPackages)' == 'true' and exists('$(ProjectLockFile)')">
   </Target>
 </Project>

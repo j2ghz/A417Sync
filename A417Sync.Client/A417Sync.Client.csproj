@@ -379,4 +379,8 @@
     </PublishFile>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="ResolveNuGetPackageAssets"
+         DependsOnTargets="$(ResolveNuGetPackageAssetsDependsOn)"
+         Condition="'$(ResolveNuGetPackages)' == 'true' and exists('$(ProjectLockFile)')">
+  </Target>
 </Project>

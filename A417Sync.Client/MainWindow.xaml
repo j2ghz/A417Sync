@@ -42,7 +42,7 @@
                                 <Grid>
                                     <ProgressBar Value="{Binding Progress, Mode=OneWay}"/>
                                     <TextBlock Text="{Binding Progress, Mode=OneWay, StringFormat={}{0:0}%}" HorizontalAlignment="Center" VerticalAlignment="Center" />
-</Grid>
+                                </Grid>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -50,7 +50,7 @@
             </ListView.View>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    
+
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

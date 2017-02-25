@@ -1,10 +1,14 @@
-﻿using Microsoft.HockeyApp;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace A417Sync.Client
 {
-    using System.Security.Permissions;
+    using Microsoft.HockeyApp;
 
     /// <summary>
     /// Interaction logic for App.xaml
@@ -20,9 +24,14 @@ namespace A417Sync.Client
             ////HockeyAppWorkaroundInitializer.InitializeAsync().GetAwaiter().GetResult();
             HockeyClient.Current.TrackEvent("Launch");
 
-            AppDomain.CurrentDomain.UnhandledException += (sender, args) => HockeyClient.Current.TrackException(args.ExceptionObject as System.Exception);
+            AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
+                {
+                    HockeyClient.Current.TrackException(args.ExceptionObject as System.Exception);
+                    HockeyClient.Current.Flush();
+                };
 
             HockeyClient.Current.Flush();
         }
     }
 }
+

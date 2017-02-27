@@ -16,7 +16,9 @@ using System.Windows.Shapes;
 namespace A417Sync.Client
 {
     using System.IO;
+    using System.Net;
     using System.Threading;
+    using System.Windows.Threading;
 
     using A417Sync.Core;
 
@@ -27,6 +29,7 @@ namespace A417Sync.Client
     /// </summary>
     public partial class MainWindow : Window
     {
+
         public MainWindow()
         {
             HockeyClient.Current.TrackPageView(nameof(MainWindow));
@@ -35,18 +38,19 @@ namespace A417Sync.Client
 
         private void LoadRepo(object sender, RoutedEventArgs e)
         {
-            LoadRepo().GetAwaiter();
+            this.btnLoad.IsEnabled = false;
+            LoadRepo();
         }
 
         private async Task LoadRepo()
         {
             var uri = new Uri(this.InputUrl.Text);
-            var repo = await Client.DownloadRepo(uri);
             var path = new DirectoryInfo(InputPath.Text);
+            var repo = await Client.DownloadRepo(uri);
             var client = new Client(path, uri);
             var actions = client.CollectActions(repo.Addons);
             queueListView.ItemsSource = actions;
-            await client.Update(actions, CancellationToken.None);
+            await client.Update(actions, CancellationToken.None).ConfigureAwait(false);
         }
     }
 }

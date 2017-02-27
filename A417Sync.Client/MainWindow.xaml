@@ -6,11 +6,13 @@
         xmlns:local="clr-namespace:A417Sync.Client"
         xmlns:models="clr-namespace:A417Sync.Core.Models;assembly=A417Sync.Core"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="350" Width="525"
+        Name="Main">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -23,7 +25,7 @@
             </Grid.RowDefinitions>
             <TextBox Grid.Column="0" Grid.Row="0" Text="http://addons.j2ghz.com/index.xml"  Padding="5" Name="InputUrl"/>
             <TextBox Grid.Column="0" Grid.Row="1" Text="D:\417Launcher\417Launcher\417addons" Padding="5" Name="InputPath"/>
-            <Button Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Content="Load" Padding="5" Click="LoadRepo"/>
+            <Button Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Name="btnLoad" Content="Load" Padding="5" Click="LoadRepo"/>
         </Grid>
         <ListView Grid.Row="1" Name="queueListView" d:DataContext="{d:DesignInstance local:IFileAction }">
             <ListView.ItemContainerStyle>
@@ -36,6 +38,7 @@
                 <GridView>
                     <GridViewColumn Header="Path" DisplayMemberBinding="{Binding Path, Mode=OneWay}" Width="Auto"/>
                     <GridViewColumn Header="Action" DisplayMemberBinding="{Binding Action, Mode=OneWay}" Width="Auto"/>
+                    <GridViewColumn Header="Speed" DisplayMemberBinding="{Binding Speed, Mode=OneWay}" Width="Auto"/>
                     <GridViewColumn Header="Progress" Width="300">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
@@ -54,6 +57,10 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-
+        <StatusBar Grid.Row="2">
+<StatusBarItem>
+                <TextBlock Text="0.0 kB/s"/>
+</StatusBarItem>
+        </StatusBar>
     </Grid>
 </Window>

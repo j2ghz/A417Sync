@@ -2,6 +2,7 @@
 {
     using System.ComponentModel;
     using System.IO;
+    using System.Net;
     using System.Runtime.CompilerServices;
     using System.Threading;
     using System.Threading.Tasks;
@@ -60,5 +61,7 @@
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public string Speed { get; }
     }
 }

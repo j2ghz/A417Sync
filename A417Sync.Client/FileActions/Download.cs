@@ -3,8 +3,7 @@
     using System;
     using System.ComponentModel;
     using System.IO;
-    using System.Linq;
-    using System.Net.Http;
+    using System.Net;
     using System.Runtime.CompilerServices;
     using System.Threading;
     using System.Threading.Tasks;
@@ -18,6 +17,8 @@
         private readonly Uri requestUri;
 
         private double progress = 0;
+
+        private string speed;
 
         public Download(FileInfo local, File file, Addon addon, Uri remote)
         {
@@ -45,66 +46,33 @@
             }
         }
 
+        public string Speed
+        {
+            get
+            {
+                return this.speed;
+            }
+
+            private set
+            {
+                this.speed = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private DateTime lastTime = DateTime.Now;
+
+        private long lastSize = 0;
+
         public async Task DoAsync(CancellationToken token)
         {
             Directory.CreateDirectory(System.IO.Path.GetDirectoryName(this.Path));
 
-            var client = new HttpClient();
+            var client = new WebClient();
 
-            var response =
-                await client.GetAsync(this.requestUri, HttpCompletionOption.ResponseHeadersRead, token)
-                    .ConfigureAwait(false);
+            client.DownloadProgressChanged += Update;
 
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new Exception(
-                    string.Format("The request returned with HTTP status code {0}", response.StatusCode));
-            }
-
-            var total = response.Content.Headers.ContentLength ?? -1L;
-            var canReportProgress = total != -1;
-
-            using (var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
-            {
-                var totalRead = 0L;
-                var buffer = new byte[4096];
-                var isMoreToRead = true;
-                var fileStream = new FileStream(
-                    this.Path,
-                    FileMode.Create,
-                    FileAccess.Write,
-                    FileShare.None,
-                    4096,
-                    true);
-
-                do
-                {
-                    token.ThrowIfCancellationRequested();
-
-                    var read = await stream.ReadAsync(buffer, 0, buffer.Length, token).ConfigureAwait(false);
-
-                    if (read == 0)
-                    {
-                        isMoreToRead = false;
-                    }
-                    else
-                    {
-                        var data = new byte[read];
-                        buffer.ToList().CopyTo(0, data, 0, read);
-
-                        // TODO: put here the code to write the file to disk
-                        await fileStream.WriteAsync(data, 0, read, token).ConfigureAwait(false);
-
-                        totalRead += read;
-
-                        if (canReportProgress)
-                        {
-                            this.Progress = (totalRead * 1d) / (total * 1d) * 100;
-                        }
-                    }
-                }
-                while (isMoreToRead);
-            }
+            await client.DownloadFileTaskAsync(this.requestUri, this.Path);
         }
 
         public override string ToString()
@@ -115,6 +83,15 @@
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void Update(object sender, DownloadProgressChangedEventArgs e)
+        {
+            Progress = (e.BytesReceived * 1.0 / e.TotalBytesToReceive) * 100;
+            var speed = (e.BytesReceived - this.lastSize) / (DateTime.Now - lastTime).TotalSeconds / 1024;
+            Speed = $"{speed:N2} kB/s";
+            this.lastTime = DateTime.Now;
+            this.lastSize = e.BytesReceived;
         }
     }
 }

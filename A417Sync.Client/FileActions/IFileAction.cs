@@ -1,18 +1,20 @@
 ﻿namespace A417Sync.Client
 {
     using System.ComponentModel;
+    using System.Net;
     using System.Threading;
     using System.Threading.Tasks;
 
     public interface IFileAction : INotifyPropertyChanged
-
     {
-    string Path { get; }
+        string Action { get; }
 
-    string Action { get; }
+        string Path { get; }
 
-    double Progress { get; }
+        double Progress { get; }
 
-    Task DoAsync(CancellationToken token);
+        string Speed { get; }
+
+        Task DoAsync(CancellationToken token);
     }
 }

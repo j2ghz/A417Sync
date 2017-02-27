@@ -1,4 +1,4 @@
-﻿namespace A417Sync.Core
+﻿namespace A417Sync.Client
 {
     using System;
     using System.ComponentModel;

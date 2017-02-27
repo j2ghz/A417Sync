@@ -20,6 +20,8 @@ namespace A417Sync.Client
 
     using A417Sync.Core;
 
+    using Microsoft.HockeyApp;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -27,6 +29,7 @@ namespace A417Sync.Client
     {
         public MainWindow()
         {
+            HockeyClient.Current.TrackPageView(nameof(MainWindow));
             InitializeComponent();
         }
 

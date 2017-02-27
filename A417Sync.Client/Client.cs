@@ -1,4 +1,4 @@
-﻿namespace A417Sync.Core
+﻿namespace A417Sync.Client
 {
     using System;
     using System.Collections.Generic;
@@ -8,6 +8,7 @@
     using System.Threading;
     using System.Threading.Tasks;
 
+    using A417Sync.Core;
     using A417Sync.Core.Models;
 
     using File = A417Sync.Core.Models.File;

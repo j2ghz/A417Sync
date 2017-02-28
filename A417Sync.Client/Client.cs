@@ -55,18 +55,15 @@
         ////    List<IFileAction> actions = CollectActions(addons);
         ////    await Update(actions, token);
         ////}
-        public async Task Update(IEnumerable<IFileAction> actions, CancellationToken token, int concurrent)
+        public async Task Update(IEnumerable<IFileAction> actions, CancellationToken token)
         {
-            Parallel.ForEach(
-                actions,
-                new ParallelOptions() { CancellationToken = token, MaxDegreeOfParallelism = concurrent },
-                async (action, state) =>
-                    {
-                        if (action != null)
-                        {
-                            await action.DoAsync(token).ConfigureAwait(false);
-                        }
-                    });
+            foreach (var action in actions)
+            {
+                if (action != null)
+                {
+                    await action.DoAsync(token).ConfigureAwait(false);
+                }
+            }
         }
 
         private IEnumerable<IFileAction> DecideAddon(Addon addon)

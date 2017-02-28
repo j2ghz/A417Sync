@@ -104,7 +104,7 @@
             if ((DateTime.Now - this.lastTime).TotalMilliseconds > 100)
             {
                 var speed = (e.BytesReceived - this.lastSize) / (DateTime.Now - this.lastTime).TotalSeconds / 1024;
-                if (double.IsInfinity(this.lastSpeed) || double.IsNaN(this.lastSpeed))
+                if (double.IsInfinity(this.lastSpeed) || double.IsNaN(this.lastSpeed) || this.lastSpeed == 0)
                 {
                     this.lastSpeed = speed;
                 }

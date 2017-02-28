@@ -50,7 +50,7 @@ namespace A417Sync.Client
             var client = new Client(path, uri);
             var actions = client.CollectActions(repo.Addons);
             queueListView.ItemsSource = actions;
-            await client.Update(actions, CancellationToken.None, int.Parse(this.concurrent.Text)).ConfigureAwait(false);
+            await client.Update(actions, CancellationToken.None).ConfigureAwait(false);
         }
     }
 }

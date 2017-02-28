@@ -14,7 +14,7 @@
 
     public class Download : IFileAction
     {
-        const double SMOOTHING_FACTOR = 0.005;
+        const double SMOOTHING_FACTOR = 0.05;
 
         private readonly Uri requestUri;
 

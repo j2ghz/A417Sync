@@ -63,6 +63,9 @@
   <PropertyGroup>
     <SignManifests>true</SignManifests>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>FinalF256.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.HockeyApp.Core45, Version=2017.213.222.10, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Unofficial.HockeySDK.Core.2017.0213.0222.10\lib\portable-net45+win8+wp8+wpa81+win81+uap10.0\Microsoft.HockeyApp.Core45.dll</HintPath>
@@ -170,6 +173,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="FinalF256.ico" />
     <Content Include="System.IO.dll" />
     <Content Include="System.Runtime.dll" />
   </ItemGroup>

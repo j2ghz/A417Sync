@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Net;
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
@@ -58,16 +57,15 @@
         ////}
         public async Task Update(IEnumerable<IFileAction> actions, CancellationToken token)
         {
-            foreach (var fileAction in actions)
-            {
-                if (fileAction == null)
-                {
-                    continue;
-                }
-
-                Console.WriteLine(fileAction);
-                await fileAction.DoAsync(token).ConfigureAwait(false);
-            }
+            Parallel.ForEach(
+                actions,
+                async (action, state) =>
+                    {
+                        if (action != null)
+                        {
+                            await action.DoAsync(token).ConfigureAwait(false);
+                        }
+                    });
         }
 
         private IEnumerable<IFileAction> DecideAddon(Addon addon)
@@ -97,17 +95,25 @@
         {
             if (!local.Exists)
             {
-                return new Download(local, remote, addon, this.RepoRootUri, remote.LastChange){Action = "Missing"};
+                return new Download(local, remote, addon, this.RepoRootUri, remote.LastChange) { Action = "Missing" };
             }
 
             if (local.Length != remote.Size)
             {
-                return new Download(local, remote, addon, this.RepoRootUri, remote.LastChange) { Action = $"size is differrent, local: {local.Length}, remote: {remote.Size}" };
+                return new Download(local, remote, addon, this.RepoRootUri, remote.LastChange)
+                           {
+                               Action =
+                                   $"size is differrent, local: {local.Length}, remote: {remote.Size}"
+                           };
             }
 
             if (local.LastWriteTimeUtc.CompareTo(remote.LastChange) != 0)
             {
-                return new Download(local, remote, addon, this.RepoRootUri, remote.LastChange) { Action = $"date is different, local: {local.LastWriteTimeUtc}, remote: {remote.LastChange}" };
+                return new Download(local, remote, addon, this.RepoRootUri, remote.LastChange)
+                           {
+                               Action =
+                                   $"date is different, local: {local.LastWriteTimeUtc}, remote: {remote.LastChange}"
+                           };
             }
 
             return null;

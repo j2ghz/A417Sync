@@ -24,11 +24,11 @@
 
         private DateTime lastTime = DateTime.Now;
 
+        private DateTime lastWrite;
+
         private double progress = 0;
 
         private string speed;
-
-        private DateTime lastWrite;
 
         private DateTime start;
 
@@ -81,11 +81,11 @@
 
             client.DownloadProgressChanged += Update;
 
-            start=DateTime.Now;
+            this.start = DateTime.Now;
 
-            await client.DownloadFileTaskAsync(this.requestUri, this.Path);
+            await client.DownloadFileTaskAsync(this.requestUri, this.Path).ConfigureAwait(false);
 
-            new FileInfo(Path).LastWriteTimeUtc = this.lastWrite;
+            new FileInfo(this.Path).LastWriteTimeUtc = this.lastWrite;
         }
 
         public override string ToString()
@@ -112,6 +112,7 @@
                 {
                     this.lastSpeed = (SMOOTHING_FACTOR * speed) + ((1 - SMOOTHING_FACTOR) * this.lastSpeed);
                 }
+
                 var overallSpeed = e.BytesReceived / (DateTime.Now - this.start).TotalSeconds / 1024;
                 this.Speed = $"{this.lastSpeed:N2} kB/s - {overallSpeed:N2} kB/s";
                 this.lastTime = DateTime.Now;

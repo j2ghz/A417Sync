@@ -38,7 +38,7 @@
                 <GridView>
                     <GridViewColumn Header="Path" DisplayMemberBinding="{Binding Path, Mode=OneWay}" Width="Auto"/>
                     <GridViewColumn Header="Action" DisplayMemberBinding="{Binding Action, Mode=OneWay}" Width="Auto"/>
-                    <GridViewColumn Header="Speed" DisplayMemberBinding="{Binding Speed, Mode=OneWay}" Width="Auto"/>
+                    <GridViewColumn Header="Speed (Weighted - Average)" DisplayMemberBinding="{Binding Speed, Mode=OneWay}" Width="Auto"/>
                     <GridViewColumn Header="Progress" Width="300">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>

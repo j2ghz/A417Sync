@@ -14,21 +14,34 @@
 
     public class Download : IFileAction
     {
+        const double SMOOTHING_FACTOR = 0.005;
+
         private readonly Uri requestUri;
+
+        private long lastSize = 0;
+
+        private double lastSpeed;
+
+        private DateTime lastTime = DateTime.Now;
 
         private double progress = 0;
 
         private string speed;
 
-        public Download(FileInfo local, File file, Addon addon, Uri remote)
+        private DateTime lastWrite;
+
+        private DateTime start;
+
+        public Download(FileInfo local, File file, Addon addon, Uri remote, DateTime lastWrite)
         {
+            this.lastWrite = lastWrite;
             this.Path = local.FullName;
             this.requestUri = new Uri(remote, addon.Name + file.Path);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public string Action => "Download";
+        public string Action { get; set; } = "Download";
 
         public string Path { get; }
 
@@ -60,10 +73,6 @@
             }
         }
 
-        private DateTime lastTime = DateTime.Now;
-
-        private long lastSize = 0;
-
         public async Task DoAsync(CancellationToken token)
         {
             Directory.CreateDirectory(System.IO.Path.GetDirectoryName(this.Path));
@@ -72,7 +81,11 @@
 
             client.DownloadProgressChanged += Update;
 
+            start=DateTime.Now;
+
             await client.DownloadFileTaskAsync(this.requestUri, this.Path);
+
+            new FileInfo(Path).LastWriteTimeUtc = this.lastWrite;
         }
 
         public override string ToString()
@@ -87,11 +100,23 @@
 
         private void Update(object sender, DownloadProgressChangedEventArgs e)
         {
-            Progress = (e.BytesReceived * 1.0 / e.TotalBytesToReceive) * 100;
-            var speed = (e.BytesReceived - this.lastSize) / (DateTime.Now - lastTime).TotalSeconds / 1024;
-            Speed = $"{speed:N2} kB/s";
-            this.lastTime = DateTime.Now;
-            this.lastSize = e.BytesReceived;
+            this.Progress = (e.BytesReceived * 1.0 / e.TotalBytesToReceive) * 100;
+            if ((DateTime.Now - this.lastTime).TotalMilliseconds > 100)
+            {
+                var speed = (e.BytesReceived - this.lastSize) / (DateTime.Now - this.lastTime).TotalSeconds / 1024;
+                if (double.IsInfinity(this.lastSpeed) || double.IsNaN(this.lastSpeed))
+                {
+                    this.lastSpeed = speed;
+                }
+                else
+                {
+                    this.lastSpeed = (SMOOTHING_FACTOR * speed) + ((1 - SMOOTHING_FACTOR) * this.lastSpeed);
+                }
+                var overallSpeed = e.BytesReceived / (DateTime.Now - this.start).TotalSeconds / 1024;
+                this.Speed = $"{this.lastSpeed:N2} kB/s - {overallSpeed:N2} kB/s";
+                this.lastTime = DateTime.Now;
+                this.lastSize = e.BytesReceived;
+            }
         }
     }
 }

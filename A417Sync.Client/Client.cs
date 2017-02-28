@@ -97,25 +97,19 @@
         {
             if (!local.Exists)
             {
-                Console.WriteLine($"File {local.FullName} does not exist, scheduling download.");
-                return new Download(local, remote, addon, this.RepoRootUri);
+                return new Download(local, remote, addon, this.RepoRootUri, remote.LastChange){Action = "Missing"};
             }
 
             if (local.Length != remote.Size)
             {
-                Console.WriteLine(
-                    $"File {local.FullName} size is differrent, local: {local.Length}, remote: {remote.Size}");
-                return new Download(local, remote, addon, this.RepoRootUri);
+                return new Download(local, remote, addon, this.RepoRootUri, remote.LastChange) { Action = $"size is differrent, local: {local.Length}, remote: {remote.Size}" };
             }
 
             if (local.LastWriteTimeUtc.CompareTo(remote.LastChange) != 0)
             {
-                Console.WriteLine(
-                    $"File {local.FullName} date is different, local: {local.LastWriteTimeUtc}, remote: {remote.LastChange}");
-                return new Download(local, remote, addon, this.RepoRootUri);
+                return new Download(local, remote, addon, this.RepoRootUri, remote.LastChange) { Action = $"date is different, local: {local.LastWriteTimeUtc}, remote: {remote.LastChange}" };
             }
 
-            Console.WriteLine($"File {local.FullName} OK");
             return null;
         }
     }

@@ -114,7 +114,7 @@
                 }
 
                 var overallSpeed = e.BytesReceived / (DateTime.Now - this.start).TotalSeconds / 1024;
-                this.Speed = $"{this.lastSpeed:N2} kB/s - {overallSpeed:N2} kB/s";
+                this.Speed = $"{speed} kB/s - {this.lastSpeed:N2} kB/s - {overallSpeed:N2} kB/s";
                 this.lastTime = DateTime.Now;
                 this.lastSize = e.BytesReceived;
             }

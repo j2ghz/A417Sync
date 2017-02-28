@@ -23,9 +23,10 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <TextBox Grid.Column="0" Grid.Row="0" Text="http://addons.j2ghz.com/index.xml"  Padding="5" Name="InputUrl"/>
+            <TextBox Grid.Column="0" Grid.Row="0" Text="https://a3.417rct.org/addons/index.xml"  Padding="5" Name="InputUrl"/>
             <TextBox Grid.Column="0" Grid.Row="1" Text="D:\417Launcher\417Launcher\417addons" Padding="5" Name="InputPath"/>
-            <Button Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Name="btnLoad" Content="Load" Padding="5" Click="LoadRepo"/>
+            <Button Grid.Column="1" Grid.Row="0" Name="btnLoad" Content="Load" Padding="5" Click="LoadRepo"/>
+            <TextBox Grid.Column="1" Grid.Row="1" Name="concurrent">1</TextBox>
         </Grid>
         <ListView Grid.Row="1" Name="queueListView" d:DataContext="{d:DesignInstance local:IFileAction }">
             <ListView.ItemContainerStyle>

@@ -55,10 +55,11 @@
         ////    List<IFileAction> actions = CollectActions(addons);
         ////    await Update(actions, token);
         ////}
-        public async Task Update(IEnumerable<IFileAction> actions, CancellationToken token)
+        public async Task Update(IEnumerable<IFileAction> actions, CancellationToken token, int concurrent)
         {
             Parallel.ForEach(
                 actions,
+                new ParallelOptions() { CancellationToken = token, MaxDegreeOfParallelism = concurrent },
                 async (action, state) =>
                     {
                         if (action != null)

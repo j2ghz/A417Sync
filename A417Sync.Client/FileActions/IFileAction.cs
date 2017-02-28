@@ -1,5 +1,6 @@
 ﻿namespace A417Sync.Client
 {
+    using System;
     using System.ComponentModel;
     using System.Net;
     using System.Threading;
@@ -11,10 +12,6 @@
 
         string Path { get; }
 
-        double Progress { get; }
-
-        string Speed { get; }
-
-        Task DoAsync(CancellationToken token);
+        Task DoAsync(CancellationToken token, IProgress<long> progress);
     }
 }

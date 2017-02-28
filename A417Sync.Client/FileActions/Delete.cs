@@ -1,5 +1,6 @@
 ﻿namespace A417Sync.Client
 {
+    using System;
     using System.ComponentModel;
     using System.IO;
     using System.Net;
@@ -40,7 +41,7 @@
 
         private FileInfo File { get; set; }
 
-        public Task DoAsync(CancellationToken token)
+        public Task DoAsync(CancellationToken token, IProgress<long> progress)
         {
             if (!token.IsCancellationRequested)
             {

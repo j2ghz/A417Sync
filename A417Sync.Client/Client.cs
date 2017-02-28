@@ -19,7 +19,10 @@
         {
             this.Local = local;
             this.RepoRootUri = repoRootUri;
+            this.Model = new ClientViewModel();
         }
+
+        public ClientViewModel Model { get; }
 
         private DirectoryInfo Local { get; }
 
@@ -45,23 +48,14 @@
             return actions.Where(x => x != null);
         }
 
-        ////public async Task Update(Modpack modpack, Repo repo, CancellationToken token)
-        ////{
-        ////    await Update(repo.Addons.Where(x => modpack.Addons.Contains(x.Name)), token).ConfigureAwait(false);
-        ////}
-
-        ////public async Task Update(IEnumerable<Addon> addons, CancellationToken token)
-        ////{
-        ////    List<IFileAction> actions = CollectActions(addons);
-        ////    await Update(actions, token);
-        ////}
         public async Task Update(IEnumerable<IFileAction> actions, CancellationToken token)
         {
             foreach (var action in actions)
             {
                 if (action != null)
                 {
-                    await action.DoAsync(token).ConfigureAwait(false);
+                    await action.DoAsync(token, new Progress<long>(x => this.Model.BytesDownloaded += x))
+                        .ConfigureAwait(false);
                 }
             }
         }
@@ -91,6 +85,7 @@
 
         private IFileAction DecideFile(FileInfo local, File remote, Addon addon)
         {
+            this.Model.BytesToDownload += remote.Size;
             if (!local.Exists)
             {
                 return new Download(local, remote, addon, this.RepoRootUri, remote.LastChange) { Action = "Missing" };
@@ -114,6 +109,7 @@
                            };
             }
 
+            this.Model.BytesToDownload -= remote.Size;
             return null;
         }
     }

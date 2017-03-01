@@ -85,6 +85,7 @@
 
         private void SetupLogging()
         {
+            Directory.CreateDirectory(LogFile);
             Log.Logger =
                 new LoggerConfiguration().WriteTo.LiterateConsole(
                         outputTemplate: "[{Timestamp:HH:mm:ss} {Level} {SourceContext}] {Message}{NewLine}{Exception}")

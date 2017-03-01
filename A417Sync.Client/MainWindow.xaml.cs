@@ -35,5 +35,10 @@
         {
             throw new NotImplementedException();
         }
+
+        private void ConsoleToggle(object sender, RoutedEventArgs e)
+        {
+            ConsoleManager.Toggle();
+        }
     }
 }

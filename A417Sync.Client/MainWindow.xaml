@@ -13,9 +13,15 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="AUto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Grid>
+        <Menu Grid.Row="0">
+            <MenuItem Header="Debug">
+                <MenuItem Header="Toggle Console" Click="ConsoleToggle"></MenuItem>
+            </MenuItem>
+        </Menu>
+        <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
@@ -28,10 +34,10 @@
             <TextBox Grid.Column="0" Grid.Row="1" Text="D:\417Launcher\417Launcher\417addons" Padding="5" Name="InputPath"/>
             <Button Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Name="btnLoad" Content="Load" Padding="5" Click="LoadRepo"/>
         </Grid>
-        <ComboBox Grid.Row="1"></ComboBox>
-        <TextBlock Grid.Row="2" Text="{Binding DownloadInfo, Mode=OneWay}"></TextBlock>
-        <ProgressBar Grid.Row="3" Value="{Binding Progress, Mode=OneWay}"/>
-        <Grid Grid.Row="4">
+        <ComboBox Grid.Row="2"></ComboBox>
+        <TextBlock Grid.Row="3" Text="{Binding DownloadInfo, Mode=OneWay}"></TextBlock>
+        <ProgressBar Grid.Row="4" MinHeight="40" Value="{Binding Progress, Mode=OneWay}"/>
+        <Grid Grid.Row="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>

@@ -4,7 +4,6 @@
     using System.Deployment.Application;
     using System.IO;
     using System.Reflection;
-    using System.Runtime.InteropServices;
     using System.Windows;
 
     using Microsoft.HockeyApp;
@@ -28,24 +27,15 @@
             =>
                 ApplicationDeployment.IsNetworkDeployed
                     ? ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString()
-                    : "Not versioned";
-
-        [DllImport("Kernel32")]
-        public static extern void FreeConsole();
+                    : "0.0.0.0";
 
         protected override void OnStartup(StartupEventArgs e)
         {
-#if DEBUG
-            ConsoleManager.Show(); //FIX the console doesn't show anything
-#endif
             this.SetupLogging();
             this.LogLaunchMessage();
             this.HockeyApp();
             base.OnStartup(e);
         }
-
-        [DllImport("Kernel32")]
-        private static extern void AllocConsole();
 
         private void HockeyApp()
         {
@@ -56,7 +46,18 @@
 
             ((HockeyClient)HockeyClient.Current).VersionInfo = this.Version;
 
-            HockeyClient.Current.SendCrashesAsync(true);
+            HockeyClient.Current.SendCrashesAsync(false).ContinueWith(
+                task =>
+                    {
+                        if (task.Result)
+                        {
+                            MessageBox.Show(
+                                "Processing finished",
+                                "Crash report",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Information);
+                        }
+                    }).GetAwaiter();
 
             HockeyClient.Current.TrackEvent("Launch");
 
@@ -66,22 +67,27 @@
         private void LogLaunchMessage()
         {
             Log.Information("Starting {name} {version}", this.Name, this.Version);
-            Log.Information("Logging to {filePath}", LogFile);
-            Console.WriteLine("a");
+            Log.Information("Logging to {filePath}", this.LogFile);
         }
 
         private void SetupLogging()
         {
             Log.Logger =
-                new LoggerConfiguration()
-                    .WriteTo.LiterateConsole(
+                new LoggerConfiguration().WriteTo.LiterateConsole(
                         outputTemplate: "[{Timestamp:HH:mm:ss} {Level} {SourceContext}] {Message}{NewLine}{Exception}")
                     .WriteTo.RollingFile(
                         this.LogFile,
-                        outputTemplate: "{Timestamp:o} [{Level:u3}] ({SourceContext}/{ThreadId}) {Message}{NewLine}{Exception}")
+                        outputTemplate:
+                        "{Timestamp:o} [{Level:u3}] ({SourceContext}/{ThreadId}) {Message}{NewLine}{Exception}")
                     .WriteTo.Trace()
                     .Enrich.FromLogContext()
                     .CreateLogger();
+
+            AppDomain.CurrentDomain.UnhandledException +=
+                (sender, args) =>
+                    Log.Fatal(
+                        args.ExceptionObject as System.Exception,
+                        nameof(AppDomain.CurrentDomain.UnhandledException));
         }
     }
 }

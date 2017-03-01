@@ -19,14 +19,9 @@
             InitializeComponent();
         }
 
-        private void LoadRepo(object sender, RoutedEventArgs e)
+        private async void LoadRepo(object sender, RoutedEventArgs e)
         {
             this.btnLoad.IsEnabled = false;
-            LoadRepo();
-        }
-
-        private async Task LoadRepo()
-        {
             var uri = new Uri(this.InputUrl.Text);
             var path = new DirectoryInfo(this.InputPath.Text);
             var client = new Client(path, uri);
@@ -34,6 +29,11 @@
             var repo = await Client.DownloadRepo(uri).ConfigureAwait(false);
             var actions = client.CollectActions(repo.Addons);
             await client.Update(actions, CancellationToken.None).ConfigureAwait(false);
+        }
+
+        private void Start(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
     }
 }

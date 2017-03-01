@@ -39,7 +39,7 @@
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0">Check</Button>
             <Button Grid.Column="1" Click="LoadRepo">Update</Button>
-            <Button Grid.Column="2">Start</Button>
+            <Button Grid.Column="2" Click="Start">Start</Button>
         </Grid>
     </Grid>
 </Window>

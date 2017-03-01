@@ -9,8 +9,6 @@
     using Microsoft.HockeyApp;
 
     using Serilog;
-    using Serilog.Core;
-    using Serilog.Events;
 
     public partial class App : Application
     {
@@ -29,24 +27,26 @@
         {
             get
             {
+                string v;
                 try
                 {
-                    return ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
+                    v = ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
                 }
                 catch (Exception e)
                 {
                     Log.Error(e, "Couldn't determine version");
-                    HockeyClient.Current.TrackException(e);
-                    return "0.0.0.0";
+                    v = "0.0.0.0";
                 }
+
+                return v;
             }
         }
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            this.SetupLogging();
-            this.LogLaunchMessage();
-            this.HockeyApp();
+            SetupLogging();
+            LogLaunchMessage();
+            HockeyApp();
             base.OnStartup(e);
         }
 
@@ -93,26 +93,12 @@
                         outputTemplate:
                         "{Timestamp:o} [{Level:u3}] ({SourceContext}/{ThreadId}) {Message}{NewLine}{Exception}")
                     .WriteTo.Trace()
-                    .WriteTo.Sink<HockeySink>()
                     .Enrich.FromLogContext()
                     .CreateLogger();
 
             AppDomain.CurrentDomain.UnhandledException +=
                 (sender, args) =>
-                    Log.Fatal(
-                        args.ExceptionObject as System.Exception,
-                        nameof(AppDomain.CurrentDomain.UnhandledException));
-        }
-    }
-
-    public class HockeySink : ILogEventSink
-    {
-        public void Emit(LogEvent logEvent)
-        {
-            if (logEvent.Exception != null)
-            {
-                HockeyClient.Current.TrackException(logEvent.Exception);
-            }
+                    Log.Fatal(args.ExceptionObject as Exception, nameof(AppDomain.CurrentDomain.UnhandledException));
         }
     }
 }

@@ -9,6 +9,8 @@
     using Microsoft.HockeyApp;
 
     using Serilog;
+    using Serilog.Core;
+    using Serilog.Events;
 
     public partial class App : Application
     {
@@ -24,10 +26,21 @@
         public string Name => Assembly.GetEntryAssembly().GetName().Name;
 
         public string Version
-            =>
-                ApplicationDeployment.IsNetworkDeployed
-                    ? ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString()
-                    : "0.0.0.0";
+        {
+            get
+            {
+                try
+                {
+                    return ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e, "Couldn't determine version");
+                    HockeyClient.Current.TrackException(e);
+                    return "0.0.0.0";
+                }
+            }
+        }
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -80,6 +93,7 @@
                         outputTemplate:
                         "{Timestamp:o} [{Level:u3}] ({SourceContext}/{ThreadId}) {Message}{NewLine}{Exception}")
                     .WriteTo.Trace()
+                    .WriteTo.Sink<HockeySink>()
                     .Enrich.FromLogContext()
                     .CreateLogger();
 
@@ -88,6 +102,17 @@
                     Log.Fatal(
                         args.ExceptionObject as System.Exception,
                         nameof(AppDomain.CurrentDomain.UnhandledException));
+        }
+    }
+
+    public class HockeySink : ILogEventSink
+    {
+        public void Emit(LogEvent logEvent)
+        {
+            if (logEvent.Exception != null)
+            {
+                HockeyClient.Current.TrackException(logEvent.Exception);
+            }
         }
     }
 }

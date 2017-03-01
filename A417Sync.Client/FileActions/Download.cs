@@ -17,11 +17,11 @@
 
         private readonly Uri requestUri;
 
-        private readonly DateTime lastRemoteWrite;
+        private readonly long lastRemoteWrite;
 
         private long lastSize  = 0;
 
-        public Download(FileInfo local, File file, Addon addon, Uri remote, DateTime lastWrite)
+        public Download(FileInfo local, File file, Addon addon, Uri remote, long lastWrite)
         {
             this.lastRemoteWrite = lastWrite;
             this.Path = local.FullName;
@@ -48,7 +48,7 @@
 
             await client.DownloadFileTaskAsync(this.requestUri, this.Path).ConfigureAwait(false);
 
-            new FileInfo(this.Path).LastWriteTimeUtc = this.lastRemoteWrite;
+            new FileInfo(this.Path).LastWriteTimeUtc = DateTime.FromFileTimeUtc(this.lastRemoteWrite);
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

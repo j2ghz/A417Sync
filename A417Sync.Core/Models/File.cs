@@ -6,7 +6,7 @@
     public class File
     {
         [XmlAttribute]
-        public DateTime LastChange { get; set; }
+        public long LastChange { get; set; }
 
         [XmlAttribute]
         public string Path { get; set; }

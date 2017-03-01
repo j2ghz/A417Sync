@@ -30,7 +30,7 @@
                                             new File()
                                                 {
                                                     Path = x.FullName.Substring(path.FullName.Length),
-                                                    LastChange = x.LastWriteTimeUtc,
+                                                    LastChange = x.LastWriteTimeUtc.ToFileTimeUtc(),
                                                     Size = x.Length
                                                 })
                                     .ToList()

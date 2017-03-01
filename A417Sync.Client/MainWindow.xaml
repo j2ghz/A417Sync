@@ -35,7 +35,43 @@
             <Button Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Name="btnLoad" Content="Load" Padding="5" Click="LoadRepo"/>
         </Grid>
         <ComboBox Grid.Row="2"></ComboBox>
-        <TextBlock Grid.Row="3" Text="{Binding DownloadInfo, Mode=OneWay}"></TextBlock>
+        <TabControl Grid.Row="3">
+            <TabItem Header="Simple">
+                <TextBlock Grid.Row="3" Text="{Binding DownloadInfo, Mode=OneWay}"></TextBlock>
+            </TabItem>
+            <TabItem Header="Advanced">
+                <ListView Grid.Row="1" Name="queueListView" d:DataContext="{d:DesignInstance local:IFileAction }">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Path" DisplayMemberBinding="{Binding Path, Mode=OneWay}" Width="Auto"/>
+                            <GridViewColumn Header="Action" DisplayMemberBinding="{Binding Action, Mode=OneWay}" Width="Auto"/>
+                            <GridViewColumn Header="Speed (Real - Weighted - Average)" DisplayMemberBinding="{Binding Speed, Mode=OneWay}" Width="Auto"/>
+                            <GridViewColumn Header="Progress" Width="300">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <ProgressBar Value="{Binding Progress, Mode=OneWay}"/>
+                                            <TextBlock Text="{Binding Progress, Mode=OneWay, StringFormat={}{0:0}%}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </TabItem>
+        </TabControl>
         <Grid Row="4">
             <ProgressBar Grid.Row="4" MinHeight="40" Value="{Binding Progress, Mode=OneWay}"/>
             <TextBlock Text="{Binding Progress, Mode=OneWay, StringFormat={}{0:0}%}" HorizontalAlignment="Center" VerticalAlignment="Center" />

@@ -26,8 +26,9 @@
             var path = new DirectoryInfo(this.InputPath.Text);
             var client = new Client(path, uri);
             this.DataContext = client.Model;
-            var repo = await Client.DownloadRepo(uri).ConfigureAwait(false);
+            var repo = await Client.DownloadRepo(uri);
             var actions = client.CollectActions(repo.Addons);
+            queueListView.ItemsSource = actions;
             await client.Update(actions, CancellationToken.None).ConfigureAwait(false);
         }
 

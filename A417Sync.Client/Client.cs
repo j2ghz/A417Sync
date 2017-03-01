@@ -104,7 +104,7 @@
 
             if (local.LastWriteTimeUtc.CompareTo(remote.LastChange) != 0)
             {
-                Log.Information("Scheduling {file} to download, date is different: {@local} vs {@remote}", local.Name, local.LastWriteTimeUtc, remote.LastChange);
+                Log.Information("Scheduling {file} to download, date is different: {@local} vs {@remote}", local.Name, local.LastWriteTimeUtc.ToFileTimeUtc(), remote.LastChange.ToFileTimeUtc());
                 return new Download(local, remote, addon, this.RepoRootUri, remote.LastChange)
                            {
                                Action =

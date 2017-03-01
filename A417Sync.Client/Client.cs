@@ -11,6 +11,8 @@
     using A417Sync.Core;
     using A417Sync.Core.Models;
 
+    using Serilog;
+
     using File = A417Sync.Core.Models.File;
 
     public class Client
@@ -102,6 +104,7 @@
 
             if (local.LastWriteTimeUtc.CompareTo(remote.LastChange) != 0)
             {
+                Log.Verbose("Scheduling {file} to download, date is different: {@local} vs {@remote}", local.Name, local.LastWriteTimeUtc, remote.LastChange);
                 return new Download(local, remote, addon, this.RepoRootUri, remote.LastChange)
                            {
                                Action =

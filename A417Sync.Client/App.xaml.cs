@@ -27,15 +27,17 @@
         {
             get
             {
-                string v;
+                string v = "0.0.0.0";
                 try
                 {
-                    v = ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
+                    if (!System.Diagnostics.Debugger.IsAttached)
+                    {
+                        v = ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
+                    }
                 }
                 catch (Exception e)
                 {
                     Log.Error(e, "Couldn't determine version");
-                    v = "0.0.0.0";
                 }
 
                 return v;
@@ -85,7 +87,7 @@
 
         private void SetupLogging()
         {
-            Directory.CreateDirectory(LogFile);
+            Directory.CreateDirectory(this.LogFile);
             Log.Logger =
                 new LoggerConfiguration().WriteTo.LiterateConsole(
                         outputTemplate: "[{Timestamp:HH:mm:ss} {Level} {SourceContext}] {Message}{NewLine}{Exception}")

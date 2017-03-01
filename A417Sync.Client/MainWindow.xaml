@@ -36,7 +36,10 @@
         </Grid>
         <ComboBox Grid.Row="2"></ComboBox>
         <TextBlock Grid.Row="3" Text="{Binding DownloadInfo, Mode=OneWay}"></TextBlock>
-        <ProgressBar Grid.Row="4" MinHeight="40" Value="{Binding Progress, Mode=OneWay}"/>
+        <Grid Row="4">
+            <ProgressBar Grid.Row="4" MinHeight="40" Value="{Binding Progress, Mode=OneWay}"/>
+            <TextBlock Text="{Binding Progress, Mode=OneWay, StringFormat={}{0:0}%}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Grid>
         <Grid Grid.Row="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>

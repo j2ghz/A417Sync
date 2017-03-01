@@ -95,11 +95,14 @@
             {
                 var speed = (this.bytesDownloaded - this.lastSpeedUpdateDownloaded) / interval;
                 var sb = new StringBuilder();
+                var remaining = new TimeSpan(0,0,0, (int)(this.bytesToDownload / speed));
                 sb.AppendFormat(new FileSizeFormatProvider(), "{0:fs}", this.bytesDownloaded);
                 sb.Append(" / ");
                 sb.AppendFormat(new FileSizeFormatProvider(), "{0:fs}", this.bytesToDownload);
                 sb.AppendLine();
                 sb.AppendFormat(new DownloadSpeedFormatProvider(), "{0:sp}", speed);
+                sb.AppendLine();
+                sb.AppendFormat("{0:g}", remaining);
                 this.DownloadInfo = sb.ToString();
                 this.lastSpeedUpdateTime = DateTime.Now;
                 this.lastSpeedUpdateDownloaded = this.bytesDownloaded;

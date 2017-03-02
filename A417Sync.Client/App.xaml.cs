@@ -9,6 +9,7 @@
     using Microsoft.HockeyApp;
 
     using Serilog;
+    using Serilog.Events;
 
     public partial class App : Application
     {
@@ -46,37 +47,44 @@
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            ConsoleManager.Show();
             SetupLogging();
             LogLaunchMessage();
             HockeyApp();
             base.OnStartup(e);
+            Log.Information("{method} finished", nameof(OnStartup));
         }
 
         private void HockeyApp()
         {
+            Log.Information("HockeyApp initializing");
             HockeyClient.Current.Configure("fcc1c7f687e344eb8e805ae492daf0c2")
                 .SetContactInfo(
                     Environment.UserName,
                     (this.Properties["Contact"] ?? Environment.MachineName).ToString());
 
             ((HockeyClient)HockeyClient.Current).VersionInfo = this.Version;
-
-            HockeyClient.Current.SendCrashesAsync(false).ContinueWith(
+            Log.Debug("Checking for pending crashes");
+            HockeyClient.Current.SendCrashesAsync().ContinueWith(
                 task =>
                     {
-                        if (task.Result)
+                        if (!task.Result)
                         {
-                            MessageBox.Show(
-                                "Processing finished",
-                                "Crash report",
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Information);
+                            return;
                         }
+
+                        Log.Information("Crash processing finished");
+                        MessageBox.Show(
+                            "Processing finished",
+                            "Crash report",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Information);
                     }).GetAwaiter();
 
             HockeyClient.Current.TrackEvent("Launch");
-
             HockeyClient.Current.Flush();
+
+            Log.Information("HockeyApp initialized");
         }
 
         private void LogLaunchMessage()
@@ -87,15 +95,15 @@
 
         private void SetupLogging()
         {
-            Directory.CreateDirectory(this.LogFile);
+            Directory.CreateDirectory(Path.GetDirectoryName(this.LogFile));
             Log.Logger =
                 new LoggerConfiguration().WriteTo.LiterateConsole(
-                        outputTemplate: "[{Timestamp:HH:mm:ss} {Level} {SourceContext}] {Message}{NewLine}{Exception}")
+                        LogEventLevel.Debug,
+                        "{Timestamp:HH:mm:ss} {Level} [{SourceContext}] {Message}{NewLine}{Exception}")
                     .WriteTo.RollingFile(
                         this.LogFile,
-                        outputTemplate:
-                        "{Timestamp:o} [{Level:u3}] ({SourceContext}/{ThreadId}) {Message}{NewLine}{Exception}")
-                    .WriteTo.Trace()
+                        LogEventLevel.Debug,
+                        "{Timestamp:o} [{Level:u3}] ({SourceContext}) {Message}{NewLine}{Exception}")
                     .Enrich.FromLogContext()
                     .CreateLogger();
 

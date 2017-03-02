@@ -136,7 +136,6 @@
     <Compile Include="Client.cs" />
     <Compile Include="ConsoleManager.cs" />
     <Compile Include="DownloadSpeedFormatProvider.cs" />
-    <Compile Include="FileActions\Delete.cs" />
     <Compile Include="FileActions\Download.cs" />
     <Compile Include="FileActions\IFileAction.cs" />
     <Compile Include="FileSizeFormatProvider.cs" />

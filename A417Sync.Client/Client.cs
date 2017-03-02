@@ -17,6 +17,8 @@
 
     public class Client
     {
+        private ILogger log = Log.ForContext<Client>();
+
         public Client(DirectoryInfo local, Uri repoRootUri)
         {
             this.Local = local;
@@ -32,15 +34,20 @@
 
         public static async Task<Repo> DownloadRepo(Uri repoUri)
         {
+            var log = Log.ForContext<Client>();
+            log.Information("Downloading repo {url}", repoUri);
             var httpClient = new HttpClient();
             var request = new HttpRequestMessage(HttpMethod.Get, repoUri);
             var response = await httpClient.SendAsync(request).ConfigureAwait(false);
             var contentStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-            return RepoFactory.LoadRepo(contentStream);
+            var repo = RepoFactory.LoadRepo(contentStream);
+            log.Verbose("{@repo}", repo);
+            return repo;
         }
 
         public IEnumerable<IFileAction> CollectActions(IEnumerable<Addon> addons)
         {
+            this.log.Information("Checking {count} addons", addons.Count());
             var actions = new List<IFileAction>();
             foreach (var addon in addons)
             {
@@ -52,6 +59,7 @@
 
         public async Task Update(IEnumerable<IFileAction> actions, CancellationToken token)
         {
+            this.log.Information("Processing {count} actions", actions.Count());
             foreach (var action in actions)
             {
                 if (action != null)
@@ -64,6 +72,7 @@
 
         private IEnumerable<IFileAction> DecideAddon(Addon addon)
         {
+            this.log.Information("Checking {addon}", addon.Name);
             var localFolder = new DirectoryInfo(Path.Combine(this.Local.FullName, addon.Name));
             List<FileInfo> localFiles = null;
             if (localFolder.Exists)
@@ -90,11 +99,13 @@
             this.Model.BytesToDownload += remote.Size;
             if (!local.Exists)
             {
+                this.log.Debug("{file} missing", local.FullName);
                 return new Download(local, remote, addon, this.RepoRootUri, remote.LastChange) { Action = "Missing" };
             }
 
             if (local.Length != remote.Size)
             {
+                this.log.Debug("{file} size: {local}, expected: {remote}", local.Name, local.Length, remote.Size);
                 return new Download(local, remote, addon, this.RepoRootUri, remote.LastChange)
                            {
                                Action =
@@ -102,12 +113,13 @@
                            };
             }
 
-            if (local.LastWriteTimeUtc.ToFileTimeUtc() == remote.LastChange)
+            if (local.LastWriteTimeUtc.ToFileTimeUtc() != remote.LastChange)
             {
+                this.log.Debug("{file} date: {local}, expected: {remote}", local.Name, local.LastWriteTimeUtc.ToFileTimeUtc(), remote.Size);
                 return new Download(local, remote, addon, this.RepoRootUri, remote.LastChange)
                            {
                                Action =
-                                   $"date is different, local: {local.LastWriteTimeUtc}, remote: {remote.LastChange}"
+                                   $"date is different, local: {local.LastWriteTimeUtc.ToFileTimeUtc()}, remote: {remote.LastChange}"
                            };
             }
 

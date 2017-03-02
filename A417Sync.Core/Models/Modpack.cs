@@ -5,19 +5,24 @@
 
     public class Modpack
     {
+        [XmlAttribute]
+        public string AdditionalParams { get; set; } = string.Empty;
+
         public List<string> Addons { get; set; }
 
         [XmlAttribute]
-        public string Name { get; set; }
+        public string IP { get; set; } = string.Empty;
+
         [XmlAttribute]
-        public string IP { get; set; }
+        public string Name { get; set; }
+
+        [XmlAttribute]
+        public string Password { get; set; } = string.Empty;
+
         [XmlAttribute]
         public int Port { get; set; }
+
         [XmlAttribute]
         public int Query { get; set; }
-        [XmlAttribute]
-        public string AdditionalParams { get; set; }
-        [XmlAttribute]
-        public string Password { get; set; }
     }
 }

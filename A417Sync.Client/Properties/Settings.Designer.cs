@@ -34,5 +34,29 @@ namespace A417Sync.Client.Properties {
                 this["Contact"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://a3.417rct.org/addons/index.xml")]
+        public string url {
+            get {
+                return ((string)(this["url"]));
+            }
+            set {
+                this["url"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("D:\\417Launcher\\417Launcher\\417addons")]
+        public string path {
+            get {
+                return ((string)(this["path"]));
+            }
+            set {
+                this["path"] = value;
+            }
+        }
     }
 }

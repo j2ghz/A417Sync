@@ -17,10 +17,16 @@
         {
             HockeyClient.Current.TrackPageView(nameof(MainWindow));
             InitializeComponent();
+            this.InputPath.Text = Properties.Settings.Default.path;
+            this.InputUrl.Text = Properties.Settings.Default.url;
         }
 
         private async void LoadRepo(object sender, RoutedEventArgs e)
         {
+            Properties.Settings.Default.path = this.InputPath.Text;
+            Properties.Settings.Default.url = this.InputUrl.Text;
+            Properties.Settings.Default.Save();
+
             this.btnLoad.IsEnabled = false;
             var uri = new Uri(this.InputUrl.Text);
             var path = new DirectoryInfo(this.InputPath.Text);

@@ -5,5 +5,11 @@
     <Setting Name="Contact" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="url" Type="System.String" Scope="User">
+      <Value Profile="(Default)">https://a3.417rct.org/addons/index.xml</Value>
+    </Setting>
+    <Setting Name="path" Type="System.String" Scope="User">
+      <Value Profile="(Default)">D:\417Launcher\417Launcher\417addons</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

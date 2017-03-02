@@ -31,17 +31,19 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <TextBox Grid.Column="0" Grid.Row="0" Text="https://a3.417rct.org/addons/index.xml"  Padding="5" Name="InputUrl"/>
-            <TextBox Grid.Column="0" Grid.Row="1" Text="D:\417Launcher\417Launcher\417addons" Padding="5" Name="InputPath"/>
+            <TextBox Grid.Column="0" Grid.Row="0" Padding="5" Name="InputUrl"/>
+            <TextBox Grid.Column="0" Grid.Row="1" Padding="5" Name="InputPath"/>
             <Button Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Name="btnLoad" Content="Load" Padding="5" Click="LoadRepo"/>
         </Grid>
-        <ComboBox Grid.Row="2" />
+        <ComboBox Grid.Row="2">
+            <ComboBoxItem IsSelected="True">(Everything)</ComboBoxItem>
+        </ComboBox>
         <TabControl Grid.Row="3">
             <TabItem Header="Simple">
                 <TextBlock Grid.Row="3" Text="{Binding DownloadInfo, Mode=OneWay}" />
             </TabItem>
             <TabItem Header="Advanced">
-                <ListView Grid.Row="1" Name="queueListView" d:DataContext="{d:DesignInstance local:IFileAction }">
+                <ListView Grid.Row="1" Name="queueListView" d:DataContext="{d:DesignInstance local:Download }">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>

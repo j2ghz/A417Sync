@@ -21,6 +21,7 @@
             <MenuItem Header="Debug">
                 <MenuItem Header="Toggle Console" Click="ConsoleToggle" />
             </MenuItem>
+            <MenuItem Header="Feedback" Click="Feedback"/>
         </Menu>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>

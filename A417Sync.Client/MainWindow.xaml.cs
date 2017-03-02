@@ -3,7 +3,6 @@
     using System;
     using System.IO;
     using System.Threading;
-    using System.Threading.Tasks;
     using System.Windows;
 
     using Microsoft.HockeyApp;
@@ -21,6 +20,21 @@
             this.InputUrl.Text = Properties.Settings.Default.url;
         }
 
+        private void ConsoleToggle(object sender, RoutedEventArgs e)
+        {
+            ConsoleManager.Toggle();
+        }
+
+        private async void Feedback(object sender, RoutedEventArgs e)
+        {
+            await HockeyClient.Current.CreateFeedbackThread()
+                .PostFeedbackMessageAsync(
+                    Microsoft.VisualBasic.Interaction.InputBox("Message"),
+                    Microsoft.VisualBasic.Interaction.InputBox("Email"),
+                    Microsoft.VisualBasic.Interaction.InputBox("Subject"),
+                    Microsoft.VisualBasic.Interaction.InputBox("Name")).ContinueWith(task => MessageBox.Show("Feedback sent"));
+        }
+
         private async void LoadRepo(object sender, RoutedEventArgs e)
         {
             Properties.Settings.Default.path = this.InputPath.Text;
@@ -34,18 +48,13 @@
             this.DataContext = client.Model;
             var repo = await Client.DownloadRepo(uri);
             var actions = client.CollectActions(repo.Addons);
-            queueListView.ItemsSource = actions;
+            this.queueListView.ItemsSource = actions;
             await client.Update(actions, CancellationToken.None).ConfigureAwait(false);
         }
 
         private void Start(object sender, RoutedEventArgs e)
         {
             throw new NotImplementedException();
-        }
-
-        private void ConsoleToggle(object sender, RoutedEventArgs e)
-        {
-            ConsoleManager.Toggle();
         }
     }
 }

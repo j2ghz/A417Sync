@@ -1,10 +1,13 @@
 ﻿namespace A417Sync.Client
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.IO;
     using System.Threading;
     using System.Windows;
+
+    using A417Sync.Core;
 
     using Microsoft.HockeyApp;
 
@@ -59,7 +62,7 @@
 
         private void Start(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            ArmaHelpers.StartArma(ViewModel.Repo.Addons,new DirectoryInfo(ViewModel.Path), new List<string>());
         }
     }
 }

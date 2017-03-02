@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525"
         Name="Main"
-        d:DataContext="{d:DesignInstance local:ClientViewModel }">
+        d:DataContext="{d:DesignInstance local:MainWindowViewModel }">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -32,19 +32,18 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <TextBox Grid.Column="0" Grid.Row="0" Padding="5" Name="InputUrl"/>
-            <TextBox Grid.Column="0" Grid.Row="1" Padding="5" Name="InputPath"/>
-            <Button Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Name="btnLoad" Content="Load" Padding="5" Click="LoadRepo"/>
+            <TextBox Grid.Column="0" Grid.Row="0" Padding="5" Text="{Binding Url, Mode=TwoWay}"/>
+            <TextBox Grid.Column="0" Grid.Row="1" Padding="5" Text="{Binding Path, Mode=TwoWay}"/>
         </Grid>
         <ComboBox Grid.Row="2">
             <ComboBoxItem IsSelected="True">(Everything)</ComboBoxItem>
         </ComboBox>
         <TabControl Grid.Row="3">
             <TabItem Header="Simple">
-                <TextBlock Grid.Row="3" Text="{Binding DownloadInfo, Mode=OneWay}" />
+                <TextBlock Text="{Binding DownloadInfo}" />
             </TabItem>
             <TabItem Header="Advanced">
-                <ListView Grid.Row="1" Name="queueListView" d:DataContext="{d:DesignInstance local:Download }">
+                <ListView Grid.Row="1" ItemsSource="{Binding Actions}">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -84,8 +83,8 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0">Check</Button>
-            <Button Grid.Column="1" Click="LoadRepo">Update</Button>
+            <Button Grid.Column="0" Click="LoadRepo" IsEnabled="{Binding CanLoadRepo, Mode=OneWay}">Check</Button>
+            <Button Grid.Column="1" Click="Download" IsEnabled="{Binding CanDownload, Mode=OneWay}">Update</Button>
             <Button Grid.Column="2" Click="Start">Start</Button>
         </Grid>
     </Grid>

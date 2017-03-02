@@ -2,11 +2,14 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.IO;
     using System.Linq;
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
+    using System.Windows;
+    using System.Windows.Threading;
 
     using A417Sync.Core;
     using A417Sync.Core.Models;
@@ -19,14 +22,14 @@
     {
         private ILogger log = Log.ForContext<Client>();
 
-        public Client(DirectoryInfo local, Uri repoRootUri)
+        public Client(DirectoryInfo local, Uri repoRootUri, MainWindowViewModel model)
         {
             this.Local = local;
             this.RepoRootUri = repoRootUri;
-            this.Model = new ClientViewModel();
+            this.Model = model;
         }
 
-        public ClientViewModel Model { get; }
+        public MainWindowViewModel Model { get; }
 
         private DirectoryInfo Local { get; }
 
@@ -45,16 +48,19 @@
             return repo;
         }
 
-        public IEnumerable<IFileAction> CollectActions(IEnumerable<Addon> addons)
+        public void CollectActions(IEnumerable<Addon> addons, ObservableCollection<IFileAction> actions)
         {
             this.log.Information("Checking {count} addons", addons.Count());
-            var actions = new List<IFileAction>();
             foreach (var addon in addons)
             {
-                actions.AddRange(DecideAddon(addon));
+                foreach (var action in DecideAddon(addon))
+                {
+                    if (action != null)
+                    {
+                        Application.Current.Dispatcher.Invoke(() => actions.Add(action));
+                    }
+                }
             }
-
-            return actions.Where(x => x != null);
         }
 
         public async Task Update(IEnumerable<IFileAction> actions, CancellationToken token)
@@ -115,7 +121,11 @@
 
             if (local.LastWriteTimeUtc.ToFileTimeUtc() != remote.LastChange)
             {
-                this.log.Debug("{file} date: {local}, expected: {remote}", local.Name, local.LastWriteTimeUtc.ToFileTimeUtc(), remote.Size);
+                this.log.Debug(
+                    "{file} date: {local}, expected: {remote}",
+                    local.Name,
+                    local.LastWriteTimeUtc.ToFileTimeUtc(),
+                    remote.Size);
                 return new Download(local, remote, addon, this.RepoRootUri, remote.LastChange)
                            {
                                Action =

@@ -9,5 +9,15 @@
 
         [XmlAttribute]
         public string Name { get; set; }
+        [XmlAttribute]
+        public string IP { get; set; }
+        [XmlAttribute]
+        public int Port { get; set; }
+        [XmlAttribute]
+        public int Query { get; set; }
+        [XmlAttribute]
+        public string AdditionalParams { get; set; }
+        [XmlAttribute]
+        public string Password { get; set; }
     }
 }

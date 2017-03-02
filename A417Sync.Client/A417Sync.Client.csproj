@@ -67,12 +67,6 @@
     <ApplicationIcon>FinalF256.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Arma3LauncherLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Arma3LauncherLib.1.0.0-rc4\lib\Arma3LauncherLib.dll</HintPath>
-    </Reference>
-    <Reference Include="Arma3LauncherLib.SSQLib, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Arma3LauncherLib.1.0.0-rc4\lib\Arma3LauncherLib.SSQLib.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.HockeyApp.Core45, Version=2017.213.222.10, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Unofficial.HockeySDK.Core.2017.0213.0222.10\lib\portable-net45+win8+wp8+wpa81+win81+uap10.0\Microsoft.HockeyApp.Core45.dll</HintPath>
     </Reference>
@@ -197,6 +191,10 @@
     <ProjectReference Include="..\A417Sync.Core\A417Sync.Core.csproj">
       <Project>{e7b5df30-2e5e-4644-8e69-cff3ec942ac2}</Project>
       <Name>A417Sync.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arma3LauncherLib\Arma3LauncherLib.csproj">
+      <Project>{c8b8ca9e-104a-4b4b-8dcb-7b3ed17f51e9}</Project>
+      <Name>Arma3LauncherLib</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

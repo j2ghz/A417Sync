@@ -2,8 +2,8 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.IO;
+    using System.Linq;
     using System.Threading;
     using System.Windows;
 
@@ -62,7 +62,11 @@
 
         private void Start(object sender, RoutedEventArgs e)
         {
-            ArmaHelpers.StartArma(ViewModel.Repo.Addons,new DirectoryInfo(ViewModel.Path), new List<string>());
+            ArmaHelpers.StartArma(
+                this.ViewModel.Repo.Modpacks.First(),
+                this.ViewModel.Repo.Addons,
+                new DirectoryInfo(this.ViewModel.Path),
+                new List<string>());
         }
     }
 }

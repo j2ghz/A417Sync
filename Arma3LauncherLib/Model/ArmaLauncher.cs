@@ -106,7 +106,7 @@ namespace DerAtrox.Arma3LauncherLib.Model {
                         }
             };
             Log.Information("Starting Arma {@info}", proc.StartInfo.Arguments);
-            //proc.Start();
+            proc.Start();
             proc.Dispose();
         }
     }

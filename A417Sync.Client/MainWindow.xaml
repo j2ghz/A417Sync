@@ -9,18 +9,22 @@
         Name="Main"
         d:DataContext="{d:DesignInstance local:MainWindowViewModel }">
     <TabControl>
-        <TabItem Header="Main">
+        <!-- Tu bude grid kurva uz -->
+            <TabItem Header="Main">
             <StackPanel Orientation="Horizontal">
 
                 <StackPanel Width="227.332">
-                    <ComboBox Grid.Row="2" Margin="0,0,0,25">
-                        <ComboBoxItem IsSelected="True">(Everything)</ComboBoxItem>
-                    </ComboBox>
+                    
                     <Button Grid.Column="0" Click="LoadRepo" IsEnabled="{Binding CanLoadRepo, Mode=OneWay}" Height="64.991">Check</Button>
                     <Button Grid.Column="1" Click="Download" IsEnabled="{Binding CanDownload, Mode=OneWay}" Height="57.303">Update</Button>
                     <Button Click="Start" IsEnabled="{Binding CanStart, Mode=OneWay}" Height="58.401" Content="Start" VerticalContentAlignment="Center"/>
                 </StackPanel>
-                <TextBlock Text="{Binding DownloadInfo}" Width="208.783" Margin="75,0,0,0" />
+                <StackPanel Margin="75,0,0,0" Width="208.454">
+                    <TextBlock Text="{Binding DownloadInfo}"/>
+                    <ComboBox>
+                        <ComboBoxItem IsSelected="True" Content="(Everything)"/>
+                    </ComboBox>
+                </StackPanel>
             </StackPanel>
         </TabItem>
         <TabItem Header="Settings/Debug">

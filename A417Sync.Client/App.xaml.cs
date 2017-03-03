@@ -58,7 +58,7 @@
         private void HockeyApp()
         {
             Log.Information("HockeyApp initializing");
-            HockeyClient.Current.Configure("fcc1c7f687e344eb8e805ae492daf0c2")
+            HockeyClient.Current.Configure("9f734b2f3449467687667e99c7cdc532")
                 .SetContactInfo(
                     Environment.UserName,
                     (this.Properties["Contact"] ?? Environment.MachineName).ToString());

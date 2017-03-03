@@ -192,6 +192,10 @@
       <Project>{e7b5df30-2e5e-4644-8e69-cff3ec942ac2}</Project>
       <Name>A417Sync.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Arma3LauncherLib.SSQLib\Arma3LauncherLib.SSQLib.csproj">
+      <Project>{3f273b18-3c15-420b-bd8f-ded3e4e52996}</Project>
+      <Name>Arma3LauncherLib.SSQLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Arma3LauncherLib\Arma3LauncherLib.csproj">
       <Project>{c8b8ca9e-104a-4b4b-8dcb-7b3ed17f51e9}</Project>
       <Name>Arma3LauncherLib</Name>

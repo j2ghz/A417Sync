@@ -1,7 +1,6 @@
 ﻿namespace A417Sync.Client
 {
     using System;
-    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
@@ -9,6 +8,8 @@
 
     using A417Sync.Client.Annotations;
     using A417Sync.Core.Models;
+
+    using DerAtrox.Arma3LauncherLib.SSQLib.Model;
 
     public class MainWindowViewModel : INotifyPropertyChanged
     {
@@ -20,6 +21,8 @@
 
         private bool canLoadRepo = true;
 
+        private bool canStart;
+
         private string downloadInfo;
 
         private long lastSpeedUpdateDownloaded;
@@ -30,7 +33,7 @@
 
         private Repo repo;
 
-        private bool canStart;
+        private Modpack selectedModpack;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -80,19 +83,6 @@
             }
         }
 
-        public bool CanStart
-        {
-            get
-            {
-                return this.canStart;
-            }
-            set
-            {
-                this.canStart = value;
-                OnPropertyChanged();
-            }
-        }
-
         public bool CanLoadRepo
         {
             get
@@ -103,6 +93,20 @@
             set
             {
                 this.canLoadRepo = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool CanStart
+        {
+            get
+            {
+                return this.canStart;
+            }
+
+            set
+            {
+                this.canStart = value;
                 OnPropertyChanged();
             }
         }
@@ -147,6 +151,7 @@
 
             set
             {
+                if (double.IsNaN(value)) return;
                 this.progress = value;
                 OnPropertyChanged();
             }
@@ -165,6 +170,22 @@
                 OnPropertyChanged();
             }
         }
+
+        public Modpack SelectedModpack
+        {
+            get
+            {
+                return this.selectedModpack;
+            }
+
+            set
+            {
+                this.selectedModpack = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<ServerInfo> Servers { get; set; } = new ObservableCollection<ServerInfo>();
 
         public string Url
         {

@@ -33,7 +33,11 @@
             }
         }
 
-        public static void StartArma(Modpack modpack, IEnumerable<Addon> addons, DirectoryInfo basePath, IEnumerable<string> arguments)
+        public static void StartArma(
+            Modpack modpack,
+            IEnumerable<Addon> addons,
+            DirectoryInfo basePath,
+            IEnumerable<string> arguments)
         {
             var addonFolders = basePath.EnumerateDirectories();
             var settings = new ArmaStartSettings();
@@ -41,7 +45,8 @@
                 addons.Select(addon => addonFolders.First(folder => folder.Name == addon.Name).FullName).ToList();
             settings.OtherArgs.AddRange(arguments);
             settings.OtherArgs.Add(modpack.AdditionalParams);
-            var server = new ArmaServer(modpack.IP,modpack.Port,modpack.Query,modpack.Password);
+            var server = new ArmaServer(modpack.IP, modpack.Port, modpack.Query, modpack.Password);
+
             new ArmaLauncher().Connect(Path.Combine(GetArma3Path(), "arma3battleye.exe"), server, settings, true);
         }
     }

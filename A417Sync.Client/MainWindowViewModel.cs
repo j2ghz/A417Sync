@@ -30,6 +30,8 @@
 
         private Repo repo;
 
+        private bool canStart;
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ObservableCollection<IFileAction> Actions { get; set; } = new ObservableCollection<IFileAction>();
@@ -74,6 +76,19 @@
             set
             {
                 this.canDownload = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool CanStart
+        {
+            get
+            {
+                return this.canStart;
+            }
+            set
+            {
+                this.canStart = value;
                 OnPropertyChanged();
             }
         }

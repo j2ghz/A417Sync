@@ -85,22 +85,7 @@
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0" Click="LoadRepo" IsEnabled="{Binding CanLoadRepo, Mode=OneWay}">Check</Button>
             <Button Grid.Column="1" Click="Download" IsEnabled="{Binding CanDownload, Mode=OneWay}">Update</Button>
-            <Button Grid.Column="2" Click="Start">Start</Button>
+            <Button Grid.Column="2" Click="Start" IsEnabled="{Binding CanStart, Mode=OneWay}">Start</Button>
         </Grid>
     </Grid>
 </Window>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

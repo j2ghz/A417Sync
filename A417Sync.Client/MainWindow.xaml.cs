@@ -36,6 +36,7 @@
             this.ViewModel.CanDownload = false;
             await this.ViewModel.Client.Update(this.ViewModel.Actions, CancellationToken.None).ConfigureAwait(false);
             this.ViewModel.CanDownload = true;
+            this.ViewModel.CanStart = true;
         }
 
         private async void Feedback(object sender, RoutedEventArgs e)

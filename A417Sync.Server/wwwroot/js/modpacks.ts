@@ -1,4 +1,6 @@
-﻿//import $ from "jquery";
+﻿console.log("Modpacks script");
+
+//import $ from "jquery";
 
 function allowDrop(ev: Event) {
     ev.preventDefault();

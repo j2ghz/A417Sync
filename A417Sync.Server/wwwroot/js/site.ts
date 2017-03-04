@@ -1,1 +1,1 @@
-﻿
+﻿console.log("Site script");

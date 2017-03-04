@@ -66,8 +66,8 @@
                 .SetContactInfo(
                     Environment.UserName,
                     (this.Properties["Contact"] ?? Environment.MachineName).ToString());
-
-            ((HockeyClient)HockeyClient.Current).VersionInfo = this.Version;
+            var hockeyInternal = (HockeyClient)HockeyClient.Current;
+            hockeyInternal.VersionInfo = this.Version;
             this.log.Debug("Checking for pending crashes");
             HockeyClient.Current.SendCrashesAsync().ContinueWith(
                 task =>
@@ -85,7 +85,7 @@
                             MessageBoxImage.Information);
                     }).GetAwaiter();
 
-            ((HockeyClient)HockeyClient.Current).OnHockeySDKInternalException +=
+            hockeyInternal.OnHockeySDKInternalException +=
                 (sender, args) =>
                     this.log.Warning(
                         args.Exception,
@@ -95,7 +95,7 @@
             HockeyClient.Current.TrackEvent("Launch", new Dictionary<string, string> { ["Version"] = this.Version });
             HockeyClient.Current.Flush();
 
-            this.log.Information("HockeyApp initialized");
+            this.log.Information("HockeyApp initialized, app version {version}", hockeyInternal.VersionInfo);
         }
 
         private void LogLaunchMessage()

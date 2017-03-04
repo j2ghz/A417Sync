@@ -44,8 +44,7 @@
             var request = new HttpRequestMessage(HttpMethod.Get, repoUri);
             var response = await httpClient.SendAsync(request).ConfigureAwait(false);
             var contentStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-            var repo = LoadRepo(contentStream);
-            return repo;
+            return LoadRepo(contentStream);
         }
 
         public static Repo LoadRepo(Stream s)

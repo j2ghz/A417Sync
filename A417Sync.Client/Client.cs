@@ -45,7 +45,6 @@
             var response = await httpClient.SendAsync(request).ConfigureAwait(false);
             var contentStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
             var repo = LoadRepo(contentStream);
-            log.Verbose("{@repo}", repo);
             return repo;
         }
 

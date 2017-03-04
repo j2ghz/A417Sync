@@ -10,10 +10,11 @@
     using Microsoft.HockeyApp;
 
     using Serilog;
-    using Serilog.Events;
 
     public partial class App : Application
     {
+        private ILogger log;
+
         public string LocalUserAppDataPath
             =>
                 Path.Combine(
@@ -49,23 +50,25 @@
         protected override void OnStartup(StartupEventArgs e)
         {
             ConsoleManager.Show();
+            Serilog.Debugging.SelfLog.Enable(Console.Error);
             SetupLogging();
+            this.log = Log.ForContext<App>();
             LogLaunchMessage();
             HockeyApp();
             base.OnStartup(e);
-            Log.Information("{method} finished", nameof(OnStartup));
+            this.log.Information("{method} finished", nameof(OnStartup));
         }
 
         private void HockeyApp()
         {
-            Log.Information("HockeyApp initializing");
+            this.log.Information("HockeyApp initializing");
             HockeyClient.Current.Configure("9f734b2f3449467687667e99c7cdc532")
                 .SetContactInfo(
                     Environment.UserName,
                     (this.Properties["Contact"] ?? Environment.MachineName).ToString());
 
             ((HockeyClient)HockeyClient.Current).VersionInfo = this.Version;
-            Log.Debug("Checking for pending crashes");
+            this.log.Debug("Checking for pending crashes");
             HockeyClient.Current.SendCrashesAsync().ContinueWith(
                 task =>
                     {
@@ -74,7 +77,7 @@
                             return;
                         }
 
-                        Log.Information("Crash processing finished");
+                        this.log.Information("Crash processing finished");
                         MessageBox.Show(
                             "Processing finished",
                             "Crash report",
@@ -83,18 +86,22 @@
                     }).GetAwaiter();
 
             ((HockeyClient)HockeyClient.Current).OnHockeySDKInternalException +=
-                (sender, args) => Log.Error(args.Exception, "HockeyApp Internal exception");
+                (sender, args) =>
+                    this.log.Warning(
+                        args.Exception,
+                        "Possible problem in HockeyApp (Crash Reporter) from: {@sender}",
+                        sender);
 
             HockeyClient.Current.TrackEvent("Launch", new Dictionary<string, string> { ["Version"] = this.Version });
             HockeyClient.Current.Flush();
 
-            Log.Information("HockeyApp initialized");
+            this.log.Information("HockeyApp initialized");
         }
 
         private void LogLaunchMessage()
         {
-            Log.Information("Starting {name} {version}", this.Name, this.Version);
-            Log.Information("Logging to {filePath}", this.LogFile);
+            this.log.Information("Starting {name} {version}", this.Name, this.Version);
+            this.log.Information("Logging to {filePath}", this.LogFile);
         }
 
         private void SetupLogging()
@@ -102,15 +109,13 @@
             Directory.CreateDirectory(Path.GetDirectoryName(this.LogFile));
             Log.Logger =
                 new LoggerConfiguration().WriteTo.LiterateConsole(
-                        LogEventLevel.Verbose,
-                        "{Timestamp:HH:mm:ss} {Level} [{SourceContext}] {Message}{NewLine}{Exception}")
+                        outputTemplate: "{Timestamp:HH:mm:ss} {Level:u3} [{SourceContext}] {Message}{NewLine}{Exception}")
                     .WriteTo.RollingFile(
                         this.LogFile,
-                        LogEventLevel.Verbose,
-                        "{Timestamp:o} [{Level:u3}] ({SourceContext}) {Message}{NewLine}{Exception}")
+                        outputTemplate: "{Timestamp:o} [{Level:u3}] ({SourceContext}) {Message}{NewLine}{Exception}")
                     .Enrich.FromLogContext()
+                    .MinimumLevel.Verbose()
                     .CreateLogger();
-
             AppDomain.CurrentDomain.UnhandledException +=
                 (sender, args) =>
                     Log.Fatal(args.ExceptionObject as Exception, nameof(AppDomain.CurrentDomain.UnhandledException));

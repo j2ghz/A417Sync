@@ -9,9 +9,9 @@
     using System.Threading;
     using System.Threading.Tasks;
     using System.Windows;
+    using System.Windows.Threading;
     using System.Xml.Serialization;
 
-    using A417Sync.Client;
     using A417Sync.Client.Models;
     using A417Sync.Client.Models.FileActions;
 
@@ -54,18 +54,12 @@
             return (Repo)xml.Deserialize(s);
         }
 
-        public void CollectActions(IEnumerable<Addon> addons, ObservableCollection<IFileAction> actions)
+        public async Task CollectActions(IEnumerable<Addon> addons, ObservableCollection<IFileAction> actions)
         {
             this.log.Information("Checking {count} addons", addons.Count());
             foreach (var addon in addons)
             {
-                foreach (var action in DecideAddon(addon))
-                {
-                    if (action != null)
-                    {
-                        Application.Current.Dispatcher.Invoke(() => actions.Add(action));
-                    }
-                }
+                await DecideAddon(addon, actions);
             }
         }
 
@@ -82,7 +76,12 @@
             }
         }
 
-        private IEnumerable<IFileAction> DecideAddon(Addon addon)
+        private async Task AddActionAsync(IFileAction action, ObservableCollection<IFileAction> actions)
+        {
+            await Application.Current.Dispatcher.InvokeAsync(() => actions.Add(action), DispatcherPriority.Background);
+        }
+
+        private async Task DecideAddon(Addon addon, ObservableCollection<IFileAction> actions)
         {
             this.log.Information("Checking {addon}", addon.Name);
             var localFolder = new DirectoryInfo(Path.Combine(this.Local.FullName, addon.Name));
@@ -100,47 +99,52 @@
                     localFiles?.RemoveAll(x => x.FullName == local.FullName);
                 }
 
-                yield return DecideFile(local, file, addon);
+                await DecideFile(local, file, addon, actions);
             }
 
             localFiles?.ForEach(f => f.Delete()); // Delete files found in filesystem but not in index
         }
 
-        private IFileAction DecideFile(FileInfo local, File remote, Addon addon)
+        private async Task DecideFile(FileInfo local, File remote, Addon addon, ObservableCollection<IFileAction> actions)
         {
             this.Model.BytesToDownload += remote.Size;
             if (!local.Exists)
             {
                 this.log.Debug("{file} missing", local.FullName);
-                return new Download(local, remote, addon, this.RepoRootUri, remote.LastChange) { Action = "Missing" };
+                await AddActionAsync(
+                    new Download(local, remote, addon, this.RepoRootUri, remote.LastChange) { Action = "Missing" },
+                    actions);
             }
-
-            if (local.Length != remote.Size)
+            else if (local.Length != remote.Size)
             {
                 this.log.Debug("{file} size: {local}, expected: {remote}", local.Name, local.Length, remote.Size);
-                return new Download(local, remote, addon, this.RepoRootUri, remote.LastChange)
-                           {
-                               Action =
-                                   $"size is differrent, local: {local.Length}, remote: {remote.Size}"
-                           };
+                await AddActionAsync(
+                    new Download(local, remote, addon, this.RepoRootUri, remote.LastChange)
+                    {
+                        Action =
+                                $"size is differrent, local: {local.Length}, remote: {remote.Size}"
+                    },
+                    actions);
             }
-
-            if (local.LastWriteTimeUtc.ToFileTimeUtc() != remote.LastChange)
+            else if (local.LastWriteTimeUtc.ToFileTimeUtc() != remote.LastChange)
             {
                 this.log.Debug(
                     "{file} date: {local}, expected: {remote}",
                     local.Name,
                     local.LastWriteTimeUtc.ToFileTimeUtc(),
                     remote.Size);
-                return new Download(local, remote, addon, this.RepoRootUri, remote.LastChange)
-                           {
-                               Action =
-                                   $"date is different, local: {local.LastWriteTimeUtc.ToFileTimeUtc()}, remote: {remote.LastChange}"
-                           };
+                await AddActionAsync(
+                    new Download(local, remote, addon, this.RepoRootUri, remote.LastChange)
+                    {
+                        Action =
+                                $"date is different, local: {local.LastWriteTimeUtc.ToFileTimeUtc()}, remote: {remote.LastChange}"
+                    },
+                    actions);
             }
-
-            this.Model.BytesToDownload -= remote.Size;
-            return null;
+            else
+            {
+                this.Model.BytesToDownload -= remote.Size;
+            }
         }
     }
 }

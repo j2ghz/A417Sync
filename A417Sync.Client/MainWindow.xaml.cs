@@ -10,9 +10,6 @@
 
     using Microsoft.HockeyApp;
 
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
@@ -33,13 +30,21 @@
         private async void Download(object sender, RoutedEventArgs e)
         {
             this.ViewModel.CanDownload = false;
-            this.ViewModel.Client.CollectActions(
-                this.ViewModel.SelectedModpack.Addons.Select(
-                    name => this.ViewModel.Repo.Addons.Find(addon => addon.Name == name)),
-                this.ViewModel.Actions);
-            await this.ViewModel.Client.Update(this.ViewModel.Actions, CancellationToken.None).ConfigureAwait(false);
-            this.ViewModel.CanDownload = true;
-            this.ViewModel.CanStart = true;
+            if (this.ViewModel.DownloadTask.GetAwaiter().IsCompleted)
+            {
+                this.ViewModel.DownloadTaskCancel = new CancellationTokenSource();
+                this.ViewModel.DownloadTask =
+                    this.ViewModel.Client.Update(this.ViewModel.Actions, this.ViewModel.DownloadTaskCancel.Token)
+                        .ConfigureAwait(false);
+                this.ViewModel.CanDownload = true;
+                await this.ViewModel.DownloadTask;
+                this.ViewModel.CanDownload = true;
+                this.ViewModel.CanStart = true;
+            }
+            else
+            {
+                this.ViewModel.DownloadTaskCancel.Cancel();
+            }
         }
 
         private async void Feedback(object sender, RoutedEventArgs e)
@@ -53,6 +58,17 @@
                 .ContinueWith(task => MessageBox.Show("Feedback sent"));
         }
 
+        private async void Check(object sender, RoutedEventArgs e)
+        {
+            this.ViewModel.CanCheck = false;
+            await this.ViewModel.Client.CollectActions(
+                this.ViewModel.SelectedModpack.Addons.Select(
+                    name => this.ViewModel.Repo.Addons.Find(addon => addon.Name == name)),
+                this.ViewModel.Actions);
+            this.ViewModel.CanCheck = true;
+            this.ViewModel.CanDownload = true;
+        }
+
         private async void LoadRepo(object sender, RoutedEventArgs e)
         {
             this.ViewModel.CanLoadRepo = false;
@@ -60,7 +76,7 @@
             var path = new DirectoryInfo(this.ViewModel.Path);
             this.ViewModel.Client = new Client(path, uri, this.ViewModel);
             this.ViewModel.Repo = await Client.DownloadRepo(uri).ConfigureAwait(false);
-            this.ViewModel.CanDownload = true;
+            this.ViewModel.SelectedModpack = this.ViewModel.Repo.Modpacks[0];
 
             foreach (var m in this.ViewModel.Repo.Modpacks)
             {
@@ -74,6 +90,9 @@
                                 new Action(() => this.ViewModel.Servers.Add(t.Result)));
                         }).ConfigureAwait(false).GetAwaiter();
             }
+
+            this.ViewModel.CanLoadRepo = true;
+            this.ViewModel.CanCheck = true;
         }
 
         private void Start(object sender, RoutedEventArgs e)

@@ -5,6 +5,8 @@
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
     using System.Text;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     using A417Sync.Client.Annotations;
     using A417Sync.Client.Models;
@@ -19,6 +21,8 @@
         private long bytesToDownload;
 
         private bool canDownload = false;
+
+        private bool canCheck;
 
         private bool canLoadRepo = true;
 
@@ -84,6 +88,20 @@
             }
         }
 
+        public bool CanCheck
+        {
+            get
+            {
+                return this.canCheck;
+            }
+
+            set
+            {
+                this.canCheck = value;
+                OnPropertyChanged();
+            }
+        }
+
         public bool CanLoadRepo
         {
             get
@@ -127,6 +145,11 @@
                 OnPropertyChanged();
             }
         }
+
+        public ConfiguredTaskAwaitable DownloadTask { get; set; } =
+            Task.CompletedTask.ConfigureAwait(false);
+
+        public CancellationTokenSource DownloadTaskCancel { get; set; } = new CancellationTokenSource();
 
         public string Path
         {

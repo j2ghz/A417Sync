@@ -59,6 +59,12 @@
 
         public async Task DoAsync(CancellationToken token, IProgress<long> progress)
         {
+            if (token.IsCancellationRequested)
+            {
+                this.log.Information("Cancelled download of {file}", this.requestUri);
+                return;
+            }
+
             this.log.Information("Downloading {url}", this.requestUri);
 
             Directory.CreateDirectory(System.IO.Path.GetDirectoryName(this.Path));
@@ -76,7 +82,7 @@
 
             this.log.Information("Downloaded {url}", this.requestUri);
 
-            this.log.Debug("Changing {prperty} to {value}", nameof(FileInfo.LastWriteTimeUtc), this.lastRemoteWrite);
+            this.log.Debug("Changing {property} to {value}", nameof(FileInfo.LastWriteTimeUtc), this.lastRemoteWrite);
 
             new FileInfo(this.Path).LastWriteTimeUtc = DateTime.FromFileTimeUtc(this.lastRemoteWrite);
         }

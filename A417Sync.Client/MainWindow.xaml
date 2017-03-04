@@ -11,25 +11,72 @@
     <TabControl>
         <!-- Tu bude grid kurva uz -->
         <TabItem Header="Main">
-            <StackPanel Orientation="Horizontal">
-
-                <StackPanel Width="227.332">
-
-                    <Button Grid.Column="0" Click="LoadRepo" IsEnabled="{Binding CanLoadRepo, Mode=OneWay}" Height="64.991">Check</Button>
-                    <Button Grid.Column="1" Click="Download" IsEnabled="{Binding CanDownload, Mode=OneWay}" Height="57.303">Update</Button>
-                    <Button Click="Start" IsEnabled="{Binding CanStart, Mode=OneWay}" Height="58.401" Content="Start" VerticalContentAlignment="Center"/>
-                </StackPanel>
-                <StackPanel Margin="75,0,0,0" Width="208.454">
-                    <TextBlock Text="{Binding DownloadInfo}"/>
-                    <ComboBox ItemsSource="{Binding Repo.Modpacks}" SelectedItem="{Binding SelectedModpack}">
-                        <ComboBox.ItemTemplate>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Button Grid.Row="0" Margin="5" Click="LoadRepo" IsEnabled="{Binding CanLoadRepo, Mode=OneWay}" Grid.ColumnSpan="2">Load</Button>
+                    <Button Grid.Row="1" Margin="5" Click="Check" IsEnabled="{Binding CanCheck, Mode=OneWay}" Grid.ColumnSpan="2">Check</Button>
+                    <Button Grid.Row="2" Margin="5" Click="Download" IsEnabled="{Binding CanDownload, Mode=OneWay}" Grid.ColumnSpan="2">Update</Button>
+                    <Button Grid.Row="3" Margin="5" Click="Start" IsEnabled="{Binding CanStart, Mode=OneWay}" Grid.ColumnSpan="2">Start</Button>
+                </Grid>
+                <Grid Grid.Column="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <ComboBox Margin="5" Grid.Row="0" IsEnabled="{Binding CanCheck, Mode=OneWay}" ItemsSource="{Binding Repo.Modpacks}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedModpack}"/>
+                    <TextBlock  Margin="5" Grid.Row="1" Text="{Binding DownloadInfo}"/>
+                    <ItemsControl Grid.Row="2" ItemsSource="{Binding Servers}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Name}"/>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-                </StackPanel>
-            </StackPanel>
+                                <StackPanel Margin="5">
+                                    <TextBlock Text="{Binding Name}"/>
+                                    <TextBlock Text="{Binding AppId}"/>
+                                    <TextBlock Text="{Binding BotCount}"/>
+                                    <TextBlock Text="{Binding Dedicated}"/>
+                                    <TextBlock Text="{Binding Game}"/>
+                                    <TextBlock Text="{Binding Ip}"/>
+                                    <TextBlock Text="{Binding Locked}"/>
+                                    <TextBlock Text="{Binding Map}"/>
+                                    <TextBlock Text="{Binding MaxPlayers}"/>
+                                    <TextBlock Text="{Binding Os}"/>
+                                    <TextBlock Text="{Binding Password}"/>
+                                    <TextBlock Text="{Binding Ping}"/>
+                                    <TextBlock Text="{Binding PlayerCount}"/>
+                                    <TextBlock Text="{Binding Port}"/>
+                                    <TextBlock Text="{Binding Vac}"/>
+                                    <TextBlock Text="{Binding Version}"/>
+                                </StackPanel>
+                                </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <Grid Row="3">
+                        <ProgressBar MinHeight="40" Value="{Binding Progress, Mode=OneWay}"/>
+                        <TextBlock Text="{Binding Progress, Mode=OneWay, StringFormat={}{0:0}%}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Grid>
+                </Grid>
+            </Grid>
         </TabItem>
         <TabItem Header="Settings/Debug">
             <Grid>
@@ -39,7 +86,6 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="AUto"/>
-                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <Menu Grid.Row="0">
                     <MenuItem Header="Debug">
@@ -91,30 +137,6 @@
                     <ProgressBar MinHeight="40" Value="{Binding Progress, Mode=OneWay}"/>
                     <TextBlock Text="{Binding Progress, Mode=OneWay, StringFormat={}{0:0}%}" HorizontalAlignment="Center" VerticalAlignment="Center" />
                 </Grid>
-                <ListBox Grid.Row="5" ItemsSource="{Binding Servers}">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <WrapPanel>
-                                <TextBlock Text="{Binding Name}"/>
-                                <TextBlock Text="{Binding AppId}"/>
-                                <TextBlock Text="{Binding BotCount}"/>
-                                <TextBlock Text="{Binding Dedicated}"/>
-                                <TextBlock Text="{Binding Game}"/>
-                                <TextBlock Text="{Binding Ip}"/>
-                                <TextBlock Text="{Binding Locked}"/>
-                                <TextBlock Text="{Binding Map}"/>
-                                <TextBlock Text="{Binding MaxPlayers}"/>
-                                <TextBlock Text="{Binding Os}"/>
-                                <TextBlock Text="{Binding Password}"/>
-                                <TextBlock Text="{Binding Ping}"/>
-                                <TextBlock Text="{Binding PlayerCount}"/>
-                                <TextBlock Text="{Binding Port}"/>
-                                <TextBlock Text="{Binding Vac}"/>
-                                <TextBlock Text="{Binding Version}"/>
-                            </WrapPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
             </Grid>
         </TabItem>
     </TabControl>

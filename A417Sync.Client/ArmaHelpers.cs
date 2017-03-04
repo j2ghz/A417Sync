@@ -45,7 +45,7 @@
                 addons.Select(addon => addonFolders.First(folder => folder.Name == addon.Name).FullName).ToList();
             settings.OtherArgs.AddRange(arguments);
             settings.OtherArgs.Add(modpack.AdditionalParams);
-            ArmaServer server = ServerInfo(modpack);
+            var server = ServerInfo(modpack);
             new ArmaLauncher().Connect(Path.Combine(GetArma3Path(), "arma3battleye.exe"), server, settings, true);
         }
 

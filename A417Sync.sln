@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26206.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "A417Sync.Core", "A417Sync.Core\A417Sync.Core.csproj", "{E7B5DF30-2E5E-4644-8E69-CFF3EC942AC2}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "A417Sync.Server", "A417Sync.Server\A417Sync.Server.csproj", "{4146CDEC-FD83-4B73-9139-4942E0BD670E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "A417Sync.Client", "A417Sync.Client\A417Sync.Client.csproj", "{2265943D-3229-4D2A-813C-2C23CDDBE82B}"
@@ -23,18 +21,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E7B5DF30-2E5E-4644-8E69-CFF3EC942AC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E7B5DF30-2E5E-4644-8E69-CFF3EC942AC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E7B5DF30-2E5E-4644-8E69-CFF3EC942AC2}.Debug|x64.ActiveCfg = Debug|x64
-		{E7B5DF30-2E5E-4644-8E69-CFF3EC942AC2}.Debug|x64.Build.0 = Debug|x64
-		{E7B5DF30-2E5E-4644-8E69-CFF3EC942AC2}.Debug|x86.ActiveCfg = Debug|x86
-		{E7B5DF30-2E5E-4644-8E69-CFF3EC942AC2}.Debug|x86.Build.0 = Debug|x86
-		{E7B5DF30-2E5E-4644-8E69-CFF3EC942AC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E7B5DF30-2E5E-4644-8E69-CFF3EC942AC2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E7B5DF30-2E5E-4644-8E69-CFF3EC942AC2}.Release|x64.ActiveCfg = Release|x64
-		{E7B5DF30-2E5E-4644-8E69-CFF3EC942AC2}.Release|x64.Build.0 = Release|x64
-		{E7B5DF30-2E5E-4644-8E69-CFF3EC942AC2}.Release|x86.ActiveCfg = Release|x86
-		{E7B5DF30-2E5E-4644-8E69-CFF3EC942AC2}.Release|x86.Build.0 = Release|x86
 		{4146CDEC-FD83-4B73-9139-4942E0BD670E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4146CDEC-FD83-4B73-9139-4942E0BD670E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4146CDEC-FD83-4B73-9139-4942E0BD670E}.Debug|x64.ActiveCfg = Debug|x64

@@ -147,6 +147,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainWindowViewModel.cs" />
+    <Compile Include="Models\Addon.cs" />
+    <Compile Include="Models\File.cs" />
+    <Compile Include="Models\Modpack.cs" />
+    <Compile Include="Models\Repo.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -188,10 +192,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\A417Sync.Core\A417Sync.Core.csproj">
-      <Project>{e7b5df30-2e5e-4644-8e69-cff3ec942ac2}</Project>
-      <Name>A417Sync.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Arma3LauncherLib.SSQLib\Arma3LauncherLib.SSQLib.csproj">
       <Project>{3f273b18-3c15-420b-bd8f-ded3e4e52996}</Project>
       <Name>Arma3LauncherLib.SSQLib</Name>

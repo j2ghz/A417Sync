@@ -9,6 +9,7 @@
     using System.Threading;
     using System.Threading.Tasks;
     using System.Windows;
+    using System.Xml.Serialization;
 
     using A417Sync.Core;
     using A417Sync.Core.Models;
@@ -42,9 +43,16 @@
             var request = new HttpRequestMessage(HttpMethod.Get, repoUri);
             var response = await httpClient.SendAsync(request).ConfigureAwait(false);
             var contentStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-            var repo = RepoFactory.LoadRepo(contentStream);
+            var repo = LoadRepo(contentStream);
             log.Verbose("{@repo}", repo);
             return repo;
+        }
+
+        public static Repo LoadRepo(Stream s)
+        {
+            var xml = new XmlSerializer(typeof(Repo));
+
+            return (Repo)xml.Deserialize(s);
         }
 
         public void CollectActions(IEnumerable<Addon> addons, ObservableCollection<IFileAction> actions)

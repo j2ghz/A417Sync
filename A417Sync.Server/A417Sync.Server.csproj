@@ -25,12 +25,14 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0-msbuild3-final" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\A417Sync.Core\A417Sync.Core.csproj" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="wwwroot\js\modpacks.js" />
     <None Include="wwwroot\js\modpacks.js.map" />
     <None Include="wwwroot\js\modpacks.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Xml">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\System.Xml.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

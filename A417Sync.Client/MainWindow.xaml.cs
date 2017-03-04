@@ -62,6 +62,7 @@
         private async void Check(object sender, RoutedEventArgs e)
         {
             this.ViewModel.CanCheck = false;
+            ViewModel.Actions.Clear();
             await this.ViewModel.Client.CollectActions(
                 this.ViewModel.SelectedModpack.Addons.Select(
                     name => this.ViewModel.Repo.Addons.Find(addon => addon.Name == name)),
@@ -102,7 +103,7 @@
                 this.ViewModel.Repo.Modpacks.First(),
                 this.ViewModel.Repo.Addons,
                 new DirectoryInfo(this.ViewModel.Path),
-                new List<string>());
+                ViewModel.Params);
         }
 
         private void ShowLogs(object sender, RoutedEventArgs e)

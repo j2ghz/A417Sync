@@ -58,5 +58,17 @@ namespace A417Sync.Client.Properties {
                 this["path"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-noSplash -world=empty")]
+        public string userParameters {
+            get {
+                return ((string)(this["userParameters"]));
+            }
+            set {
+                this["userParameters"] = value;
+            }
+        }
     }
 }

@@ -100,9 +100,11 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <TextBox Grid.Column="0" Grid.Row="0" Padding="5" Text="{Binding Url, Mode=TwoWay}"/>
-                    <TextBox Grid.Column="0" Grid.Row="1" Padding="5" Text="{Binding Path, Mode=TwoWay}"/>
+                    <TextBox Grid.Column="0" Grid.Row="0" Margin="5"  Padding="5" Text="{Binding Url, Mode=TwoWay}"/>
+                    <TextBox Grid.Column="0" Grid.Row="1" Margin="5"  Padding="5" Text="{Binding Path, Mode=TwoWay}"/>
+                    <TextBox Grid.Column="0" Grid.Row="2" Margin="5" Padding="5" Text="{Binding UserParams, Mode=TwoWay}"/>
                 </Grid>
                 <ListView Grid.Row="3" ItemsSource="{Binding Actions}">
                     <ListView.ItemContainerStyle>

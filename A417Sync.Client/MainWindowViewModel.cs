@@ -1,6 +1,7 @@
 ﻿namespace A417Sync.Client
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
@@ -146,10 +147,16 @@
             }
         }
 
-        public ConfiguredTaskAwaitable DownloadTask { get; set; } =
-            Task.CompletedTask.ConfigureAwait(false);
+        public ConfiguredTaskAwaitable DownloadTask { get; set; } = Task.CompletedTask.ConfigureAwait(false);
 
         public CancellationTokenSource DownloadTaskCancel { get; set; } = new CancellationTokenSource();
+
+        public List<string> Params
+            => new List<string>()
+            {
+                this.UserParams,
+                this.SelectedModpack.AdditionalParams
+            };
 
         public string Path
         {
@@ -221,6 +228,21 @@
             set
             {
                 Properties.Settings.Default.url = value;
+                Properties.Settings.Default.Save();
+                OnPropertyChanged();
+            }
+        }
+
+        public string UserParams
+        {
+            get
+            {
+                return Properties.Settings.Default.userParameters;
+            }
+
+            set
+            {
+                Properties.Settings.Default.userParameters = value;
                 Properties.Settings.Default.Save();
                 OnPropertyChanged();
             }

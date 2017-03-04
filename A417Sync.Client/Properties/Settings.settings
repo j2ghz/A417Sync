@@ -11,5 +11,8 @@
     <Setting Name="path" Type="System.String" Scope="User">
       <Value Profile="(Default)">D:\417Launcher\417Launcher\417addons</Value>
     </Setting>
+    <Setting Name="userParameters" Type="System.String" Scope="User">
+      <Value Profile="(Default)">-noSplash -world=empty</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

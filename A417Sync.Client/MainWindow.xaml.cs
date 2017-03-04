@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Threading;
@@ -102,6 +103,11 @@
                 this.ViewModel.Repo.Addons,
                 new DirectoryInfo(this.ViewModel.Path),
                 new List<string>());
+        }
+
+        private void ShowLogs(object sender, RoutedEventArgs e)
+        {
+            Process.Start(((App)Application.Current).LocalUserAppDataPath);
         }
     }
 }

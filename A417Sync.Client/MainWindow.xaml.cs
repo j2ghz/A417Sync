@@ -8,7 +8,7 @@
     using System.Windows;
     using System.Windows.Threading;
 
-    using A417Sync.Core;
+    using A417Sync.Client;
 
     using Microsoft.HockeyApp;
 

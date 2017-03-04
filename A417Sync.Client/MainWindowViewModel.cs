@@ -7,7 +7,8 @@
     using System.Text;
 
     using A417Sync.Client.Annotations;
-    using A417Sync.Core.Models;
+    using A417Sync.Client.Models;
+    using A417Sync.Client.Models.FileActions;
 
     using DerAtrox.Arma3LauncherLib.SSQLib.Model;
 

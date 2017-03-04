@@ -11,12 +11,13 @@
     using System.Windows;
     using System.Xml.Serialization;
 
-    using A417Sync.Core;
-    using A417Sync.Core.Models;
+    using A417Sync.Client;
+    using A417Sync.Client.Models;
+    using A417Sync.Client.Models.FileActions;
 
     using Serilog;
 
-    using File = A417Sync.Core.Models.File;
+    using File = A417Sync.Client.Models.File;
 
     public class Client
     {

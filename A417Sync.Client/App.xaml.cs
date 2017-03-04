@@ -1,6 +1,7 @@
 ﻿namespace A417Sync.Client
 {
     using System;
+    using System.Collections.Generic;
     using System.Deployment.Application;
     using System.IO;
     using System.Reflection;
@@ -28,7 +29,7 @@
         {
             get
             {
-                string v = "0.0.0.0";
+                string v = "1.2.3.4";
                 try
                 {
                     if (!System.Diagnostics.Debugger.IsAttached)
@@ -81,7 +82,7 @@
                             MessageBoxImage.Information);
                     }).GetAwaiter();
 
-            HockeyClient.Current.TrackEvent("Launch");
+            HockeyClient.Current.TrackEvent("Launch", new Dictionary<string, string> { ["Version"] = this.Version });
             HockeyClient.Current.Flush();
 
             Log.Information("HockeyApp initialized");
@@ -98,11 +99,11 @@
             Directory.CreateDirectory(Path.GetDirectoryName(this.LogFile));
             Log.Logger =
                 new LoggerConfiguration().WriteTo.LiterateConsole(
-                        LogEventLevel.Debug,
+                        LogEventLevel.Verbose,
                         "{Timestamp:HH:mm:ss} {Level} [{SourceContext}] {Message}{NewLine}{Exception}")
                     .WriteTo.RollingFile(
                         this.LogFile,
-                        LogEventLevel.Debug,
+                        LogEventLevel.Verbose,
                         "{Timestamp:o} [{Level:u3}] ({SourceContext}) {Message}{NewLine}{Exception}")
                     .Enrich.FromLogContext()
                     .CreateLogger();

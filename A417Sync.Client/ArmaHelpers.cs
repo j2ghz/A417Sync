@@ -1,11 +1,11 @@
-﻿namespace A417Sync.Core
+﻿namespace A417Sync.Client
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
 
-    using A417Sync.Core.Models;
+    using A417Sync.Client.Models;
 
     using DerAtrox.Arma3LauncherLib.Model;
 

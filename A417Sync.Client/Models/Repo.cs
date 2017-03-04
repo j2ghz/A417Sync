@@ -1,4 +1,4 @@
-﻿namespace A417Sync.Core.Models
+﻿namespace A417Sync.Client.Models
 {
     using System.Collections.Generic;
 

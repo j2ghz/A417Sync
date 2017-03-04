@@ -82,6 +82,9 @@
                             MessageBoxImage.Information);
                     }).GetAwaiter();
 
+            ((HockeyClient)HockeyClient.Current).OnHockeySDKInternalException +=
+                (sender, args) => Log.Error(args.Exception, "HockeyApp Internal exception");
+
             HockeyClient.Current.TrackEvent("Launch", new Dictionary<string, string> { ["Version"] = this.Version });
             HockeyClient.Current.Flush();
 

@@ -68,6 +68,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.HockeyApp.Core45, Version=2017.213.222.10, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Unofficial.HockeySDK.Core.2017.0213.0222.10\lib\portable-net45+win8+wp8+wpa81+win81+uap10.0\Microsoft.HockeyApp.Core45.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.HockeyApp.Kit, Version=2017.213.222.10, Culture=neutral, processorArchitecture=MSIL">

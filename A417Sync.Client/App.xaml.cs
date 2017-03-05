@@ -57,6 +57,7 @@
             HockeyApp();
             base.OnStartup(e);
             this.log.Information("{method} finished", nameof(OnStartup));
+            ConsoleManager.Hide();
         }
 
         private void HockeyApp()
@@ -116,9 +117,11 @@
                     .Enrich.FromLogContext()
                     .MinimumLevel.Verbose()
                     .CreateLogger();
-            AppDomain.CurrentDomain.UnhandledException +=
-                (sender, args) =>
+            AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
+                {
+                    ConsoleManager.Show();
                     Log.Fatal(args.ExceptionObject as Exception, nameof(AppDomain.CurrentDomain.UnhandledException));
+                };
         }
     }
 }

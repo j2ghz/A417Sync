@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Threading;
     using System.Windows;
+    using System.Windows.Controls;
     using System.Windows.Threading;
 
     using Microsoft.HockeyApp;
@@ -71,6 +72,7 @@
             this.ViewModel.Client = new Client(path, uri, this.ViewModel);
             this.ViewModel.CanCheck = false;
             this.ViewModel.Actions.Clear();
+            ViewModel.BytesToDownload = 0;
             await this.ViewModel.Client.CollectActions(
                 this.ViewModel.SelectedModpack.Addons.Select(
                     name => this.ViewModel.Repo.Addons.Find(addon => addon.Name == name)),
@@ -123,6 +125,12 @@
                 this.ViewModel.Repo.Addons,
                 new DirectoryInfo(this.ViewModel.Path),
                 this.ViewModel.Params);
+        }
+
+        private void PathChange(object sender, TextChangedEventArgs e)
+        {
+            ViewModel.CanStart = false;
+            ViewModel.CanDownload = false;
         }
     }
 }

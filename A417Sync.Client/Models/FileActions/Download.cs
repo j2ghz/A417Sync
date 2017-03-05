@@ -61,7 +61,7 @@
         {
             if (token.IsCancellationRequested)
             {
-                this.log.Information("Cancelled download of {file}", this.requestUri);
+                this.log.Debug("Cancelled download of {file}", this.requestUri);
                 return;
             }
 

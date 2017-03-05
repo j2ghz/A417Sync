@@ -33,21 +33,22 @@
 
         private async void Download(object sender, RoutedEventArgs e)
         {
-            this.ViewModel.CanDownload = false;
             if (this.ViewModel.DownloadTask.GetAwaiter().IsCompleted)
             {
-                this.DownloadButton.Content = "Pause Download";
+                this.ViewModel.CanCheck = false;
                 this.ViewModel.DownloadTaskCancel = new CancellationTokenSource();
                 this.ViewModel.DownloadTask =
                     this.ViewModel.Client.Update(this.ViewModel.Actions, this.ViewModel.DownloadTaskCancel.Token)
                         .ConfigureAwait(false);
-                this.ViewModel.CanDownload = true;
                 await this.ViewModel.DownloadTask;
-                await Dispatcher.CurrentDispatcher.InvokeAsync(() => this.DownloadButton.Content = "Download");
-                this.ViewModel.CanDownload = true;
+                ViewModel.CanCheck = true;
                 if (!this.ViewModel.DownloadTaskCancel.IsCancellationRequested)
                 {
                     this.ViewModel.CanStart = true;
+                }
+                else
+                {
+                    this.ViewModel.CanDownload = false;
                 }
             }
             else

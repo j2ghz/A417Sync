@@ -7,6 +7,9 @@
     using System.Reflection;
     using System.Windows;
 
+    using Loggly;
+    using Loggly.Config;
+
     using Microsoft.HockeyApp;
 
     using Serilog;
@@ -108,12 +111,33 @@
         private void SetupLogging()
         {
             Directory.CreateDirectory(Path.GetDirectoryName(this.LogFile));
+            var config = LogglyConfig.Instance;
+            config.CustomerToken = "de5800d3-c799-4865-8f20-d8106467c08b";
+            config.ApplicationName = "A417Sync";
+            config.Transport = new TransportConfiguration()
+                                   {
+                                       EndpointHostname = "logs-01.loggly.com",
+                                       EndpointPort = 443,
+                                       LogTransport = LogTransport.Https
+                                   };
+            config.ThrowExceptions = true;
+
+            // Define Tags sent to Loggly
+            config.TagConfig.Tags.AddRange(
+                new ITag[]
+                    {
+                        new ApplicationNameTag { Formatter = "application-{0}" },
+                        new HostnameTag { Formatter = "host-{0}" },
+                        new OperatingSystemVersionTag { Formatter = "os-{0}" }
+                    });
+
             Log.Logger =
                 new LoggerConfiguration().WriteTo.LiterateConsole(
                         outputTemplate: "{Timestamp:HH:mm:ss} {Level:u3} [{SourceContext}] {Message}{NewLine}{Exception}")
                     .WriteTo.RollingFile(
                         this.LogFile,
                         outputTemplate: "{Timestamp:o} [{Level:u3}] ({SourceContext}) {Message}{NewLine}{Exception}")
+                    .WriteTo.Loggly(bufferBaseFilename: Path.GetTempFileName())
                     .Enrich.FromLogContext()
                     .MinimumLevel.Verbose()
                     .CreateLogger();

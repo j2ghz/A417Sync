@@ -42,7 +42,10 @@
                 this.ViewModel.CanDownload = true;
                 await this.ViewModel.DownloadTask;
                 this.ViewModel.CanDownload = true;
-                this.ViewModel.CanStart = true;
+                if (!this.ViewModel.DownloadTaskCancel.IsCancellationRequested)
+                {
+                    this.ViewModel.CanStart = true;
+                }
             }
             else
             {

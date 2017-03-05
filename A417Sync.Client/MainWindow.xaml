@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:A417Sync.Client"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="900"
+        Title="A417Sync Client" Height="500" Width="900"
         Name="Main"
         d:DataContext="{d:DesignInstance local:MainWindowViewModel }"
         Loaded="LoadRepo">

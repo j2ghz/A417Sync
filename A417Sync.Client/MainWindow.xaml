@@ -61,7 +61,7 @@
                     </Grid.RowDefinitions>
                     <ComboBox Margin="5" Grid.Row="0" IsEnabled="{Binding CanCheck, Mode=OneWay}"
                               ItemsSource="{Binding Repo.Modpacks}" DisplayMemberPath="Name"
-                              SelectedItem="{Binding SelectedModpack}" />
+                              SelectedItem="{Binding SelectedModpack}" SelectionChanged="ChangeModpack" />
                     <TextBlock Margin="5" Grid.Row="1" Text="{Binding DownloadInfo}" FontSize="16"/>
                     <ItemsControl Grid.Row="2" ItemsSource="{Binding Servers}">
                         <ItemsControl.ItemsPanel>

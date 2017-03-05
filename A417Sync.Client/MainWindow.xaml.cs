@@ -124,10 +124,16 @@
         private void Start(object sender, RoutedEventArgs e)
         {
             ArmaHelpers.StartArma(
-                this.ViewModel.Repo.Modpacks.First(),
+                this.ViewModel.SelectedModpack,
                 this.ViewModel.Repo.Addons,
                 new DirectoryInfo(this.ViewModel.Path),
                 this.ViewModel.Params);
+        }
+
+        private void ChangeModpack(object sender, SelectionChangedEventArgs e)
+        {
+            this.ViewModel.CanStart = false;
+            this.ViewModel.CanDownload = false;
         }
     }
 }

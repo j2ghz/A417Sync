@@ -42,13 +42,10 @@
                         .ConfigureAwait(false);
                 await this.ViewModel.DownloadTask;
                 this.ViewModel.CanCheck = true;
+                this.ViewModel.CanDownload = false;
                 if (!this.ViewModel.DownloadTaskCancel.IsCancellationRequested)
                 {
                     this.ViewModel.CanStart = true;
-                }
-                else
-                {
-                    this.ViewModel.CanDownload = false;
                 }
             }
             else

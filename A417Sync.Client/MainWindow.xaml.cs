@@ -43,7 +43,7 @@
                         .ConfigureAwait(false);
                 this.ViewModel.CanDownload = true;
                 await this.ViewModel.DownloadTask;
-                this.DownloadButton.Content = "Download";
+                await Dispatcher.CurrentDispatcher.InvokeAsync(() => this.DownloadButton.Content = "Download");
                 this.ViewModel.CanDownload = true;
                 if (!this.ViewModel.DownloadTaskCancel.IsCancellationRequested)
                 {
@@ -80,7 +80,7 @@
                 this.ViewModel.SelectedModpack.Addons.Select(
                     name => this.ViewModel.Repo.Addons.Find(addon => addon.Name == name)),
                 this.ViewModel.Actions);
-            ViewModel.Recalculate();
+            this.ViewModel.Recalculate();
             this.ViewModel.CanCheck = true;
             if (this.ViewModel.Actions.Any())
             {
@@ -112,6 +112,7 @@
                                 new Action(() => this.ViewModel.Servers.Add(t.Result)));
                         }).ConfigureAwait(false).GetAwaiter();
             }
+
             this.ViewModel.CanLoadRepo = true;
             this.ViewModel.CanCheck = true;
         }

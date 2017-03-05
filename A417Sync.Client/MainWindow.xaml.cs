@@ -41,7 +41,7 @@
                     this.ViewModel.Client.Update(this.ViewModel.Actions, this.ViewModel.DownloadTaskCancel.Token)
                         .ConfigureAwait(false);
                 await this.ViewModel.DownloadTask;
-                ViewModel.CanCheck = true;
+                this.ViewModel.CanCheck = true;
                 if (!this.ViewModel.DownloadTaskCancel.IsCancellationRequested)
                 {
                     this.ViewModel.CanStart = true;
@@ -53,6 +53,7 @@
             }
             else
             {
+                this.ViewModel.CanDownload = false;
                 this.ViewModel.DownloadTaskCancel.Cancel();
             }
         }

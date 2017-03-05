@@ -71,6 +71,8 @@
 
             var client = new WebClient();
 
+            token.Register(client.CancelAsync);
+
             client.DownloadProgressChanged += (sender, args) =>
                 {
                     progress.Report(args.BytesReceived - this.lastSize);

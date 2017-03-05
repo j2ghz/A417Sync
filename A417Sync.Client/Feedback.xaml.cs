@@ -26,7 +26,6 @@
                         {
                             Serilog.Log.ForContext<Feedback>()
                                 .Information("Feedback sent. Info received: {@info}", task.Result);
-                            Process.Start(task.Result.CreatedAt);
                         });
             Cancel(sender, e);
         }

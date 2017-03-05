@@ -1,8 +1,6 @@
 ﻿namespace A417Sync.Client
 {
     using System;
-    using System.Collections.Generic;
-    using System.Deployment.Application;
     using System.IO;
     using System.Reflection;
     using System.Windows;
@@ -14,6 +12,8 @@
 
     using Serilog;
 
+    using Squirrel;
+
     public partial class App : Application
     {
         private ILogger log;
@@ -22,35 +22,11 @@
             =>
                 Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                    this.Name,
-                    this.Version);
+                    Assembly.GetExecutingAssembly().GetName().Name);
 
-        public string LogFile => Path.Combine(this.LocalUserAppDataPath, "{Date}.log");
+        private string LogFile => Path.Combine(this.LocalUserAppDataPath, "{Date}.log");
 
-        public string Name => Assembly.GetEntryAssembly().GetName().Name;
-
-        public string Version
-        {
-            get
-            {
-                string v = "1.2.3.4";
-                try
-                {
-                    if (!System.Diagnostics.Debugger.IsAttached)
-                    {
-                        v = ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
-                    }
-                }
-                catch (Exception e)
-                {
-                    Log.Error(e, "Couldn't determine version");
-                }
-
-                return v;
-            }
-        }
-
-        protected override void OnStartup(StartupEventArgs e)
+        protected override async void OnStartup(StartupEventArgs e)
         {
             ConsoleManager.Show();
             Serilog.Debugging.SelfLog.Enable(Console.Error);
@@ -60,6 +36,11 @@
             HockeyApp();
             base.OnStartup(e);
             this.log.Information("{method} finished", nameof(OnStartup));
+            using (var mgr = new UpdateManager("D:\\Source\\A417Sync\\A417Sync.Client\\Releases"))
+            {
+                await mgr.UpdateApp().ConfigureAwait(false);
+            }
+
             ConsoleManager.Hide();
         }
 
@@ -70,8 +51,6 @@
                 .SetContactInfo(
                     Environment.UserName,
                     (this.Properties["Contact"] ?? Environment.MachineName).ToString());
-            var hockeyInternal = (HockeyClient)HockeyClient.Current;
-            hockeyInternal.VersionInfo = this.Version;
             this.log.Debug("Checking for pending crashes");
             HockeyClient.Current.SendCrashesAsync(true).ContinueWith(
                 task =>
@@ -89,22 +68,16 @@
                             MessageBoxImage.Information);
                     }).GetAwaiter();
 
-            hockeyInternal.OnHockeySDKInternalException +=
-                (sender, args) =>
-                    this.log.Warning(
-                        args.Exception,
-                        "Possible problem in HockeyApp (Crash Reporter) from: {@sender}",
-                        sender);
-
-            HockeyClient.Current.TrackEvent("Launch", new Dictionary<string, string> { ["Version"] = this.Version });
             HockeyClient.Current.Flush();
 
-            this.log.Information("HockeyApp initialized, app version {version}", hockeyInternal.VersionInfo);
+            this.log.Information(
+                "HockeyApp initialized, app version {version}",
+                Assembly.GetExecutingAssembly().GetName().Version.ToString());
         }
 
         private void LogLaunchMessage()
         {
-            this.log.Information("Starting {name} {version}", this.Name, this.Version);
+            this.log.Information("Starting {name}", Assembly.GetExecutingAssembly().GetName().FullName);
             this.log.Information("Logging to {filePath}", this.LogFile);
         }
 

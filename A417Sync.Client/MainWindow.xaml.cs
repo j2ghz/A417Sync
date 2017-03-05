@@ -98,6 +98,7 @@
             this.ViewModel.Servers.Clear();
             var uri = new Uri(this.ViewModel.Url);
             this.ViewModel.Repo = await Client.DownloadRepo(uri).ConfigureAwait(false);
+            this.ViewModel.SelectedModpack = this.ViewModel.Repo.Modpacks[0];
 
             foreach (var m in this.ViewModel.Repo.Modpacks)
             {
@@ -111,7 +112,6 @@
                                 new Action(() => this.ViewModel.Servers.Add(t.Result)));
                         }).ConfigureAwait(false).GetAwaiter();
             }
-
             this.ViewModel.CanLoadRepo = true;
             this.ViewModel.CanCheck = true;
         }

@@ -79,8 +79,14 @@
                     this.lastSize = args.BytesReceived;
                     this.Progress = 1D * args.BytesReceived / args.TotalBytesToReceive * 100;
                 };
-
-            await client.DownloadFileTaskAsync(this.requestUri, this.Path).ConfigureAwait(false);
+            try
+            {
+                await client.DownloadFileTaskAsync(this.requestUri, this.Path).ConfigureAwait(false);
+            }
+            catch (WebException e)
+            {
+                this.log.Error(e, "WebClient exception");
+            }
 
             this.log.Information("Downloaded {url}", this.requestUri);
 

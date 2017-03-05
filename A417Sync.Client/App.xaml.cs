@@ -69,7 +69,7 @@
             var hockeyInternal = (HockeyClient)HockeyClient.Current;
             hockeyInternal.VersionInfo = this.Version;
             this.log.Debug("Checking for pending crashes");
-            HockeyClient.Current.SendCrashesAsync().ContinueWith(
+            HockeyClient.Current.SendCrashesAsync(true).ContinueWith(
                 task =>
                     {
                         if (!task.Result)

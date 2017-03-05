@@ -1,7 +1,6 @@
 ﻿namespace A417Sync.Client
 {
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
@@ -10,6 +9,9 @@
     using System.Windows.Threading;
 
     using Microsoft.HockeyApp;
+    using Microsoft.VisualBasic;
+
+    using Serilog;
 
     public partial class MainWindow : Window
     {
@@ -21,7 +23,7 @@
             this.DataContext = this.ViewModel;
         }
 
-        public MainWindowViewModel ViewModel { get; private set; }
+        public MainWindowViewModel ViewModel { get; }
 
         private void ConsoleToggle(object sender, RoutedEventArgs e)
         {
@@ -52,31 +54,40 @@
         {
             await HockeyClient.Current.CreateFeedbackThread()
                 .PostFeedbackMessageAsync(
-                    Microsoft.VisualBasic.Interaction.InputBox("Message"),
-                    Microsoft.VisualBasic.Interaction.InputBox("Email"),
-                    Microsoft.VisualBasic.Interaction.InputBox("Subject"),
-                    Microsoft.VisualBasic.Interaction.InputBox("Name"))
+                    Interaction.InputBox("Message"),
+                    Interaction.InputBox("Email"),
+                    Interaction.InputBox("Subject"),
+                    Interaction.InputBox("Name"))
                 .ContinueWith(task => MessageBox.Show("Feedback sent"));
         }
 
         private async void Check(object sender, RoutedEventArgs e)
         {
+            var uri = new Uri(this.ViewModel.Url);
+            var path = new DirectoryInfo(this.ViewModel.Path);
+            this.ViewModel.Client = new Client(path, uri, this.ViewModel);
             this.ViewModel.CanCheck = false;
-            ViewModel.Actions.Clear();
+            this.ViewModel.Actions.Clear();
             await this.ViewModel.Client.CollectActions(
                 this.ViewModel.SelectedModpack.Addons.Select(
                     name => this.ViewModel.Repo.Addons.Find(addon => addon.Name == name)),
                 this.ViewModel.Actions);
             this.ViewModel.CanCheck = true;
-            this.ViewModel.CanDownload = true;
+            if (this.ViewModel.Actions.Any())
+            {
+                this.ViewModel.CanDownload = true;
+            }
+            else
+            {
+                this.ViewModel.CanStart = true;
+            }
         }
 
         private async void LoadRepo(object sender, RoutedEventArgs e)
         {
             this.ViewModel.CanLoadRepo = false;
+            this.ViewModel.Servers.Clear();
             var uri = new Uri(this.ViewModel.Url);
-            var path = new DirectoryInfo(this.ViewModel.Path);
-            this.ViewModel.Client = new Client(path, uri, this.ViewModel);
             this.ViewModel.Repo = await Client.DownloadRepo(uri).ConfigureAwait(false);
             this.ViewModel.SelectedModpack = this.ViewModel.Repo.Modpacks[0];
 
@@ -86,7 +97,7 @@
                 serverInfo.ContinueWith(
                     t =>
                         {
-                            Serilog.Log.Debug("{@server}", t.Result);
+                            Log.Debug("{@server}", t.Result);
                             return this.Dispatcher.BeginInvoke(
                                 DispatcherPriority.Background,
                                 new Action(() => this.ViewModel.Servers.Add(t.Result)));
@@ -97,18 +108,18 @@
             this.ViewModel.CanCheck = true;
         }
 
+        private void ShowLogs(object sender, RoutedEventArgs e)
+        {
+            Process.Start(((App)Application.Current).LocalUserAppDataPath);
+        }
+
         private void Start(object sender, RoutedEventArgs e)
         {
             ArmaHelpers.StartArma(
                 this.ViewModel.Repo.Modpacks.First(),
                 this.ViewModel.Repo.Addons,
                 new DirectoryInfo(this.ViewModel.Path),
-                ViewModel.Params);
-        }
-
-        private void ShowLogs(object sender, RoutedEventArgs e)
-        {
-            Process.Start(((App)Application.Current).LocalUserAppDataPath);
+                this.ViewModel.Params);
         }
     }
 }

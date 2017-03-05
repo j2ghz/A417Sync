@@ -72,7 +72,7 @@
             this.ViewModel.Client = new Client(path, uri, this.ViewModel);
             this.ViewModel.CanCheck = false;
             this.ViewModel.Actions.Clear();
-            ViewModel.BytesToDownload = 0;
+            this.ViewModel.BytesToDownload = 0;
             await this.ViewModel.Client.CollectActions(
                 this.ViewModel.SelectedModpack.Addons.Select(
                     name => this.ViewModel.Repo.Addons.Find(addon => addon.Name == name)),
@@ -88,13 +88,17 @@
             }
         }
 
+        private void Loaded(object sender, RoutedEventArgs e)
+        {
+            LoadRepo(sender, e);
+        }
+
         private async void LoadRepo(object sender, RoutedEventArgs e)
         {
             this.ViewModel.CanLoadRepo = false;
             this.ViewModel.Servers.Clear();
             var uri = new Uri(this.ViewModel.Url);
             this.ViewModel.Repo = await Client.DownloadRepo(uri).ConfigureAwait(false);
-            this.ViewModel.SelectedModpack = this.ViewModel.Repo.Modpacks[0];
 
             foreach (var m in this.ViewModel.Repo.Modpacks)
             {
@@ -113,6 +117,12 @@
             this.ViewModel.CanCheck = true;
         }
 
+        private void PathChange(object sender, TextChangedEventArgs e)
+        {
+            this.ViewModel.CanStart = false;
+            this.ViewModel.CanDownload = false;
+        }
+
         private void ShowLogs(object sender, RoutedEventArgs e)
         {
             Process.Start(((App)Application.Current).LocalUserAppDataPath);
@@ -125,12 +135,6 @@
                 this.ViewModel.Repo.Addons,
                 new DirectoryInfo(this.ViewModel.Path),
                 this.ViewModel.Params);
-        }
-
-        private void PathChange(object sender, TextChangedEventArgs e)
-        {
-            ViewModel.CanStart = false;
-            ViewModel.CanDownload = false;
         }
     }
 }

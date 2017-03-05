@@ -7,7 +7,8 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="500" Width="900"
         Name="Main"
-        d:DataContext="{d:DesignInstance local:MainWindowViewModel }">
+        d:DataContext="{d:DesignInstance local:MainWindowViewModel }"
+        Loaded="Loaded">
 
     <TabControl>
         <!-- Tu bude grid kurva uz -->

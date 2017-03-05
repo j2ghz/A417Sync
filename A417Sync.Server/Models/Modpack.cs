@@ -14,7 +14,7 @@
         public string IP { get; set; } = string.Empty;
 
         [XmlAttribute]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         [XmlAttribute]
         public string Password { get; set; } = string.Empty;

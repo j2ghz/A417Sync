@@ -75,6 +75,7 @@
             this.ViewModel.CanCheck = false;
             this.ViewModel.Actions.Clear();
             this.ViewModel.BytesToDownload = 0;
+            this.ViewModel.BytesDownloaded = 0;
             await this.ViewModel.Client.CollectActions(
                 this.ViewModel.SelectedModpack.Addons.Select(
                     name => this.ViewModel.Repo.Addons.Find(addon => addon.Name == name)),

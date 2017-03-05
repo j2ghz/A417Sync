@@ -55,15 +55,9 @@
             }
         }
 
-        private async void Feedback(object sender, RoutedEventArgs e)
+        private void Feedback(object sender, RoutedEventArgs e)
         {
-            await HockeyClient.Current.CreateFeedbackThread()
-                .PostFeedbackMessageAsync(
-                    Interaction.InputBox("Message"),
-                    Interaction.InputBox("Email"),
-                    Interaction.InputBox("Subject"),
-                    Interaction.InputBox("Name"))
-                .ContinueWith(task => MessageBox.Show("Feedback sent"));
+            new Feedback().ShowDialog();
         }
 
         private async void Check(object sender, RoutedEventArgs e)

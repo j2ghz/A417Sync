@@ -79,6 +79,7 @@
                 this.ViewModel.SelectedModpack.Addons.Select(
                     name => this.ViewModel.Repo.Addons.Find(addon => addon.Name == name)),
                 this.ViewModel.Actions);
+            ViewModel.Recalculate();
             this.ViewModel.CanCheck = true;
             if (this.ViewModel.Actions.Any())
             {

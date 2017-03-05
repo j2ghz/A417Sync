@@ -254,7 +254,7 @@
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void Recalculate()
+        public void Recalculate()
         {
             this.Progress = 1D * this.BytesDownloaded / this.BytesToDownload * 100D;
             var interval = (DateTime.Now - this.lastSpeedUpdateTime).TotalSeconds;

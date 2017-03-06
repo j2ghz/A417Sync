@@ -4,12 +4,17 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Windows;
 
     using A417Sync.Client.Models;
 
+    using DerAtrox.Arma3LauncherLib.Exceptions;
     using DerAtrox.Arma3LauncherLib.Model;
 
+    using Microsoft.VisualBasic.Logging;
     using Microsoft.Win32;
+
+    using Log = Serilog.Log;
 
     public static class ArmaHelpers
     {
@@ -46,7 +51,21 @@
             settings.OtherArgs.AddRange(arguments);
             settings.OtherArgs.Add(modpack.AdditionalParams);
             var server = ServerInfo(modpack);
-            new ArmaLauncher().Connect(Path.Combine(GetArma3Path(), "arma3battleye.exe"), server, settings, true);
+            try
+            {
+                new ArmaLauncher().Connect(Path.Combine(GetArma3Path(), "arma3battleye.exe"), server, settings, true);
+            }
+            catch (ArmaRunningException ex)
+            {
+
+                Log.Warning(ex,"Arma already running");
+                MessageBox.Show("Arma already running!","Error launching Arma",MessageBoxButton.OK,MessageBoxImage.Error);
+            }
+            catch (ArmaNotFoundException ex)
+            {
+                Log.Warning(ex, "rma path not found");
+                MessageBox.Show("Arma path not found in the registry! Have you launched Arma at least once without the launcher before?", "Error launching Arma", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public static ArmaServer ServerInfo(Modpack modpack)

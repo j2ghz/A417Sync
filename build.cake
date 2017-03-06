@@ -4,7 +4,8 @@
 var target = Argument("target", "Default");
 
 Task("Default")
-    .IsDependentOn("Build WPF");
+    .IsDependentOn("Build WPF")
+    .IsDependentOn("WPF Installer");
 
 Task("Build WPF")
   .IsDependentOn("Restore NuGet")
@@ -29,7 +30,7 @@ Task("WPF Package")
 Task("WPF Installer")
     .IsDependentOn("WPF Package")
     .Does(() => {
-        Squirrel(GetFile("./A417Sync.WPF/A417Sync.WPF.nupkg"));
+        Squirrel("./A417Sync.WPF/A417Sync.WPF.nupkg");
     });
 
 RunTarget(target);

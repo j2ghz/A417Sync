@@ -1,4 +1,4 @@
-﻿namespace A417Sync.Client.Models.FileActions
+﻿namespace A417Sync.WPF.Models.FileActions
 {
     using System;
     using System.ComponentModel;
@@ -8,11 +8,11 @@
     using System.Threading;
     using System.Threading.Tasks;
 
-    using A417Sync.Client.Models;
+    using A417Sync.WPF.Models;
 
     using Serilog;
 
-    using File = A417Sync.Client.Models.File;
+    using File = A417Sync.WPF.Models.File;
 
     public class Download : IFileAction
     {

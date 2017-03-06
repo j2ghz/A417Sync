@@ -1,7 +1,12 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.4</TargetFramework>
+    <TargetFramework>netstandard1.0</TargetFramework>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Authors>J2ghz</Authors>
+    <Company />
+    <Product>A417Sync</Product>
+    <Description>Client libraries for A417Sync</Description>
   </PropertyGroup>
 
 </Project>

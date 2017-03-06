@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{2265943D-3229-4D2A-813C-2C23CDDBE82B}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>A417Sync.Client</RootNamespace>
-    <AssemblyName>A417Sync.Client</AssemblyName>
+    <RootNamespace>A417Sync.WPF</RootNamespace>
+    <AssemblyName>A417Sync.WPF</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -55,12 +55,6 @@
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\squirrel.windows.1.5.2\lib\Net45\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
-    <Reference Include="Loggly, Version=4.6.0.0, Culture=neutral, PublicKeyToken=aea0e3c965ace843, processorArchitecture=MSIL">
-      <HintPath>..\packages\loggly-csharp.4.6.0.5\lib\net45\Loggly.dll</HintPath>
-    </Reference>
-    <Reference Include="Loggly.Config, Version=4.6.0.0, Culture=neutral, PublicKeyToken=aea0e3c965ace843, processorArchitecture=MSIL">
-      <HintPath>..\packages\loggly-csharp-config.4.6.0.5\lib\net45\Loggly.Config.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.HockeyApp.Core45, Version=2017.213.222.10, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Unofficial.HockeySDK.Core.2017.0213.0222.10\lib\portable-net45+win8+wp8+wpa81+win81+uap10.0\Microsoft.HockeyApp.Core45.dll</HintPath>
@@ -81,9 +75,6 @@
     <Reference Include="Mono.Cecil.Rocks, Version=0.9.6.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
       <HintPath>..\packages\Mono.Cecil.0.9.6.1\lib\net45\Mono.Cecil.Rocks.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="NuGet.Squirrel, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\squirrel.windows.1.5.2\lib\Net45\NuGet.Squirrel.dll</HintPath>
     </Reference>
@@ -95,12 +86,6 @@
     </Reference>
     <Reference Include="Serilog.Sinks.Literate, Version=2.1.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
       <HintPath>..\packages\Serilog.Sinks.Literate.2.1.0\lib\net45\Serilog.Sinks.Literate.dll</HintPath>
-    </Reference>
-    <Reference Include="Serilog.Sinks.Loggly, Version=3.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
-      <HintPath>..\packages\Serilog.Sinks.Loggly.4.0.0\lib\net45\Serilog.Sinks.Loggly.dll</HintPath>
-    </Reference>
-    <Reference Include="Serilog.Sinks.PeriodicBatching, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
-      <HintPath>..\packages\Serilog.Sinks.PeriodicBatching.2.0.0\lib\net45\Serilog.Sinks.PeriodicBatching.dll</HintPath>
     </Reference>
     <Reference Include="Serilog.Sinks.RollingFile, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
       <HintPath>..\packages\Serilog.Sinks.RollingFile.3.3.0\lib\net45\Serilog.Sinks.RollingFile.dll</HintPath>
@@ -151,15 +136,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ArmaHelpers.cs" />
-    <Compile Include="Client.cs" />
     <Compile Include="ConsoleManager.cs" />
-    <Compile Include="DownloadSpeedFormatProvider.cs" />
     <Compile Include="Feedback.xaml.cs">
       <DependentUpon>Feedback.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\FileActions\Download.cs" />
-    <Compile Include="Models\FileActions\IFileAction.cs" />
-    <Compile Include="FileSizeFormatProvider.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -167,11 +147,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainWindowViewModel.cs" />
-    <Compile Include="Models\Addon.cs" />
-    <Compile Include="Models\File.cs" />
-    <Compile Include="Models\Modpack.cs" />
-    <Compile Include="Models\Repo.cs" />
-    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

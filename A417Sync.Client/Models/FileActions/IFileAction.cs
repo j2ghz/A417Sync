@@ -1,4 +1,4 @@
-﻿namespace A417Sync.Client.Models.FileActions
+﻿namespace A417Sync.WPF.Models.FileActions
 {
     using System;
     using System.ComponentModel;

@@ -1,7 +1,7 @@
-﻿<Application x:Class="A417Sync.Client.App"
+﻿<Application x:Class="A417Sync.WPF.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:A417Sync.Client"
+             xmlns:local="clr-namespace:A417Sync.WPF"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
          

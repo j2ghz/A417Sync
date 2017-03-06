@@ -1,4 +1,4 @@
-﻿namespace A417Sync.Client
+﻿namespace A417Sync.WPF
 {
     using System;
     using System.Collections.Generic;
@@ -9,9 +9,9 @@
     using System.Threading;
     using System.Threading.Tasks;
 
-    using A417Sync.Client.Annotations;
-    using A417Sync.Client.Models;
-    using A417Sync.Client.Models.FileActions;
+    using A417Sync.WPF;
+    using A417Sync.WPF.Models;
+    using A417Sync.WPF.Models.FileActions;
 
     using DerAtrox.Arma3LauncherLib.SSQLib.Model;
 
@@ -248,7 +248,6 @@
             }
         }
 
-        [NotifyPropertyChangedInvocator]
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -264,12 +263,12 @@
                 var sb = new StringBuilder();
                 var remaining = new TimeSpan(0, 0, 0, (int)(this.bytesToDownload / speed));
                 sb.Append("Download progress: ");
-                sb.AppendFormat(new FileSizeFormatProvider(), "{0:fs}", this.bytesDownloaded);
+                //sb.AppendFormat(new FileSizeFormatProvider(), "{0:fs}", this.bytesDownloaded);
                 sb.Append(" / ");
-                sb.AppendFormat(new FileSizeFormatProvider(), "{0:fs}", this.bytesToDownload);
+                //sb.AppendFormat(new FileSizeFormatProvider(), "{0:fs}", this.bytesToDownload);
                 sb.AppendLine();
                 sb.Append("Download speed: ");
-                sb.AppendFormat(new DownloadSpeedFormatProvider(), "{0:sp}", speed);
+                //sb.AppendFormat(new DownloadSpeedFormatProvider(), "{0:sp}", speed);
                 sb.AppendLine();
                 sb.Append("Remaining time: ");
                 sb.AppendFormat("{0:g}", remaining);

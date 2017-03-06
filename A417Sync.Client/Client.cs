@@ -1,4 +1,4 @@
-﻿namespace A417Sync.Client
+﻿namespace A417Sync.WPF
 {
     using System;
     using System.Collections.Generic;
@@ -12,12 +12,12 @@
     using System.Windows.Threading;
     using System.Xml.Serialization;
 
-    using A417Sync.Client.Models;
-    using A417Sync.Client.Models.FileActions;
+    using A417Sync.WPF.Models;
+    using A417Sync.WPF.Models.FileActions;
 
     using Serilog;
 
-    using File = A417Sync.Client.Models.File;
+    using File = A417Sync.WPF.Models.File;
 
     public class Client
     {

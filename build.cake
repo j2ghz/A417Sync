@@ -3,7 +3,7 @@
 
 var target = Argument("target", "Default");
 var directoryWPF = Directory("./A417Sync.WPF");
-var version = "0.0.0.0";
+var version = Argument("version","0.0.0.0");
 
 Task("Default")
     .IsDependentOn("Build WPF")

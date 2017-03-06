@@ -1,4 +1,4 @@
-﻿namespace A417Sync.Client
+﻿namespace A417Sync.WPF
 {
     using System;
 

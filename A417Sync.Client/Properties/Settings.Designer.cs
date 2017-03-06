@@ -49,7 +49,7 @@ namespace A417Sync.Client.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("D:\\417Launcher\\417Launcher\\417addons")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string path {
             get {
                 return ((string)(this["path"]));

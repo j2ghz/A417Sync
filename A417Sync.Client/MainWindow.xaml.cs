@@ -1,5 +1,7 @@
 ﻿namespace A417Sync.Client
 {
+    #region
+
     using System;
     using System.Diagnostics;
     using System.IO;
@@ -11,8 +13,11 @@
     using System.Windows.Threading;
 
     using Microsoft.HockeyApp;
+    using Microsoft.VisualBasic;
 
     using Serilog;
+
+    #endregion
 
     public partial class MainWindow : Window
     {
@@ -20,6 +25,12 @@
         {
             HockeyClient.Current.TrackPageView(nameof(MainWindow));
             this.ViewModel = new MainWindowViewModel();
+            while (string.IsNullOrWhiteSpace(this.ViewModel.Path) || !new DirectoryInfo(this.ViewModel.Path).Exists)
+                this.ViewModel.Path =
+                    Interaction.InputBox(
+                        "Your addon folder does not exist. Provide a directory that exists",
+                        "Addon directory not found",
+                        "C:\\417addons\\");
             InitializeComponent();
             this.DataContext = this.ViewModel;
         }
@@ -43,10 +54,7 @@
                 await this.ViewModel.DownloadTask;
                 this.ViewModel.CanCheck = true;
                 this.ViewModel.CanDownload = false;
-                if (!this.ViewModel.DownloadTaskCancel.IsCancellationRequested)
-                {
-                    this.ViewModel.CanStart = true;
-                }
+                if (!this.ViewModel.DownloadTaskCancel.IsCancellationRequested) this.ViewModel.CanStart = true;
             }
             else
             {
@@ -81,14 +89,8 @@
                 this.ViewModel.Actions).ConfigureAwait(false);
             this.ViewModel.Recalculate();
             this.ViewModel.CanCheck = true;
-            if (this.ViewModel.Actions.Any())
-            {
-                this.ViewModel.CanDownload = true;
-            }
-            else
-            {
-                this.ViewModel.CanStart = true;
-            }
+            if (this.ViewModel.Actions.Any()) this.ViewModel.CanDownload = true;
+            else this.ViewModel.CanStart = true;
         }
 
         private async void LoadRepo(object sender, RoutedEventArgs e)

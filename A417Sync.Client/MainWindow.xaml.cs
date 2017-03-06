@@ -21,6 +21,8 @@
 
     public partial class MainWindow : Window
     {
+        private ILogger log = Log.ForContext<MainWindow>();
+
         public MainWindow()
         {
             HockeyClient.Current.TrackPageView(nameof(MainWindow));
@@ -51,7 +53,22 @@
                 this.ViewModel.DownloadTask =
                     this.ViewModel.Client.Update(this.ViewModel.Actions, this.ViewModel.DownloadTaskCancel.Token)
                         .ConfigureAwait(false);
-                await this.ViewModel.DownloadTask;
+                try
+                {
+                    await this.ViewModel.DownloadTask;
+                }
+                catch (UnauthorizedAccessException ex)
+                {
+                    this.log.Warning(ex, "Could not create direcotry for file download");
+                    MessageBox.Show(
+                        "Access to addon folder was denied." + Environment.NewLine + ex.Message,
+                        "Folder access denied",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+                    this.ViewModel.CanDownload = false;
+                    this.ViewModel.DownloadTaskCancel.Cancel();
+                }
+
                 this.ViewModel.CanCheck = true;
                 this.ViewModel.CanDownload = false;
                 if (!this.ViewModel.DownloadTaskCancel.IsCancellationRequested) this.ViewModel.CanStart = true;

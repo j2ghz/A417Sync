@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>A417Sync.WPF</id>
+        <version>1.0.0</version>
+        <authors>J2ghz</authors>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>My package description.</description>
+    </metadata>
+    <files>
+        <file src="bin\Release\A417Sync.Client.exe" target="lib\net45\A417Sync.Client.exe" />
+        <file src="bin\Release\A417Sync.Client.exe.config" target="lib\net45\A417Sync.Client.exe.config" />
+        <file src="bin\Release\Arma3LauncherLib.dll" target="lib\net45\Arma3LauncherLib.dll" />
+        <file src="bin\Release\Arma3LauncherLib.SSQLib.dll" target="lib\net45\Arma3LauncherLib.SSQLib.dll" />
+        <file src="bin\Release\Arma3LauncherLib.SSQLib.xml" target="lib\net45\Arma3LauncherLib.SSQLib.xml" />
+        <file src="bin\Release\Arma3LauncherLib.xml" target="lib\net45\Arma3LauncherLib.xml" />
+        <file src="bin\Release\DeltaCompressionDotNet.dll" target="lib\net45\DeltaCompressionDotNet.dll" />
+        <file src="bin\Release\DeltaCompressionDotNet.MsDelta.dll" target="lib\net45\DeltaCompressionDotNet.MsDelta.dll" />
+        <file src="bin\Release\DeltaCompressionDotNet.PatchApi.dll" target="lib\net45\DeltaCompressionDotNet.PatchApi.dll" />
+        <file src="bin\Release\ICSharpCode.SharpZipLib.dll" target="lib\net45\ICSharpCode.SharpZipLib.dll" />
+        <file src="bin\Release\ICSharpCode.SharpZipLib.xml" target="lib\net45\ICSharpCode.SharpZipLib.xml" />
+        <file src="bin\Release\Loggly.Config.dll" target="lib\net45\Loggly.Config.dll" />
+        <file src="bin\Release\Loggly.dll" target="lib\net45\Loggly.dll" />
+        <file src="bin\Release\Microsoft.HockeyApp.Core45.dll" target="lib\net45\Microsoft.HockeyApp.Core45.dll" />
+        <file src="bin\Release\Microsoft.HockeyApp.Core45.xml" target="lib\net45\Microsoft.HockeyApp.Core45.xml" />
+        <file src="bin\Release\Microsoft.HockeyApp.Kit.dll" target="lib\net45\Microsoft.HockeyApp.Kit.dll" />
+        <file src="bin\Release\Microsoft.HockeyApp.Kit.xml" target="lib\net45\Microsoft.HockeyApp.Kit.xml" />
+        <file src="bin\Release\Mono.Cecil.dll" target="lib\net45\Mono.Cecil.dll" />
+        <file src="bin\Release\Mono.Cecil.Mdb.dll" target="lib\net45\Mono.Cecil.Mdb.dll" />
+        <file src="bin\Release\Mono.Cecil.Pdb.dll" target="lib\net45\Mono.Cecil.Pdb.dll" />
+        <file src="bin\Release\Mono.Cecil.Rocks.dll" target="lib\net45\Mono.Cecil.Rocks.dll" />
+        <file src="bin\Release\Newtonsoft.Json.dll" target="lib\net45\Newtonsoft.Json.dll" />
+        <file src="bin\Release\Newtonsoft.Json.xml" target="lib\net45\Newtonsoft.Json.xml" />
+        <file src="bin\Release\NuGet.Squirrel.dll" target="lib\net45\NuGet.Squirrel.dll" />
+        <file src="bin\Release\Serilog.dll" target="lib\net45\Serilog.dll" />
+        <file src="bin\Release\Serilog.Sinks.File.dll" target="lib\net45\Serilog.Sinks.File.dll" />
+        <file src="bin\Release\Serilog.Sinks.File.xml" target="lib\net45\Serilog.Sinks.File.xml" />
+        <file src="bin\Release\Serilog.Sinks.Literate.dll" target="lib\net45\Serilog.Sinks.Literate.dll" />
+        <file src="bin\Release\Serilog.Sinks.Literate.xml" target="lib\net45\Serilog.Sinks.Literate.xml" />
+        <file src="bin\Release\Serilog.Sinks.Loggly.dll" target="lib\net45\Serilog.Sinks.Loggly.dll" />
+        <file src="bin\Release\Serilog.Sinks.PeriodicBatching.dll" target="lib\net45\Serilog.Sinks.PeriodicBatching.dll" />
+        <file src="bin\Release\Serilog.Sinks.PeriodicBatching.xml" target="lib\net45\Serilog.Sinks.PeriodicBatching.xml" />
+        <file src="bin\Release\Serilog.Sinks.RollingFile.dll" target="lib\net45\Serilog.Sinks.RollingFile.dll" />
+        <file src="bin\Release\Serilog.Sinks.RollingFile.xml" target="lib\net45\Serilog.Sinks.RollingFile.xml" />
+        <file src="bin\Release\Serilog.Sinks.Trace.dll" target="lib\net45\Serilog.Sinks.Trace.dll" />
+        <file src="bin\Release\Serilog.Sinks.Trace.xml" target="lib\net45\Serilog.Sinks.Trace.xml" />
+        <file src="bin\Release\Serilog.xml" target="lib\net45\Serilog.xml" />
+        <file src="bin\Release\Splat.dll" target="lib\net45\Splat.dll" />
+        <file src="bin\Release\Squirrel.dll" target="lib\net45\Squirrel.dll" />
+    </files>
+</package>

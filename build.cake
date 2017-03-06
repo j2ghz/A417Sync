@@ -1,3 +1,6 @@
+#tool "Squirrel.Windows" 
+#addin Cake.Squirrel
+
 var target = Argument("target", "Default");
 
 Task("Default")
@@ -16,5 +19,17 @@ Task("Restore NuGet")
 {
   NuGetRestore("./A417Sync.sln");
 });
+
+Task("WPF Package")
+    .Does(() => {
+        DotNetBuild("./A417Sync.WPF/A417Sync.WPF.csproj", settings =>
+            settings.WithTarget("Package"));
+    });
+
+Task("WPF Installer")
+    .IsDependentOn("WPF Package")
+    .Does(() => {
+        Squirrel(GetFile("./A417Sync.WPF/A417Sync.WPF.nupkg"));
+    });
 
 RunTarget(target);

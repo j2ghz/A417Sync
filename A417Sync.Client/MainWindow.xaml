@@ -11,7 +11,6 @@
         Loaded="LoadRepo">
 
     <TabControl>
-        <!-- Tu bude grid kurva uz -->
         <TabItem Header="Main">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -116,17 +115,20 @@
                 </Menu>
                 <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <TextBox Grid.Column="0" Grid.Row="0" Margin="5" Padding="5" Text="{Binding Url, Mode=TwoWay}" IsEnabled="False" Background="White" />
-                    <TextBox Grid.Column="0" Grid.Row="1" Margin="5" Padding="5" Text="{Binding Path, Mode=TwoWay}" TextChanged="PathChange" />
-                    <TextBox Grid.Column="0" Grid.Row="2" Margin="5" Padding="5"
+                    <TextBlock Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5">Repo url:</TextBlock>
+                    <TextBox Grid.Column="1" Grid.Row="0" Margin="5" Padding="5" Text="{Binding Url, Mode=TwoWay}" IsEnabled="False" />
+                    <TextBlock Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5">Addon path:</TextBlock>
+                    <TextBox Grid.Column="1" Grid.Row="1" Margin="5" Padding="5" Text="{Binding Path, Mode=TwoWay}" TextChanged="PathChange" />
+                    <TextBlock Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5">Custom parameters:</TextBlock>
+                    <TextBox Grid.Column="1" Grid.Row="2" Margin="5" Padding="5"
                              Text="{Binding UserParams, Mode=TwoWay}" />
                 </Grid>
                 <ListView Grid.Row="3" ItemsSource="{Binding Actions}">

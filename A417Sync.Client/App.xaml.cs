@@ -7,9 +7,6 @@
     using System.Reflection;
     using System.Windows;
 
-    using Loggly;
-    using Loggly.Config;
-
     using Microsoft.HockeyApp;
 
     using Serilog;

@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.IO;
 using DerAtrox.Arma3LauncherLib.Exceptions;
-using Serilog;
 
 namespace DerAtrox.Arma3LauncherLib.Model {
     /// <summary>
@@ -105,7 +104,6 @@ namespace DerAtrox.Arma3LauncherLib.Model {
                             WorkingDirectory = Path.GetDirectoryName(arma3StartPath)
                         }
             };
-            Log.Information("Starting Arma {@info}", proc.StartInfo.Arguments);
             proc.Start();
             proc.Dispose();
         }

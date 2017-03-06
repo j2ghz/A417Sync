@@ -221,3 +221,5 @@ A417Sync\.Server/wwwroot/lib/
 *.js
 
 *.map
+
+tools/

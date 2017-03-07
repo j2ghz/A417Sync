@@ -41,7 +41,7 @@
                     </Button>
                     <Button Name="DownloadButton" Grid.Row="2" Margin="10" FontSize="16" Click="Download" IsEnabled="{Binding CanDownload, Mode=OneWay}"
                             Grid.ColumnSpan="2">
-                        Download
+                        Download / Pause
                     </Button>
                     <Button Background="{Binding StartColor}" Name="StartButton" Grid.Row="3" Margin="10" FontSize="16"  Click="Start" IsEnabled="{Binding CanStart, Mode=OneWay}"
                             Grid.ColumnSpan="2">

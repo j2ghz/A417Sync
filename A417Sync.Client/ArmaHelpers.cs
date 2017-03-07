@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Windows;
@@ -40,6 +41,14 @@
 
         public static void StartArma(Modpack modpack, IEnumerable<Addon> addons, DirectoryInfo basePath, IEnumerable<string> arguments, bool connectIsChecked)
         {
+            if (!Process.GetProcessesByName("Steam.exe").Any())
+            {
+                MessageBox.Show(
+                    "Steam is not running. Arma will probably not launch.",
+                    "Steam not running",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+            }
             var addonFolders = basePath.EnumerateDirectories();
             var settings = new ArmaStartSettings();
             settings.Mods =

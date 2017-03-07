@@ -43,7 +43,7 @@
                             Grid.ColumnSpan="2">
                         Download
                     </Button>
-                    <Button Grid.Row="3" Margin="10" FontSize="16"  Click="Start" IsEnabled="{Binding CanStart, Mode=OneWay}"
+                    <Button Background="{Binding StartColor}" Name="StartButton" Grid.Row="3" Margin="10" FontSize="16"  Click="Start" IsEnabled="{Binding CanStart, Mode=OneWay}"
                             Grid.ColumnSpan="2">
                         Start
                     </Button>

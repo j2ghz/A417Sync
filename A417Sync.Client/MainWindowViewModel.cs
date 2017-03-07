@@ -8,6 +8,8 @@
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
+    using System.Windows.Media;
+    using System.Windows.Threading;
 
     using A417Sync.Client.Annotations;
     using A417Sync.Client.Models;
@@ -40,6 +42,8 @@
         private Repo repo;
 
         private Modpack selectedModpack;
+
+        private Brush startColor = new SolidColorBrush(Color.FromRgb(221, 221, 221));
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -127,7 +131,22 @@
             set
             {
                 this.canStart = value;
+                this.StartColor = value ? new SolidColorBrush(Color.FromRgb(221, 221, 221)) : Brushes.LightGreen;
                 OnPropertyChanged();
+            }
+        }
+
+        public Brush StartColor
+        {
+            get
+            {
+                return this.startColor;
+            }
+            set
+            {
+                this.startColor = value;
+                OnPropertyChanged();
+
             }
         }
 

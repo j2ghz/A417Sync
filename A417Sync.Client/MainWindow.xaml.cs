@@ -10,6 +10,7 @@
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Windows.Media;
     using System.Windows.Threading;
 
     using Microsoft.HockeyApp;
@@ -113,6 +114,9 @@
             else
             {
                 this.ViewModel.CanStart = true;
+                await this.Dispatcher.InvokeAsync(
+                    () => this.StartButton.Background = Brushes.LightGreen,
+                    DispatcherPriority.Background);
             }
         }
 

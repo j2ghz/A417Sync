@@ -60,35 +60,46 @@
                               ItemsSource="{Binding Repo.Modpacks}" DisplayMemberPath="Name"
                               SelectedItem="{Binding SelectedModpack}" SelectionChanged="ChangeModpack" />
                     <TextBlock Margin="5" Grid.Row="1" Text="{Binding DownloadInfo}" FontSize="16"/>
-                    <ItemsControl Grid.Row="2" ItemsSource="{Binding Servers}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <WrapPanel />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Margin="5">
-                                    <TextBlock Text="{Binding Name}" />
-                                    <TextBlock Text="{Binding AppId}" />
-                                    <TextBlock Text="{Binding BotCount}" />
-                                    <TextBlock Text="{Binding Dedicated}" />
-                                    <TextBlock Text="{Binding Game}" />
-                                    <TextBlock Text="{Binding Ip}" />
-                                    <TextBlock Text="{Binding Locked}" />
-                                    <TextBlock Text="{Binding Map}" />
-                                    <TextBlock Text="{Binding MaxPlayers}" />
-                                    <TextBlock Text="{Binding Os}" />
-                                    <TextBlock Text="{Binding Password}" />
-                                    <TextBlock Text="{Binding Ping}" />
-                                    <TextBlock Text="{Binding PlayerCount}" />
-                                    <TextBlock Text="{Binding Port}" />
-                                    <TextBlock Text="{Binding Vac}" />
-                                    <TextBlock Text="{Binding Version}" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                    <StackPanel Grid.Row="2" Orientation="Horizontal">
+                        <ListBox ItemsSource="{Binding SelectedModpack.Addons}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                        <ItemsControl ItemsSource="{Binding Servers}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Margin="5">
+                                        <TextBlock Text="{Binding Name}" />
+                                        <TextBlock Text="{Binding AppId}" />
+                                        <TextBlock Text="{Binding BotCount}" />
+                                        <TextBlock Text="{Binding Dedicated}" />
+                                        <TextBlock Text="{Binding Game}" />
+                                        <TextBlock Text="{Binding Ip}" />
+                                        <TextBlock Text="{Binding Locked}" />
+                                        <TextBlock Text="{Binding Map}" />
+                                        <TextBlock Text="{Binding MaxPlayers}" />
+                                        <TextBlock Text="{Binding Os}" />
+                                        <TextBlock Text="{Binding Password}" />
+                                        <TextBlock Text="{Binding Ping}" />
+                                        <TextBlock Text="{Binding PlayerCount}" />
+                                        <TextBlock Text="{Binding Port}" />
+                                        <TextBlock Text="{Binding Vac}" />
+                                        <TextBlock Text="{Binding Version}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
                 </Grid>
                 <Grid Grid.Column="0" Row="1" ColumnSpan="3" Margin="15">
                     <ProgressBar MinHeight="40" Value="{Binding Progress, Mode=OneWay}" />

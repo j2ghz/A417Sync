@@ -76,8 +76,12 @@
             }
         }
 
-        private async Task AddActionAsync(IFileAction action, ObservableCollection<IFileAction> actions)
+        private async Task AddActionAsync(
+            IFileAction action,
+            ObservableCollection<IFileAction> actions,
+            long sizeToDownload)
         {
+            this.Model.BytesToDownload += sizeToDownload;
             await Application.Current.Dispatcher.InvokeAsync(() => actions.Add(action), DispatcherPriority.Background);
         }
 
@@ -105,26 +109,31 @@
             localFiles?.ForEach(f => f.Delete()); // Delete files found in filesystem but not in index
         }
 
-        private async Task DecideFile(FileInfo local, File remote, Addon addon, ObservableCollection<IFileAction> actions)
+        private async Task DecideFile(
+            FileInfo local,
+            File remote,
+            Addon addon,
+            ObservableCollection<IFileAction> actions)
         {
-            this.Model.BytesToDownload += remote.Size;
             if (!local.Exists)
             {
                 this.log.Debug("{file} missing", local.FullName);
                 await AddActionAsync(
                     new Download(local, remote, addon, this.RepoRootUri, remote.LastChange) { Action = "Missing" },
-                    actions);
+                    actions,
+                    remote.Size);
             }
             else if (local.Length != remote.Size)
             {
                 this.log.Debug("{file} size: {local}, expected: {remote}", local.Name, local.Length, remote.Size);
                 await AddActionAsync(
                     new Download(local, remote, addon, this.RepoRootUri, remote.LastChange)
-                    {
-                        Action =
+                        {
+                            Action =
                                 $"size is differrent, local: {local.Length}, remote: {remote.Size}"
-                    },
-                    actions);
+                        },
+                    actions,
+                    remote.Size);
             }
             else if (local.LastWriteTimeUtc.ToFileTimeUtc() != remote.LastChange)
             {
@@ -135,15 +144,12 @@
                     remote.Size);
                 await AddActionAsync(
                     new Download(local, remote, addon, this.RepoRootUri, remote.LastChange)
-                    {
-                        Action =
+                        {
+                            Action =
                                 $"date is different, local: {local.LastWriteTimeUtc.ToFileTimeUtc()}, remote: {remote.LastChange}"
-                    },
-                    actions);
-            }
-            else
-            {
-                this.Model.BytesToDownload -= remote.Size;
+                        },
+                    actions,
+                    remote.Size);
             }
         }
     }

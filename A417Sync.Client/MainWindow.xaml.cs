@@ -106,8 +106,14 @@
                 this.ViewModel.Actions).ConfigureAwait(false);
             this.ViewModel.Recalculate();
             this.ViewModel.CanCheck = true;
-            if (this.ViewModel.Actions.Any()) this.ViewModel.CanDownload = true;
-            else this.ViewModel.CanStart = true;
+            if (this.ViewModel.Actions.Any())
+            {
+                this.ViewModel.CanDownload = true;
+            }
+            else
+            {
+                this.ViewModel.CanStart = true;
+            }
         }
 
         private async void LoadRepo(object sender, RoutedEventArgs e)

@@ -94,6 +94,7 @@
 
         private async void Check(object sender, RoutedEventArgs e)
         {
+            this.ViewModel.CanStart = false;
             var uri = new Uri(this.ViewModel.Url);
             var path = new DirectoryInfo(this.ViewModel.Path);
             this.ViewModel.Client = new Client(path, uri, this.ViewModel);

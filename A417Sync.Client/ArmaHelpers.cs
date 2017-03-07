@@ -38,11 +38,7 @@
             }
         }
 
-        public static void StartArma(
-            Modpack modpack,
-            IEnumerable<Addon> addons,
-            DirectoryInfo basePath,
-            IEnumerable<string> arguments)
+        public static void StartArma(Modpack modpack, IEnumerable<Addon> addons, DirectoryInfo basePath, IEnumerable<string> arguments, bool connectIsChecked)
         {
             var addonFolders = basePath.EnumerateDirectories();
             var settings = new ArmaStartSettings();
@@ -53,7 +49,11 @@
             var server = ServerInfo(modpack);
             try
             {
-                new ArmaLauncher().Connect(Path.Combine(GetArma3Path(), "arma3battleye.exe"), server, settings, true);
+                    new ArmaLauncher().Connect(
+                        Path.Combine(GetArma3Path(), "arma3battleye.exe"),
+                        connectIsChecked ? server : null,
+                        settings,
+                        true);
             }
             catch (ArmaRunningException ex)
             {

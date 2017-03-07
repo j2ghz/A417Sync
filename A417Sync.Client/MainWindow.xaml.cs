@@ -150,7 +150,8 @@
                 this.ViewModel.SelectedModpack,
                 this.ViewModel.Repo.Addons,
                 new DirectoryInfo(this.ViewModel.Path),
-                this.ViewModel.Params);
+                this.ViewModel.Params,
+                this.Connect.IsChecked.Value);
         }
     }
 }

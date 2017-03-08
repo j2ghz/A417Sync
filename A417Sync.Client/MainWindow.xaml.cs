@@ -186,5 +186,10 @@
                 this.ViewModel.Params,
                 this.Connect.IsChecked.Value);
         }
+
+        private void UnblockStart(object sender, RoutedEventArgs e)
+        {
+            this.ViewModel.CanStart = true;
+        }
     }
 }

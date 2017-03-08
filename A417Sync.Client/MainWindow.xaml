@@ -91,7 +91,7 @@
                 </Grid.RowDefinitions>
                 <Menu Grid.Row="0">
                     <MenuItem Header="Debug">
-                        <MenuItem Header="Unblock start"></MenuItem>
+                        <MenuItem Header="Unblock start" Click="UnblockStart"/>
                     </MenuItem>
                     <MenuItem Header="Toggle Console" Click="ConsoleToggle" />
                     <MenuItem Header="Feedback" Click="Feedback" />

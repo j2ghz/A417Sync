@@ -45,6 +45,8 @@
 
         private Brush startColor = new SolidColorBrush(Color.FromRgb(221, 221, 221));
 
+        private string serverInfo;
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ObservableCollection<IFileAction> Actions { get; set; } = new ObservableCollection<IFileAction>();
@@ -132,6 +134,19 @@
             {
                 this.canStart = value;
                 this.StartColor = value ? new SolidColorBrush(Color.FromRgb(221, 221, 221)) : Brushes.LightGreen;
+                OnPropertyChanged();
+            }
+        }
+
+        public string ServerInfo
+        {
+            get
+            {
+                return this.serverInfo;
+            }
+            set
+            {
+                this.serverInfo = value;
                 OnPropertyChanged();
             }
         }

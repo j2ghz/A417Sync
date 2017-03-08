@@ -6,11 +6,12 @@
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
+    using System.Reflection;
+    using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Controls;
-    using System.Windows.Media;
     using System.Windows.Threading;
 
     using Microsoft.HockeyApp;
@@ -39,6 +40,22 @@
         }
 
         public MainWindowViewModel ViewModel { get; }
+
+        public static string GetLogFor(object target)
+        {
+            var properties =
+                from property in target.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                select new { Name = property.Name, Value = property.GetValue(target, null) };
+
+            var builder = new StringBuilder();
+
+            foreach (var property in properties)
+            {
+                builder.Append(property.Name).Append(" = ").Append(property.Value).AppendLine();
+            }
+
+            return builder.ToString();
+        }
 
         private void ConsoleToggle(object sender, RoutedEventArgs e)
         {
@@ -90,6 +107,14 @@
         {
             this.ViewModel.CanStart = false;
             this.ViewModel.CanDownload = false;
+            ArmaHelpers.ServerInfo(this.ViewModel.SelectedModpack).GetServerInfoAsync().ContinueWith(
+                t =>
+                    {
+                        Log.Debug("{@server}", t.Result);
+                        return this.Dispatcher.InvokeAsync(
+                            () => this.ViewModel.ServerInfo = GetLogFor(t.Result),
+                            DispatcherPriority.Background);
+                    });
         }
 
         private async void Check(object sender, RoutedEventArgs e)

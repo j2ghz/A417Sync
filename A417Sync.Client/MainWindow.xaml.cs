@@ -115,9 +115,6 @@
             else
             {
                 this.ViewModel.CanStart = true;
-                await this.Dispatcher.InvokeAsync(
-                    () => this.StartButton.Background = Brushes.LightGreen,
-                    DispatcherPriority.Background);
             }
         }
 

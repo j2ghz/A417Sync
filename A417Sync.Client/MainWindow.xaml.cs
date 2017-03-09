@@ -3,6 +3,7 @@
     #region
 
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
@@ -185,7 +186,7 @@
                 new DirectoryInfo(this.ViewModel.Path),
                 this.ViewModel.Params,
                 this.Connect.IsChecked.Value,
-                new DirectoryInfo(ViewModel.UserAddons).GetDirectories().Where(d => d.Name.StartsWith("@")).Select(d => d.FullName));
+                string.IsNullOrWhiteSpace(ViewModel.UserAddons) ? new List<string>() : new DirectoryInfo(ViewModel.UserAddons).GetDirectories().Where(d => d.Name.StartsWith("@")).Select(d => d.FullName));
         }
 
         private void UnblockStart(object sender, RoutedEventArgs e)

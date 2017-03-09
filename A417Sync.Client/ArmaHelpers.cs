@@ -41,7 +41,7 @@
 
         public static void StartArma(Modpack modpack, IEnumerable<Addon> addons, DirectoryInfo basePath, IEnumerable<string> arguments, bool connectIsChecked, IEnumerable<string> userAddons)
         {
-            if (!Process.GetProcessesByName("Steam.exe").Any())
+            if (!Process.GetProcessesByName("Steam").Any())
             {
                 MessageBox.Show(
                     "Steam is not running. Arma will probably not launch.",

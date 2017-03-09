@@ -252,7 +252,7 @@
             }
         }
 
-        public ObservableCollection<ServerInfo> Servers { get; set; } = new ObservableCollection<ServerInfo>();
+        ////public ObservableCollection<ServerInfo> Servers { get; set; } = new ObservableCollection<ServerInfo>();
 
         public string Url
         {

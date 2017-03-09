@@ -10,7 +10,6 @@
     using System.Reflection;
     using System.Text;
     using System.Threading;
-    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Threading;
@@ -36,7 +35,7 @@
                         "Your addon folder does not exist. Provide a directory that exists",
                         "Addon directory not found",
                         "C:\\417addons\\");
-            this.InitializeComponent();
+            InitializeComponent();
             this.DataContext = this.ViewModel;
         }
 
@@ -108,13 +107,27 @@
         {
             this.ViewModel.CanStart = false;
             this.ViewModel.CanDownload = false;
+            this.ViewModel.ServerInfo = string.Empty;
             ArmaHelpers.ServerInfo(this.ViewModel.SelectedModpack).GetServerInfoAsync().ContinueWith(
                 t =>
                     {
                         Log.Debug("{@server}", t.Result);
-                        return this.Dispatcher.InvokeAsync(
-                            () => this.ViewModel.ServerInfo = GetLogFor(t.Result),
-                            DispatcherPriority.Background);
+                        return
+                            this.Dispatcher.InvokeAsync(
+                                () => this.ViewModel.ServerInfo += GetLogFor(t.Result) + Environment.NewLine,
+                                DispatcherPriority.Background);
+                    });
+            ArmaHelpers.ServerInfo(this.ViewModel.SelectedModpack).GetPlayerListAsync().ContinueWith(
+                t =>
+                    {
+                        Log.Debug("{@server}", t.Result);
+                        return
+                            this.Dispatcher.InvokeAsync(
+                                () =>
+                                    this.ViewModel.ServerInfo +=
+                                        "Players: " + string.Join(", ", t.Result.Select(p => p.Name))
+                                        + Environment.NewLine,
+                                DispatcherPriority.Background);
                     });
         }
 
@@ -147,22 +160,22 @@
         private async void LoadRepo(object sender, RoutedEventArgs e)
         {
             this.ViewModel.CanLoadRepo = false;
-            this.ViewModel.Servers.Clear();
+
+            ////this.ViewModel.Servers.Clear();
             var uri = new Uri(this.ViewModel.Url);
             this.ViewModel.Repo = await Client.DownloadRepo(uri).ConfigureAwait(false);
             this.ViewModel.SelectedModpack = this.ViewModel.Repo.Modpacks[0];
 
-            await Task.WhenAll(
-                this.ViewModel.Repo.Modpacks.Select(
-                    m => ArmaHelpers.ServerInfo(m).GetServerInfoAsync().ContinueWith(
-                        t =>
-                            {
-                                Log.Debug("{@server}", t.Result);
-                                return this.Dispatcher.InvokeAsync(
-                                    () => this.ViewModel.Servers.Add(t.Result),
-                                    DispatcherPriority.Background);
-                            }))).ConfigureAwait(false);
-
+            ////await Task.WhenAll(
+            ////    this.ViewModel.Repo.Modpacks.Select(
+            ////        m => ArmaHelpers.ServerInfo(m).GetServerInfoAsync().ContinueWith(
+            ////            t =>
+            ////                {
+            ////                    Log.Debug("{@server}", t.Result);
+            ////                    return this.Dispatcher.InvokeAsync(
+            ////                        () => this.ViewModel.Servers.Add(t.Result),
+            ////                        DispatcherPriority.Background);
+            ////                }))).ConfigureAwait(false);
             this.ViewModel.CanLoadRepo = true;
             this.ViewModel.CanCheck = true;
         }
@@ -186,7 +199,11 @@
                 new DirectoryInfo(this.ViewModel.Path),
                 this.ViewModel.Params,
                 this.Connect.IsChecked.Value,
-                string.IsNullOrWhiteSpace(ViewModel.UserAddons) ? new List<string>() : new DirectoryInfo(ViewModel.UserAddons).GetDirectories().Where(d => d.Name.StartsWith("@")).Select(d => d.FullName));
+                string.IsNullOrWhiteSpace(this.ViewModel.UserAddons)
+                    ? new List<string>()
+                    : new DirectoryInfo(this.ViewModel.UserAddons).GetDirectories()
+                        .Where(d => d.Name.StartsWith("@"))
+                        .Select(d => d.FullName));
         }
 
         private void UnblockStart(object sender, RoutedEventArgs e)

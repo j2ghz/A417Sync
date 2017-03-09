@@ -39,7 +39,7 @@
             }
         }
 
-        public static void StartArma(Modpack modpack, IEnumerable<Addon> addons, DirectoryInfo basePath, IEnumerable<string> arguments, bool connectIsChecked)
+        public static void StartArma(Modpack modpack, IEnumerable<Addon> addons, DirectoryInfo basePath, IEnumerable<string> arguments, bool connectIsChecked, IEnumerable<string> userAddons)
         {
             if (!Process.GetProcessesByName("Steam.exe").Any())
             {
@@ -53,6 +53,7 @@
             var settings = new ArmaStartSettings();
             settings.Mods =
                 addons.Select(addon => addonFolders.First(folder => folder.Name == addon.Name).FullName).ToList();
+            settings.Mods.AddRange(userAddons);
             settings.OtherArgs.AddRange(arguments);
             settings.OtherArgs.Add(modpack.AdditionalParams);
             var server = ServerInfo(modpack);

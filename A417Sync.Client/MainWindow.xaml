@@ -106,6 +106,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5">Repo url:</TextBlock>
                     <TextBox Grid.Column="1" Grid.Row="0" Margin="5" Padding="5" Text="{Binding Url, Mode=TwoWay}" IsEnabled="False" />
@@ -114,6 +115,9 @@
                     <TextBlock Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5">Custom parameters:</TextBlock>
                     <TextBox Grid.Column="1" Grid.Row="2" Margin="5" Padding="5"
                              Text="{Binding UserParams, Mode=TwoWay}" />
+                    <TextBlock Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5">Additional addon path:</TextBlock>
+                    <TextBox Grid.Column="1" Grid.Row="3" Margin="5" Padding="5"
+                             Text="{Binding UserAddons, Mode=TwoWay}" />
                 </Grid>
                 <ListView Grid.Row="3" ItemsSource="{Binding Actions}">
                     <ListView.ItemContainerStyle>

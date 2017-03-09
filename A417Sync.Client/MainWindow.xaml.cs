@@ -35,7 +35,7 @@
                         "Your addon folder does not exist. Provide a directory that exists",
                         "Addon directory not found",
                         "C:\\417addons\\");
-            InitializeComponent();
+            this.InitializeComponent();
             this.DataContext = this.ViewModel;
         }
 
@@ -184,7 +184,8 @@
                 this.ViewModel.Repo.Addons,
                 new DirectoryInfo(this.ViewModel.Path),
                 this.ViewModel.Params,
-                this.Connect.IsChecked.Value);
+                this.Connect.IsChecked.Value,
+                new DirectoryInfo(ViewModel.UserAddons).GetDirectories().Where(d => d.Name.StartsWith("@")).Select(d => d.FullName));
         }
 
         private void UnblockStart(object sender, RoutedEventArgs e)

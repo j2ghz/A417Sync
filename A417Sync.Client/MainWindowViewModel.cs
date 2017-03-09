@@ -47,6 +47,8 @@
 
         private string serverInfo;
 
+        private string userAddons;
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ObservableCollection<IFileAction> Actions { get; set; } = new ObservableCollection<IFileAction>();
@@ -279,6 +281,19 @@
                 Properties.Settings.Default.userParameters = value;
                 Properties.Settings.Default.Save();
                 OnPropertyChanged();
+            }
+        }
+
+        public string UserAddons
+        {
+            get
+            {
+                return this.userAddons;
+            }
+            set
+            {
+                this.userAddons = value;
+                this.OnPropertyChanged();
             }
         }
 

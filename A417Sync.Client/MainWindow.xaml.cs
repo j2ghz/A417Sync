@@ -210,5 +210,10 @@
         {
             this.ViewModel.CanStart = true;
         }
+
+        private void Crash(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException("User requested crash");
+        }
     }
 }

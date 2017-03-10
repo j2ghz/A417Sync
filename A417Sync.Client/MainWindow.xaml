@@ -92,6 +92,7 @@
                 <Menu Grid.Row="0">
                     <MenuItem Header="Debug">
                         <MenuItem Header="Unblock start" Click="UnblockStart"/>
+                        <MenuItem Header="Crash" Click="Crash"/>
                     </MenuItem>
                     <MenuItem Header="Toggle Console" Click="ConsoleToggle" />
                     <MenuItem Header="Feedback" Click="Feedback" />

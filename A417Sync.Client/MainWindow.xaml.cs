@@ -29,12 +29,16 @@
         {
             HockeyClient.Current.TrackPageView(nameof(MainWindow));
             this.ViewModel = new MainWindowViewModel();
-            while (string.IsNullOrWhiteSpace(this.ViewModel.Path) || !new DirectoryInfo(this.ViewModel.Path).Exists)
-                this.ViewModel.Path =
-                    Interaction.InputBox(
-                        "Your addon folder does not exist. Provide a directory that exists",
-                        "Addon directory not found",
-                        "C:\\417addons\\");
+            var path = this.ViewModel.Path;
+            while (!PathValidExists(path))
+            {
+                path = Interaction.InputBox(
+                    "Your addon folder does not exist. Provide a directory that exists",
+                    "Addon directory not found",
+                    "C:\\417addons\\");
+            }
+
+            this.ViewModel.Path = path;
             InitializeComponent();
             this.DataContext = this.ViewModel;
         }
@@ -57,9 +61,28 @@
             return builder.ToString();
         }
 
+        public static bool PathValidExists(string path)
+        {
+            try
+            {
+                Directory.CreateDirectory(path);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Log.ForContext<MainWindow>().Error(ex, "Path invalid");
+                return false;
+            }
+        }
+
         private void ConsoleToggle(object sender, RoutedEventArgs e)
         {
             ConsoleManager.Toggle();
+        }
+
+        private void Crash(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException("User requested crash");
         }
 
         private async void Download(object sender, RoutedEventArgs e)
@@ -209,11 +232,6 @@
         private void UnblockStart(object sender, RoutedEventArgs e)
         {
             this.ViewModel.CanStart = true;
-        }
-
-        private void Crash(object sender, RoutedEventArgs e)
-        {
-            throw new NotImplementedException("User requested crash");
         }
     }
 }

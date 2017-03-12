@@ -216,17 +216,43 @@
 
         private void Start(object sender, RoutedEventArgs e)
         {
+            var additional = new List<string>();
+            if (!string.IsNullOrWhiteSpace(this.ViewModel.UserAddons))
+            {
+                try
+                {
+                    additional.AddRange(
+                        new DirectoryInfo(this.ViewModel.UserAddons).GetDirectories()
+                            .Where(d => d.Name.StartsWith("@"))
+                            .Select(d => d.FullName));
+                }
+                catch (UnauthorizedAccessException ex)
+                {
+                    this.log.Warning(ex, "Could not access directory with additinal mods at {path}", this.ViewModel.UserAddons);
+                    MessageBox.Show(
+                        $"Access to additinal addon folder at {this.ViewModel.UserAddons} was denied." + Environment.NewLine + ex.Message,
+                        "Folder access denied",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+                }
+                catch (DirectoryNotFoundException ex)
+                {
+                    this.log.Warning(ex, "Additional addon direcotry not found at {path}", this.ViewModel.UserAddons);
+                    MessageBox.Show(
+                        $"Additional addon directory not found at {this.ViewModel.UserAddons}" + Environment.NewLine + ex.Message,
+                        "Folder access denied",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+                }
+            }
+
             ArmaHelpers.StartArma(
                 this.ViewModel.SelectedModpack,
                 this.ViewModel.Repo.Addons,
                 new DirectoryInfo(this.ViewModel.Path),
                 this.ViewModel.Params,
                 this.Connect.IsChecked.Value,
-                string.IsNullOrWhiteSpace(this.ViewModel.UserAddons)
-                    ? new List<string>()
-                    : new DirectoryInfo(this.ViewModel.UserAddons).GetDirectories()
-                        .Where(d => d.Name.StartsWith("@"))
-                        .Select(d => d.FullName));
+                additional);
         }
 
         private void UnblockStart(object sender, RoutedEventArgs e)

@@ -67,7 +67,6 @@
 
             this.log.Information("Downloading {url}", this.requestUri);
 
-
             Directory.CreateDirectory(System.IO.Path.GetDirectoryName(this.Path));
 
             var client = new WebClient();

@@ -9,13 +9,10 @@
     using System.Threading;
     using System.Threading.Tasks;
     using System.Windows.Media;
-    using System.Windows.Threading;
 
     using A417Sync.Client.Annotations;
     using A417Sync.Client.Models;
     using A417Sync.Client.Models.FileActions;
-
-    using DerAtrox.Arma3LauncherLib.SSQLib.Model;
 
     public class MainWindowViewModel : INotifyPropertyChanged
     {
@@ -43,9 +40,9 @@
 
         private Modpack selectedModpack;
 
-        private Brush startColor = new SolidColorBrush(Color.FromRgb(221, 221, 221));
-
         private string serverInfo;
+
+        private Brush startColor = new SolidColorBrush(Color.FromRgb(221, 221, 221));
 
         private string userAddons;
 
@@ -140,33 +137,6 @@
             }
         }
 
-        public string ServerInfo
-        {
-            get
-            {
-                return this.serverInfo;
-            }
-            set
-            {
-                this.serverInfo = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public Brush StartColor
-        {
-            get
-            {
-                return this.startColor;
-            }
-            set
-            {
-                this.startColor = value;
-                OnPropertyChanged();
-
-            }
-        }
-
         public Client Client { get; set; }
 
         public string DownloadInfo
@@ -183,16 +153,11 @@
             }
         }
 
-        public ConfiguredTaskAwaitable DownloadTask { get; set; } = Task.CompletedTask.ConfigureAwait(false);
+        public ConfiguredTaskAwaitable DownloadTask { get; set; } = new Task(() => { }).ConfigureAwait(false);
 
         public CancellationTokenSource DownloadTaskCancel { get; set; } = new CancellationTokenSource();
 
-        public List<string> Params
-            => new List<string>()
-            {
-                this.UserParams,
-                this.SelectedModpack.AdditionalParams
-            };
+        public List<string> Params => new List<string>() { this.UserParams, this.SelectedModpack.AdditionalParams };
 
         public string Path
         {
@@ -252,8 +217,35 @@
             }
         }
 
-        ////public ObservableCollection<ServerInfo> Servers { get; set; } = new ObservableCollection<ServerInfo>();
+        public string ServerInfo
+        {
+            get
+            {
+                return this.serverInfo;
+            }
 
+            set
+            {
+                this.serverInfo = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Brush StartColor
+        {
+            get
+            {
+                return this.startColor;
+            }
+
+            set
+            {
+                this.startColor = value;
+                OnPropertyChanged();
+            }
+        }
+
+        ////public ObservableCollection<ServerInfo> Servers { get; set; } = new ObservableCollection<ServerInfo>();
         public string Url
         {
             get
@@ -265,6 +257,20 @@
             {
                 Properties.Settings.Default.url = value;
                 Properties.Settings.Default.Save();
+                OnPropertyChanged();
+            }
+        }
+
+        public string UserAddons
+        {
+            get
+            {
+                return this.userAddons;
+            }
+
+            set
+            {
+                this.userAddons = value;
                 OnPropertyChanged();
             }
         }
@@ -282,25 +288,6 @@
                 Properties.Settings.Default.Save();
                 OnPropertyChanged();
             }
-        }
-
-        public string UserAddons
-        {
-            get
-            {
-                return this.userAddons;
-            }
-            set
-            {
-                this.userAddons = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        [NotifyPropertyChangedInvocator]
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         public void Recalculate()
@@ -326,6 +313,12 @@
                 this.lastSpeedUpdateTime = DateTime.Now;
                 this.lastSpeedUpdateDownloaded = this.bytesDownloaded;
             }
+        }
+
+        [NotifyPropertyChangedInvocator]
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

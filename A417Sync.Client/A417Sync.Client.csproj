@@ -203,5 +203,11 @@
   <ItemGroup>
     <Resource Include="FinalF256.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="System.IO.dll" />
+    <Content Include="System.Reflection.dll" />
+    <Content Include="System.Runtime.dll" />
+    <Content Include="System.Runtime.Extensions.dll" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

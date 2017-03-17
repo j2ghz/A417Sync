@@ -47,8 +47,8 @@ namespace DerAtrox.Arma3LauncherLib.Model {
             }
 
             var args = new List<string>();
-            args.Add("2");
-            args.Add("1");
+            //args.Add("2");
+            //args.Add("1");
 
             if (server != null) {
                 args.Add("-connect=" + server.ServerAdress);

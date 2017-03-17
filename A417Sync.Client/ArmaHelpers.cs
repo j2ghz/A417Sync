@@ -60,7 +60,7 @@
             try
             {
                     new ArmaLauncher().Connect(
-                        Path.Combine(GetArma3Path(), "arma3battleye.exe"),
+                        Path.Combine(GetArma3Path(), "arma3.exe"),
                         connectIsChecked ? server : null,
                         settings,
                         true);

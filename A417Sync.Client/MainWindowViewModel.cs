@@ -153,7 +153,7 @@
             }
         }
 
-        public ConfiguredTaskAwaitable DownloadTask { get; set; } = new Task(() => { }).ConfigureAwait(false);
+        public ConfiguredTaskAwaitable DownloadTask { get; set; } = Task.WhenAll().ConfigureAwait(false);
 
         public CancellationTokenSource DownloadTaskCancel { get; set; } = new CancellationTokenSource();
 

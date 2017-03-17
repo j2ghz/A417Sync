@@ -14,6 +14,9 @@
     using System.Windows.Controls;
     using System.Windows.Threading;
 
+    using DerAtrox.Arma3LauncherLib.Model;
+    using DerAtrox.Arma3LauncherLib.SSQLib.Exceptions;
+
     using Microsoft.HockeyApp;
     using Microsoft.VisualBasic;
 
@@ -112,7 +115,10 @@
 
                 this.ViewModel.CanCheck = true;
                 this.ViewModel.CanDownload = false;
-                if (!this.ViewModel.DownloadTaskCancel.IsCancellationRequested) this.ViewModel.CanStart = true;
+                if (!this.ViewModel.DownloadTaskCancel.IsCancellationRequested)
+                {
+                    this.ViewModel.CanStart = true;
+                }
             }
             else
             {
@@ -126,32 +132,61 @@
             new Feedback().ShowDialog();
         }
 
-        private void ChangeModpack(object sender, SelectionChangedEventArgs e)
+        private async void ChangeModpack(object sender, SelectionChangedEventArgs e)
         {
             this.ViewModel.CanStart = false;
             this.ViewModel.CanDownload = false;
             this.ViewModel.ServerInfo = string.Empty;
-            ArmaHelpers.ServerInfo(this.ViewModel.SelectedModpack).GetServerInfoAsync().ContinueWith(
-                t =>
-                    {
-                        Log.Debug("{@server}", t.Result);
-                        return
-                            this.Dispatcher.InvokeAsync(
-                                () => this.ViewModel.ServerInfo += GetLogFor(t.Result) + Environment.NewLine,
-                                DispatcherPriority.Background);
-                    });
-            ArmaHelpers.ServerInfo(this.ViewModel.SelectedModpack).GetPlayerListAsync().ContinueWith(
-                t =>
-                    {
-                        Log.Debug("{@server}", t.Result);
-                        return
-                            this.Dispatcher.InvokeAsync(
-                                () =>
-                                    this.ViewModel.ServerInfo +=
-                                        "Players: " + string.Join(", ", t.Result.Select(p => p.Name))
-                                        + Environment.NewLine,
-                                DispatcherPriority.Background);
-                    });
+            try
+            {
+                await ArmaHelpers.ServerInfo(this.ViewModel.SelectedModpack).GetServerInfoAsync().ContinueWith(
+                    t =>
+                        {
+                            this.log.Debug("{@server}", t.Result);
+                            return
+                                this.Dispatcher.InvokeAsync(
+                                    () => this.ViewModel.ServerInfo += GetLogFor(t.Result) + Environment.NewLine,
+                                    DispatcherPriority.Background);
+                        }).ConfigureAwait(false);
+            }
+            catch (SourceServerException ex)
+            {
+                this.log.Warning(
+                    ex,
+                    "Couldn't {method} for server {ip}",
+                    nameof(ArmaServer.GetServerInfoAsync),
+                    this.ViewModel.SelectedModpack.IP + ":" + this.ViewModel.SelectedModpack.Port);
+                await this.Dispatcher.InvokeAsync(
+                    () => this.ViewModel.ServerInfo += "Unavailable" + Environment.NewLine,
+                    DispatcherPriority.Background);
+            }
+
+            try
+            {
+                await ArmaHelpers.ServerInfo(this.ViewModel.SelectedModpack).GetPlayerListAsync().ContinueWith(
+                    t =>
+                        {
+                            this.log.Debug("{@server}", t.Result);
+                            return
+                                this.Dispatcher.InvokeAsync(
+                                    () =>
+                                        this.ViewModel.ServerInfo +=
+                                            "Players: " + string.Join(", ", t.Result.Select(p => p.Name))
+                                            + Environment.NewLine,
+                                    DispatcherPriority.Background);
+                        }).ConfigureAwait(false);
+            }
+            catch (SourceServerException ex)
+            {
+                this.log.Warning(
+                    ex,
+                    "Couldn't {method} for server {ip}",
+                    nameof(ArmaServer.GetPlayerListAsync),
+                    this.ViewModel.SelectedModpack.IP + ":" + this.ViewModel.SelectedModpack.Port);
+                await this.Dispatcher.InvokeAsync(
+                    () => this.ViewModel.ServerInfo += "Unavailable" + Environment.NewLine,
+                    DispatcherPriority.Background);
+            }
         }
 
         private async void Check(object sender, RoutedEventArgs e)
@@ -228,9 +263,13 @@
                 }
                 catch (UnauthorizedAccessException ex)
                 {
-                    this.log.Warning(ex, "Could not access directory with additinal mods at {path}", this.ViewModel.UserAddons);
+                    this.log.Warning(
+                        ex,
+                        "Could not access directory with additinal mods at {path}",
+                        this.ViewModel.UserAddons);
                     MessageBox.Show(
-                        $"Access to additinal addon folder at {this.ViewModel.UserAddons} was denied." + Environment.NewLine + ex.Message,
+                        $"Access to additinal addon folder at {this.ViewModel.UserAddons} was denied."
+                        + Environment.NewLine + ex.Message,
                         "Folder access denied",
                         MessageBoxButton.OK,
                         MessageBoxImage.Error);
@@ -239,7 +278,8 @@
                 {
                     this.log.Warning(ex, "Additional addon direcotry not found at {path}", this.ViewModel.UserAddons);
                     MessageBox.Show(
-                        $"Additional addon directory not found at {this.ViewModel.UserAddons}" + Environment.NewLine + ex.Message,
+                        $"Additional addon directory not found at {this.ViewModel.UserAddons}" + Environment.NewLine
+                        + ex.Message,
                         "Folder access denied",
                         MessageBoxButton.OK,
                         MessageBoxImage.Error);

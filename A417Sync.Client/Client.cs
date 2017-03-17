@@ -92,7 +92,7 @@
             List<FileInfo> localFiles = null;
             if (localFolder.Exists)
             {
-                localFiles = localFolder.EnumerateFiles().ToList();
+                localFiles = localFolder.EnumerateFiles(string.Empty, SearchOption.AllDirectories).ToList();
             }
 
             foreach (var file in addon.Files)

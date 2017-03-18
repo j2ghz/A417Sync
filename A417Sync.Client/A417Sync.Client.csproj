@@ -68,12 +68,6 @@
     <ApplicationIcon>FinalF256.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Exceptionless, Version=4.0.1934.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Exceptionless.4.0.1934\lib\net45\Exceptionless.dll</HintPath>
-    </Reference>
-    <Reference Include="Exceptionless.Wpf, Version=4.0.1934.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Exceptionless.Wpf.4.0.1934\lib\net45\Exceptionless.Wpf.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.HockeyApp.Core45, Version=2017.213.222.10, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Unofficial.HockeySDK.Core.2017.0213.0222.10\lib\portable-net45+win8+wp8+wpa81+win81+uap10.0\Microsoft.HockeyApp.Core45.dll</HintPath>
     </Reference>

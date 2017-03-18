@@ -7,8 +7,6 @@
     using System.Reflection;
     using System.Windows;
 
-    using Exceptionless;
-
     using Microsoft.HockeyApp;
 
     using Serilog;
@@ -57,15 +55,9 @@
             this.log = Log.ForContext<App>();
             LogLaunchMessage();
             HockeyApp();
-            Exceptionless();
             base.OnStartup(e);
             this.log.Information("{method} finished", nameof(OnStartup));
             ConsoleManager.Hide();
-        }
-
-        private void Exceptionless()
-        {
-            ExceptionlessClient.Default.Register();
         }
 
         private void HockeyApp()

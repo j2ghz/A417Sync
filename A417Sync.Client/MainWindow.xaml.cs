@@ -14,7 +14,6 @@
     using System.Windows.Controls;
     using System.Windows.Threading;
 
-    using DerAtrox.Arma3LauncherLib.Model;
     using DerAtrox.Arma3LauncherLib.SSQLib.Exceptions;
 
     using Microsoft.HockeyApp;
@@ -139,49 +138,24 @@
             this.ViewModel.ServerInfo = string.Empty;
             try
             {
-                await ArmaHelpers.ServerInfo(this.ViewModel.SelectedModpack).GetServerInfoAsync().ContinueWith(
-                    t =>
-                        {
-                            this.log.Debug("{@server}", t.Result);
-                            return
-                                this.Dispatcher.InvokeAsync(
-                                    () => this.ViewModel.ServerInfo += GetLogFor(t.Result) + Environment.NewLine,
-                                    DispatcherPriority.Background);
-                        }).ConfigureAwait(false);
-            }
-            catch (SourceServerException ex)
-            {
-                this.log.Warning(
-                    ex,
-                    "Couldn't {method} for server {ip}",
-                    nameof(ArmaServer.GetServerInfoAsync),
-                    this.ViewModel.SelectedModpack.IP + ":" + this.ViewModel.SelectedModpack.Port);
+                var server = ArmaHelpers.ServerInfo(this.ViewModel.SelectedModpack);
+                var info = server.GetServerInfo();
                 await this.Dispatcher.InvokeAsync(
-                    () => this.ViewModel.ServerInfo += "Unavailable" + Environment.NewLine,
+                    () => this.ViewModel.ServerInfo += GetLogFor(info) + Environment.NewLine,
+                    DispatcherPriority.Background);
+
+                var players = server.GetPlayerList();
+                await this.Dispatcher.InvokeAsync(
+                    () =>
+                        this.ViewModel.ServerInfo +=
+                            "Players: " + string.Join(", ", players.Select(p => p.Name)) + Environment.NewLine,
                     DispatcherPriority.Background);
             }
-
-            try
-            {
-                await ArmaHelpers.ServerInfo(this.ViewModel.SelectedModpack).GetPlayerListAsync().ContinueWith(
-                    t =>
-                        {
-                            this.log.Debug("{@server}", t.Result);
-                            return
-                                this.Dispatcher.InvokeAsync(
-                                    () =>
-                                        this.ViewModel.ServerInfo +=
-                                            "Players: " + string.Join(", ", t.Result.Select(p => p.Name))
-                                            + Environment.NewLine,
-                                    DispatcherPriority.Background);
-                        }).ConfigureAwait(false);
-            }
             catch (SourceServerException ex)
             {
                 this.log.Warning(
                     ex,
-                    "Couldn't {method} for server {ip}",
-                    nameof(ArmaServer.GetPlayerListAsync),
+                    "Couldn't connect to server {ip}",
                     this.ViewModel.SelectedModpack.IP + ":" + this.ViewModel.SelectedModpack.Port);
                 await this.Dispatcher.InvokeAsync(
                     () => this.ViewModel.ServerInfo += "Unavailable" + Environment.NewLine,

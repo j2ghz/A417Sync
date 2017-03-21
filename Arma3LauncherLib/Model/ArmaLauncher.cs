@@ -47,8 +47,10 @@ namespace DerAtrox.Arma3LauncherLib.Model {
             }
 
             var args = new List<string>();
-            //args.Add("2");
-            //args.Add("1");
+            args.Add("2");
+            args.Add("1");
+            args.Add("0");
+            args.Add("-exe arma3.exe");
 
             if (server != null) {
                 args.Add("-connect=" + server.ServerAdress);
@@ -104,6 +106,10 @@ namespace DerAtrox.Arma3LauncherLib.Model {
                             WorkingDirectory = Path.GetDirectoryName(arma3StartPath)
                         }
             };
+
+            Trace.WriteLine(proc.StartInfo.FileName);
+            Trace.WriteLine(proc.StartInfo.Arguments);
+
             proc.Start();
             proc.Dispose();
         }

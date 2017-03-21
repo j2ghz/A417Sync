@@ -262,7 +262,7 @@
 
             ArmaHelpers.StartArma(
                 this.ViewModel.SelectedModpack,
-                this.ViewModel.Repo.Addons,
+                this.ViewModel.SelectedModpack.Addons.Select(a => this.ViewModel.Repo.Addons.Find(b => b.Name == a)),
                 new DirectoryInfo(this.ViewModel.Path),
                 this.ViewModel.Params,
                 this.Connect.IsChecked.Value,

@@ -12,10 +12,9 @@
     using DerAtrox.Arma3LauncherLib.Exceptions;
     using DerAtrox.Arma3LauncherLib.Model;
 
-    using Microsoft.VisualBasic.Logging;
     using Microsoft.Win32;
 
-    using Log = Serilog.Log;
+    using Serilog;
 
     public static class ArmaHelpers
     {
@@ -39,7 +38,19 @@
             }
         }
 
-        public static void StartArma(Modpack modpack, IEnumerable<Addon> addons, DirectoryInfo basePath, IEnumerable<string> arguments, bool connectIsChecked, IEnumerable<string> userAddons)
+        public static ArmaServer ServerInfo(Modpack modpack)
+        {
+            return new ArmaServer(modpack.IP, modpack.Port, modpack.Query, modpack.Password);
+        }
+
+        public static void StartArma(
+            Modpack modpack,
+            IEnumerable<Addon> addons,
+            DirectoryInfo basePath,
+            IEnumerable<string> arguments,
+            bool connectIsChecked,
+            IEnumerable<string> userAddons,
+            bool set64bit)
         {
             if (!Process.GetProcessesByName("Steam").Any())
             {
@@ -49,6 +60,7 @@
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);
             }
+
             var addonFolders = basePath.EnumerateDirectories();
             var settings = new ArmaStartSettings();
             settings.Mods =
@@ -59,28 +71,31 @@
             var server = ServerInfo(modpack);
             try
             {
-                    new ArmaLauncher().Connect(
-                        Path.Combine(GetArma3Path(), "arma3battleye.exe"),
-                        connectIsChecked ? server : null,
-                        settings,
-                        true);
+                new ArmaLauncher().Connect(
+                    Path.Combine(GetArma3Path(), "arma3battleye.exe"),
+                    connectIsChecked ? server : null,
+                    settings,
+                    true,
+                    set64bit: set64bit);
             }
             catch (ArmaRunningException ex)
             {
-
-                Log.Warning(ex,"Arma already running");
-                MessageBox.Show("Arma already running!","Error launching Arma",MessageBoxButton.OK,MessageBoxImage.Error);
+                Log.Warning(ex, "Arma already running");
+                MessageBox.Show(
+                    "Arma already running!",
+                    "Error launching Arma",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
             }
             catch (ArmaNotFoundException ex)
             {
                 Log.Warning(ex, "rma path not found");
-                MessageBox.Show("Arma path not found in the registry! Have you launched Arma at least once without the launcher before?", "Error launching Arma", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(
+                    "Arma path not found in the registry! Have you launched Arma at least once without the launcher before?",
+                    "Error launching Arma",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
             }
-        }
-
-        public static ArmaServer ServerInfo(Modpack modpack)
-        {
-            return new ArmaServer(modpack.IP, modpack.Port, modpack.Query, modpack.Password);
         }
     }
 

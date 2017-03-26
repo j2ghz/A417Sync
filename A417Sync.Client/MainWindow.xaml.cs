@@ -265,8 +265,9 @@
                 this.ViewModel.SelectedModpack.Addons.Select(a => this.ViewModel.Repo.Addons.Find(b => b.Name == a)),
                 new DirectoryInfo(this.ViewModel.Path),
                 this.ViewModel.Params,
-                this.Connect.IsChecked.Value,
-                additional);
+                this.Connect.IsChecked == true,
+                additional,
+                this.Set64bit.IsChecked == true);
         }
 
         private void UnblockStart(object sender, RoutedEventArgs e)

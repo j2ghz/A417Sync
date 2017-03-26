@@ -29,6 +29,7 @@
                         <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Button Grid.Row="0" Margin="10" Click="LoadRepo" IsEnabled="False"
                             Grid.ColumnSpan="2">
@@ -48,6 +49,7 @@
                         Start
                     </Button>
                     <CheckBox Name="Connect" IsChecked="True" Grid.Row="4" VerticalContentAlignment="Center" HorizontalAlignment="Center" Margin="10" >Connect</CheckBox>
+                    <CheckBox Name="Set64bit" IsChecked="False" Grid.Row="5"  VerticalContentAlignment="Center" HorizontalAlignment="Center" Margin="10">64bit</CheckBox>
                 </Grid>
                 <Grid Grid.Column="2">
                     <Grid.RowDefinitions>

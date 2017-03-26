@@ -32,7 +32,7 @@ namespace DerAtrox.Arma3LauncherLib.Model {
         /// <param name="arma3TaskName">Custom arma 3 task name.</param>
         /// <exception cref="ArmaRunningException">Is thrown, if checkForRunningTask is true and Arma 3 is running.</exception>
         /// <exception cref="ArmaNotFoundException">Is thrown, if arma3StartPath doesn't exists.</exception>
-        public void Connect(string arma3StartPath, ArmaServer server, ArmaStartSettings startSettings = null, bool checkForRunningTask = false, string arma3TaskName = "arma3") {
+        public void Connect(string arma3StartPath, ArmaServer server, ArmaStartSettings startSettings = null, bool checkForRunningTask = false, string arma3TaskName = "arma3", bool set64bit = false) {
             if (startSettings == null) startSettings = new ArmaStartSettings();
 
             if (checkForRunningTask) {
@@ -50,7 +50,7 @@ namespace DerAtrox.Arma3LauncherLib.Model {
             args.Add("2");
             args.Add("1");
             args.Add("0");
-            args.Add("-exe arma3.exe");
+            args.Add(set64bit ? "-exe arma3_x64.exe" : "-exe arma3.exe");
 
             if (server != null) {
                 args.Add("-connect=" + server.ServerAdress);

@@ -43,6 +43,7 @@
 
             this.ViewModel.Path = path;
             InitializeComponent();
+            this.Title = $"A417Sync Client v{Assembly.GetEntryAssembly().GetName().Version}";
             this.DataContext = this.ViewModel;
         }
 

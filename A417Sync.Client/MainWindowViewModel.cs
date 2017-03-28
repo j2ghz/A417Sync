@@ -80,6 +80,8 @@
             }
         }
 
+        public long BytesToDownloadRemaining => this.BytesToDownload - this.BytesDownloaded;
+
         public bool CanDownload
         {
             get
@@ -290,25 +292,30 @@
             }
         }
 
-        public void Recalculate()
+        public void Recalculate(bool force = false)
         {
             this.Progress = 1D * this.BytesDownloaded / this.BytesToDownload * 100D;
             var interval = (DateTime.Now - this.lastSpeedUpdateTime).TotalSeconds;
-            if (interval > 1)
+            if (force || interval > 1)
             {
                 var speed = (this.bytesDownloaded - this.lastSpeedUpdateDownloaded) / interval;
                 var sb = new StringBuilder();
-                var remaining = new TimeSpan(0, 0, 0, (int)(this.bytesToDownload / speed));
-                sb.Append("Download progress: ");
-                sb.AppendFormat(new FileSizeFormatProvider(), "{0:fs}", this.bytesDownloaded);
-                sb.Append(" / ");
-                sb.AppendFormat(new FileSizeFormatProvider(), "{0:fs}", this.bytesToDownload);
-                sb.AppendLine();
-                sb.Append("Download speed: ");
+                var remaining = new TimeSpan((long)(this.BytesToDownloadRemaining / speed * TimeSpan.TicksPerSecond));
+                if (remaining.CompareTo(TimeSpan.Zero) < 0)
+                {
+                    remaining = new TimeSpan(0);
+                }
+
+                sb.AppendFormat("{0:P0} ", this.Progress / 100);
+                sb.AppendFormat(
+                    new FileSizeFormatProvider(),
+                    "({0:fs} / {1:fs})",
+                    this.bytesDownloaded,
+                    this.bytesToDownload);
+                sb.Append("\t");
                 sb.AppendFormat(new DownloadSpeedFormatProvider(), "{0:sp}", speed);
-                sb.AppendLine();
-                sb.Append("Remaining time: ");
-                sb.AppendFormat("{0:g}", remaining);
+                sb.Append("\tETA: ");
+                sb.AppendFormat(new DynamicTimeSpanFormatProvider(), "{0:ts}", remaining);
                 this.DownloadInfo = sb.ToString();
                 this.lastSpeedUpdateTime = DateTime.Now;
                 this.lastSpeedUpdateDownloaded = this.bytesDownloaded;

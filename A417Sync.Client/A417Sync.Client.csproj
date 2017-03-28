@@ -130,6 +130,7 @@
     <Compile Include="Feedback.xaml.cs">
       <DependentUpon>Feedback.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DynamicTimeSpanFormatProvider.cs" />
     <Compile Include="Models\FileActions\Download.cs" />
     <Compile Include="Models\FileActions\IFileAction.cs" />
     <Compile Include="FileSizeFormatProvider.cs" />

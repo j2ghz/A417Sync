@@ -99,6 +99,7 @@
                 try
                 {
                     await this.ViewModel.DownloadTask;
+                    this.ViewModel.Recalculate(true);
                 }
                 catch (UnauthorizedAccessException ex)
                 {
@@ -177,7 +178,7 @@
                 this.ViewModel.SelectedModpack.Addons.Select(
                     name => this.ViewModel.Repo.Addons.Find(addon => addon.Name == name)),
                 this.ViewModel.Actions).ConfigureAwait(false);
-            this.ViewModel.Recalculate();
+            this.ViewModel.Recalculate(true);
             this.ViewModel.CanCheck = true;
             if (this.ViewModel.Actions.Any())
             {
@@ -267,7 +268,7 @@
                 this.ViewModel.Params,
                 this.Connect.IsChecked == true,
                 additional,
-                this.Set64bit.IsChecked == true);
+                this.Set64Bit.IsChecked == true);
         }
 
         private void UnblockStart(object sender, RoutedEventArgs e)

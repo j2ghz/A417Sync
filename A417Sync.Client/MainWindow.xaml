@@ -9,126 +9,123 @@
         Name="Main"
         d:DataContext="{d:DesignInstance local:MainWindowViewModel }"
         Loaded="LoadRepo">
+    <DockPanel LastChildFill="True">
+        <Grid DockPanel.Dock="Bottom">
+            <ProgressBar MinHeight="50" Value="{Binding Progress, Mode=OneWay}" />
+            <TextBlock Text="{Binding DownloadInfo, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Grid>
 
-    <TabControl>
-        <TabItem Header="Main">
-            <DockPanel LastChildFill="True">
-                <Grid DockPanel.Dock="Bottom" Margin="5">
-                    <ProgressBar MinHeight="40" Value="{Binding Progress, Mode=OneWay}" />
-                    <TextBlock Text="{Binding DownloadInfo, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                </Grid>
-                <ListBox DockPanel.Dock="Left" Margin="5" MinWidth="100" Grid.Row="0" IsEnabled="{Binding CanCheck, Mode=OneWay}"
+
+        <TabControl>
+            <TabItem Header="Main">
+                <DockPanel>
+                    <ListBox DockPanel.Dock="Left" Margin="5" MinWidth="100" Grid.Row="0" IsEnabled="{Binding CanCheck, Mode=OneWay}"
                               ItemsSource="{Binding Repo.Modpacks}" DisplayMemberPath="Name"
                               SelectedItem="{Binding SelectedModpack}" SelectionChanged="ChangeModpack" />
 
                     <DockPanel>
                         <TextBlock DockPanel.Dock="Top" Margin="5" Text="{Binding SelectedModpack.Name, FallbackValue='Choose a modpack'}" FontSize="24"/>
-                    <Border BorderBrush="LightGray" BorderThickness="1" Margin="5" Padding="5">
-                        <DockPanel LastChildFill="True">
-                            <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
-                                <Button Margin="5" FontSize="16" Padding="10,15" Click="Check" IsEnabled="{Binding CanCheck, Mode=OneWay}" Content="Check addons"/>
-                                <Button Margin="5" Padding="10,15" FontSize="16" Click="Download" IsEnabled="{Binding CanDownload, Mode=OneWay}" Content="Download / Pause"/>
-                                <Button Margin="5" FontSize="16" Padding="10,15"  Click="Start" IsEnabled="{Binding CanStart, Mode=OneWay}" Content="Start"/>
-                                <CheckBox Name="Connect" IsChecked="True"  VerticalContentAlignment="Center" HorizontalAlignment="Center" Margin="5" >Connect</CheckBox>
+                        <Border BorderBrush="LightGray" BorderThickness="1" Margin="5" Padding="5">
+                            <DockPanel LastChildFill="True">
+                                <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
+                                    <Button Margin="5" FontSize="16" Padding="10,15" Click="Check" IsEnabled="{Binding CanCheck, Mode=OneWay}" Content="Check addons"/>
+                                    <Button Margin="5" Padding="10,15" FontSize="16" Click="Download" IsEnabled="{Binding CanDownload, Mode=OneWay}" Content="Download / Pause"/>
+                                    <Button Margin="5" FontSize="16" Padding="10,15"  Click="Start" IsEnabled="{Binding CanStart, Mode=OneWay}" Content="Start"/>
+                                    <CheckBox Name="Connect" IsChecked="True"  VerticalContentAlignment="Center" HorizontalAlignment="Center" Margin="5" >Connect</CheckBox>
 
-                            </StackPanel>
-                            <ListBox DockPanel.Dock="Left" Margin="5" ItemsSource="{Binding SelectedModpack.Addons}" MinWidth="100">
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding}" />
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
-                            <TextBlock Margin="5"  Text="{Binding ServerInfo, TargetNullValue='Choose a modpack'}"/>
-                        </DockPanel>
+                                </StackPanel>
+                                <ListBox DockPanel.Dock="Left" Margin="5" ItemsSource="{Binding SelectedModpack.Addons}" MinWidth="100">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding}" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                                <TextBlock Margin="5"  Text="{Binding ServerInfo, TargetNullValue='Choose a modpack'}"/>
+                            </DockPanel>
                         </Border>
                     </DockPanel>
-            </DockPanel>
-        </TabItem>
-        <TabItem Header="Settings/Debug">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Menu Grid.Row="0">
-                    <MenuItem Header="Debug">
-                        <MenuItem Header="Unblock start" Click="UnblockStart"/>
-                        <MenuItem Header="Crash" Click="Crash"/>
-                    </MenuItem>
-                    <MenuItem Header="Toggle Console" Click="ConsoleToggle" />
-                    <MenuItem Header="Feedback" Click="Feedback" />
-                    <MenuItem Header="Show Logs" Click="ShowLogs" />
-                </Menu>
-                <Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
+                </DockPanel>
+            </TabItem>
+            <TabItem Header="Settings/Debug">
+                <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5">Repo url:</TextBlock>
-                    <TextBox Grid.Column="1" Grid.Row="0" Margin="5" Padding="5" Text="{Binding Url, Mode=TwoWay}" IsEnabled="False" />
-                    <TextBlock Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5">Addon path:</TextBlock>
-                    <TextBox Grid.Column="1" Grid.Row="1" Margin="5" Padding="5" Text="{Binding Path, Mode=TwoWay}" TextChanged="PathChange" />
-                    <TextBlock Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5">Custom parameters:</TextBlock>
-                    <TextBox Grid.Column="1" Grid.Row="2" Margin="5" Padding="5"
+                    <Menu Grid.Row="0">
+                        <MenuItem Header="Debug">
+                            <MenuItem Header="Unblock start" Click="UnblockStart"/>
+                            <MenuItem Header="Crash" Click="Crash"/>
+                        </MenuItem>
+                        <MenuItem Header="Toggle Console" Click="ConsoleToggle" />
+                        <MenuItem Header="Feedback" Click="Feedback" />
+                        <MenuItem Header="Show Logs" Click="ShowLogs" />
+                    </Menu>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5">Repo url:</TextBlock>
+                        <TextBox Grid.Column="1" Grid.Row="0" Margin="5" Padding="5" Text="{Binding Url, Mode=TwoWay}" IsEnabled="False" />
+                        <TextBlock Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5">Addon path:</TextBlock>
+                        <TextBox Grid.Column="1" Grid.Row="1" Margin="5" Padding="5" Text="{Binding Path, Mode=TwoWay}" TextChanged="PathChange" />
+                        <TextBlock Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5">Custom parameters:</TextBlock>
+                        <TextBox Grid.Column="1" Grid.Row="2" Margin="5" Padding="5"
                              Text="{Binding UserParams, Mode=TwoWay}" />
-                    <TextBlock Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5">Additional addon path:</TextBlock>
-                    <TextBox Grid.Column="1" Grid.Row="3" Margin="5" Padding="5"
+                        <TextBlock Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5">Additional addon path:</TextBlock>
+                        <TextBox Grid.Column="1" Grid.Row="3" Margin="5" Padding="5"
                              Text="{Binding UserAddons, Mode=TwoWay}" />
-                    <TextBlock Grid.Column="0" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5">Additional options:</TextBlock>
+                        <TextBlock Grid.Column="0" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5">Additional options:</TextBlock>
 
-                    <CheckBox Grid.Column="1" Grid.Row="4" Name="Set64Bit" IsChecked="False"  Margin="5">64bit</CheckBox>
-                </Grid>
-                <ListView Grid.Row="3" ItemsSource="{Binding Actions}">
-                    <ListView.ItemContainerStyle>
-                        <Style TargetType="ListViewItem">
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                            <Setter Property="VerticalContentAlignment" Value="Stretch" />
-                        </Style>
-                    </ListView.ItemContainerStyle>
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn Header="Path" DisplayMemberBinding="{Binding Path, Mode=OneWay}"
+                        <CheckBox Grid.Column="1" Grid.Row="4" Name="Set64Bit" IsChecked="False"  Margin="5">64bit</CheckBox>
+                    </Grid>
+                    <ListView Grid.Row="3" ItemsSource="{Binding Actions}">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Path" DisplayMemberBinding="{Binding Path, Mode=OneWay}"
                                             Width="Auto" />
-                            <GridViewColumn Header="Size" DisplayMemberBinding="{Binding Size, Mode=OneWay}"
+                                <GridViewColumn Header="Size" DisplayMemberBinding="{Binding Size, Mode=OneWay}"
                                             Width="Auto" />
-                            <GridViewColumn Header="Action" DisplayMemberBinding="{Binding Action, Mode=OneWay}"
+                                <GridViewColumn Header="Action" DisplayMemberBinding="{Binding Action, Mode=OneWay}"
                                             Width="Auto" />
-                            <GridViewColumn Header="Progress" Width="300">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Grid>
-                                            <ProgressBar Value="{Binding Progress, Mode=OneWay}" />
-                                            <TextBlock Text="{Binding Progress, Mode=OneWay, StringFormat={}{0:0}%}"
+                                <GridViewColumn Header="Progress" Width="300">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <ProgressBar Value="{Binding Progress, Mode=OneWay}" />
+                                                <TextBlock Text="{Binding Progress, Mode=OneWay, StringFormat={}{0:0}%}"
                                                        HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                        </Grid>
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                        </GridView>
-                    </ListView.View>
-                    <ListView.ItemTemplate>
-                        <DataTemplate />
-                    </ListView.ItemTemplate>
-                </ListView>
-                <Grid Row="4">
-                    <ProgressBar MinHeight="40" Value="{Binding Progress, Mode=OneWay}" />
-                    <TextBlock Text="{Binding Progress, Mode=OneWay, StringFormat={}{0:0}%}"
-                               HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                        <ListView.ItemTemplate>
+                            <DataTemplate />
+                        </ListView.ItemTemplate>
+                    </ListView>
                 </Grid>
-            </Grid>
-        </TabItem>
-    </TabControl>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
 </Window>

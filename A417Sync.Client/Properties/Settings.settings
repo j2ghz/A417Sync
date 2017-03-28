@@ -14,5 +14,8 @@
     <Setting Name="userParameters" Type="System.String" Scope="User">
       <Value Profile="(Default)">-noSplash -world=empty</Value>
     </Setting>
+    <Setting Name="Set64Bit" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

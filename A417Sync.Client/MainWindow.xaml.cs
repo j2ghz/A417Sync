@@ -17,6 +17,7 @@
     using DerAtrox.Arma3LauncherLib.SSQLib.Exceptions;
 
     using Microsoft.HockeyApp;
+    using Microsoft.HockeyApp.DataContracts;
     using Microsoft.VisualBasic;
 
     using Serilog;
@@ -89,6 +90,7 @@
 
         private async void Download(object sender, RoutedEventArgs e)
         {
+            HockeyClient.Current.TrackEvent(nameof(this.Download));
             if (this.ViewModel.DownloadTask.GetAwaiter().IsCompleted)
             {
                 this.ViewModel.CanCheck = false;
@@ -166,6 +168,7 @@
 
         private async void Check(object sender, RoutedEventArgs e)
         {
+            HockeyClient.Current.TrackEvent(nameof(this.Check));
             this.ViewModel.CanStart = false;
             var uri = new Uri(this.ViewModel.Url);
             var path = new DirectoryInfo(this.ViewModel.Path);
@@ -192,6 +195,7 @@
 
         private async void LoadRepo(object sender, RoutedEventArgs e)
         {
+            HockeyClient.Current.TrackEvent(nameof(this.LoadRepo));
             this.ViewModel.CanLoadRepo = false;
 
             ////this.ViewModel.Servers.Clear();
@@ -226,6 +230,7 @@
 
         private void Start(object sender, RoutedEventArgs e)
         {
+            HockeyClient.Current.TrackEvent(nameof(this.Start));
             var additional = new List<string>();
             if (!string.IsNullOrWhiteSpace(this.ViewModel.UserAddons))
             {
@@ -268,7 +273,7 @@
                 this.ViewModel.Params,
                 this.Connect.IsChecked == true,
                 additional,
-                this.Set64Bit.IsChecked == true);
+                this.ViewModel.Set64Bit);
         }
 
         private void UnblockStart(object sender, RoutedEventArgs e)

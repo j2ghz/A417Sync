@@ -70,5 +70,17 @@ namespace A417Sync.Client.Properties {
                 this["userParameters"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Set64Bit {
+            get {
+                return ((bool)(this["Set64Bit"]));
+            }
+            set {
+                this["Set64Bit"] = value;
+            }
+        }
     }
 }

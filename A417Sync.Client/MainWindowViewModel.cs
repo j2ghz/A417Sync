@@ -65,6 +65,19 @@
             }
         }
 
+        public bool Set64Bit
+        {
+            get
+            {
+                return Properties.Settings.Default.Set64Bit;
+            }
+            set
+            {
+                Properties.Settings.Default.Set64Bit = value;
+                this.OnPropertyChanged();
+            }
+        }
+
         public long BytesToDownload
         {
             get

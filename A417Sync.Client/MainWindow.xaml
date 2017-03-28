@@ -43,7 +43,7 @@
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
                                 </ListBox>
-                                <TextBlock Margin="5"  Text="{Binding ServerInfo, TargetNullValue='Choose a modpack'}"/>
+                                <TextBlock Margin="5" TextWrapping="Wrap" Text="{Binding ServerInfo, TargetNullValue='Choose a modpack'}"/>
                             </DockPanel>
                         </Border>
                     </DockPanel>
@@ -90,7 +90,7 @@
                              Text="{Binding UserAddons, Mode=TwoWay}" />
                         <TextBlock Grid.Column="0" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5">Additional options:</TextBlock>
 
-                        <CheckBox Grid.Column="1" Grid.Row="4" Name="Set64Bit" IsChecked="False"  Margin="5">64bit</CheckBox>
+                        <CheckBox Grid.Column="1" Grid.Row="4" IsChecked="{Binding Set64Bit}"  Margin="5">64bit</CheckBox>
                     </Grid>
                     <ListView Grid.Row="3" ItemsSource="{Binding Actions}">
                         <ListView.ItemContainerStyle>

@@ -1,21 +1,17 @@
-﻿namespace A417Sync.Client
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Windows;
+using A417Sync.Client.Models;
+using DerAtrox.Arma3LauncherLib.Exceptions;
+using DerAtrox.Arma3LauncherLib.Model;
+using Microsoft.Win32;
+using Serilog;
+
+namespace A417Sync.Client
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.IO;
-    using System.Linq;
-    using System.Windows;
-
-    using A417Sync.Client.Models;
-
-    using DerAtrox.Arma3LauncherLib.Exceptions;
-    using DerAtrox.Arma3LauncherLib.Model;
-
-    using Microsoft.Win32;
-
-    using Serilog;
-
     public static class ArmaHelpers
     {
         public static string GetArma3Path()
@@ -28,7 +24,8 @@
                 registryKey =
                     registryKey.OpenSubKey(
                             registryKey.GetSubKeyNames()
-                                .First(key => string.Equals(key, "Bohemia Interactive", StringComparison.OrdinalIgnoreCase)))
+                                .First(key => string.Equals(key, "Bohemia Interactive",
+                                    StringComparison.OrdinalIgnoreCase)))
                         .OpenSubKey("arma 3");
                 return registryKey.GetValue("MAIN").ToString();
             }
@@ -50,7 +47,8 @@
             IEnumerable<string> arguments,
             bool connectIsChecked,
             IEnumerable<string> userAddons,
-            bool set64bit)
+            bool set64bit,
+            bool battleEye)
         {
             if (!Process.GetProcessesByName("Steam").Any())
             {
@@ -71,12 +69,17 @@
             var server = ServerInfo(modpack);
             try
             {
+                var exe = "arma3battleye.exe";
+                if (!battleEye)
+                {
+                    exe = set64bit ? "arma3_x64.exe" : "arma3.exe";
+                }
                 new ArmaLauncher().Connect(
-                    Path.Combine(GetArma3Path(), "arma3battleye.exe"),
+                    Path.Combine(GetArma3Path(), exe),
                     connectIsChecked ? server : null,
                     settings,
                     true,
-                    set64bit: set64bit);
+                    set64bit: set64bit, battleEye: battleEye);
             }
             catch (ArmaRunningException ex)
             {
@@ -89,7 +92,7 @@
             }
             catch (ArmaNotFoundException ex)
             {
-                Log.Warning(ex, "rma path not found");
+                Log.Warning(ex, "Arma path not found");
                 MessageBox.Show(
                     "Arma path not found in the registry! Have you launched Arma at least once without the launcher before?",
                     "Error launching Arma",

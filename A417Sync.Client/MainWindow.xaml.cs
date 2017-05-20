@@ -1,26 +1,22 @@
-﻿namespace A417Sync.Client
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Threading;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Threading;
+using DerAtrox.Arma3LauncherLib.SSQLib.Exceptions;
+using Microsoft.HockeyApp;
+using Microsoft.VisualBasic;
+using Serilog;
+
+namespace A417Sync.Client
 {
     #region
-
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.IO;
-    using System.Linq;
-    using System.Reflection;
-    using System.Text;
-    using System.Threading;
-    using System.Windows;
-    using System.Windows.Controls;
-    using System.Windows.Threading;
-
-    using DerAtrox.Arma3LauncherLib.SSQLib.Exceptions;
-
-    using Microsoft.HockeyApp;
-    using Microsoft.HockeyApp.DataContracts;
-    using Microsoft.VisualBasic;
-
-    using Serilog;
 
     #endregion
 
@@ -53,7 +49,7 @@
         {
             var properties =
                 from property in target.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                select new { Name = property.Name, Value = property.GetValue(target, null) };
+                select new {Name = property.Name, Value = property.GetValue(target, null)};
 
             var builder = new StringBuilder();
 
@@ -91,7 +87,7 @@
 
         private async void Download(object sender, RoutedEventArgs e)
         {
-            HockeyClient.Current.TrackEvent(nameof(this.Download));
+            HockeyClient.Current.TrackEvent(nameof(Download));
             if (this.ViewModel.DownloadTask.GetAwaiter().IsCompleted)
             {
                 this.ViewModel.CanCheck = false;
@@ -169,7 +165,7 @@
 
         private async void Check(object sender, RoutedEventArgs e)
         {
-            HockeyClient.Current.TrackEvent(nameof(this.Check));
+            HockeyClient.Current.TrackEvent(nameof(Check));
             this.ViewModel.CanStart = false;
             var uri = new Uri(this.ViewModel.Url);
             var path = new DirectoryInfo(this.ViewModel.Path);
@@ -196,7 +192,7 @@
 
         private async void LoadRepo(object sender, RoutedEventArgs e)
         {
-            HockeyClient.Current.TrackEvent(nameof(this.LoadRepo));
+            HockeyClient.Current.TrackEvent(nameof(LoadRepo));
             this.ViewModel.CanLoadRepo = false;
 
             ////this.ViewModel.Servers.Clear();
@@ -226,12 +222,12 @@
 
         private void ShowLogs(object sender, RoutedEventArgs e)
         {
-            Process.Start(((App)Application.Current).LocalUserAppDataPath);
+            Process.Start(((App) Application.Current).LocalUserAppDataPath);
         }
 
         private void Start(object sender, RoutedEventArgs e)
         {
-            HockeyClient.Current.TrackEvent(nameof(this.Start));
+            HockeyClient.Current.TrackEvent(nameof(Start));
             var additional = new List<string>();
             if (!string.IsNullOrWhiteSpace(this.ViewModel.UserAddons))
             {
@@ -274,7 +270,8 @@
                 this.ViewModel.Params,
                 this.Connect.IsChecked == true,
                 additional,
-                this.ViewModel.Set64Bit);
+                this.ViewModel.Set64Bit,
+                this.ViewModel.BattleEye);
         }
 
         private void UnblockStart(object sender, RoutedEventArgs e)

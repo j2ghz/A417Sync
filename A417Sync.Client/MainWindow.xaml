@@ -90,7 +90,10 @@
                              Text="{Binding UserAddons, Mode=TwoWay}" />
                         <TextBlock Grid.Column="0" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5">Additional options:</TextBlock>
 
-                        <CheckBox Grid.Column="1" Grid.Row="4" IsChecked="{Binding Set64Bit}"  Margin="5">64bit</CheckBox>
+                        <StackPanel Grid.Column="1" Grid.Row="4" Orientation="Horizontal">
+                            <CheckBox IsChecked="{Binding Set64Bit}"  Margin="5">64bit</CheckBox>
+                            <CheckBox IsChecked="{Binding BattleEye}"  Margin="5">BattleEye</CheckBox>
+                        </StackPanel>
                     </Grid>
                     <ListView Grid.Row="3" ItemsSource="{Binding Actions}">
                         <ListView.ItemContainerStyle>

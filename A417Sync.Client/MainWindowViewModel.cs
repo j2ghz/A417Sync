@@ -1,21 +1,22 @@
-﻿namespace A417Sync.Client
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Media;
+using A417Sync.Client.Annotations;
+using A417Sync.Client.Models;
+using A417Sync.Client.Models.FileActions;
+
+namespace A417Sync.Client
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.ComponentModel;
-    using System.Runtime.CompilerServices;
-    using System.Text;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using System.Windows.Media;
-
-    using A417Sync.Client.Annotations;
-    using A417Sync.Client.Models;
-    using A417Sync.Client.Models.FileActions;
-
     public class MainWindowViewModel : INotifyPropertyChanged
     {
+        private bool _battleEye = true;
+
         private long bytesDownloaded;
 
         private long bytesToDownload;
@@ -46,16 +47,11 @@
 
         private string userAddons;
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
         public ObservableCollection<IFileAction> Actions { get; set; } = new ObservableCollection<IFileAction>();
 
         public long BytesDownloaded
         {
-            get
-            {
-                return this.bytesDownloaded;
-            }
+            get { return this.bytesDownloaded; }
 
             set
             {
@@ -65,12 +61,19 @@
             }
         }
 
+        public bool BattleEye
+        {
+            get { return this._battleEye; }
+            set
+            {
+                this._battleEye = value;
+                OnPropertyChanged();
+            }
+        }
+
         public long BytesToDownload
         {
-            get
-            {
-                return this.bytesToDownload;
-            }
+            get { return this.bytesToDownload; }
 
             set
             {
@@ -84,10 +87,7 @@
 
         public bool CanDownload
         {
-            get
-            {
-                return this.canDownload;
-            }
+            get { return this.canDownload; }
 
             set
             {
@@ -98,10 +98,7 @@
 
         public bool CanCheck
         {
-            get
-            {
-                return this.canCheck;
-            }
+            get { return this.canCheck; }
 
             set
             {
@@ -112,10 +109,7 @@
 
         public bool CanLoadRepo
         {
-            get
-            {
-                return this.canLoadRepo;
-            }
+            get { return this.canLoadRepo; }
 
             set
             {
@@ -126,10 +120,7 @@
 
         public bool CanStart
         {
-            get
-            {
-                return this.canStart;
-            }
+            get { return this.canStart; }
 
             set
             {
@@ -143,10 +134,7 @@
 
         public string DownloadInfo
         {
-            get
-            {
-                return this.downloadInfo;
-            }
+            get { return this.downloadInfo; }
 
             set
             {
@@ -159,14 +147,11 @@
 
         public CancellationTokenSource DownloadTaskCancel { get; set; } = new CancellationTokenSource();
 
-        public List<string> Params => new List<string>() { this.UserParams, this.SelectedModpack.AdditionalParams };
+        public List<string> Params => new List<string>() {this.UserParams, this.SelectedModpack.AdditionalParams};
 
         public string Path
         {
-            get
-            {
-                return Properties.Settings.Default.path;
-            }
+            get { return Properties.Settings.Default.path; }
 
             set
             {
@@ -178,10 +163,7 @@
 
         public double Progress
         {
-            get
-            {
-                return this.progress;
-            }
+            get { return this.progress; }
 
             set
             {
@@ -193,10 +175,7 @@
 
         public Repo Repo
         {
-            get
-            {
-                return this.repo;
-            }
+            get { return this.repo; }
 
             set
             {
@@ -207,10 +186,7 @@
 
         public Modpack SelectedModpack
         {
-            get
-            {
-                return this.selectedModpack;
-            }
+            get { return this.selectedModpack; }
 
             set
             {
@@ -221,10 +197,7 @@
 
         public string ServerInfo
         {
-            get
-            {
-                return this.serverInfo;
-            }
+            get { return this.serverInfo; }
 
             set
             {
@@ -235,10 +208,7 @@
 
         public bool Set64Bit
         {
-            get
-            {
-                return Properties.Settings.Default.Set64Bit;
-            }
+            get { return Properties.Settings.Default.Set64Bit; }
 
             set
             {
@@ -250,10 +220,7 @@
 
         public Brush StartColor
         {
-            get
-            {
-                return this.startColor;
-            }
+            get { return this.startColor; }
 
             set
             {
@@ -265,10 +232,7 @@
         ////public ObservableCollection<ServerInfo> Servers { get; set; } = new ObservableCollection<ServerInfo>();
         public string Url
         {
-            get
-            {
-                return Properties.Settings.Default.url;
-            }
+            get { return Properties.Settings.Default.url; }
 
             set
             {
@@ -280,10 +244,7 @@
 
         public string UserAddons
         {
-            get
-            {
-                return this.userAddons;
-            }
+            get { return this.userAddons; }
 
             set
             {
@@ -294,10 +255,7 @@
 
         public string UserParams
         {
-            get
-            {
-                return Properties.Settings.Default.userParameters;
-            }
+            get { return Properties.Settings.Default.userParameters; }
 
             set
             {
@@ -307,6 +265,8 @@
             }
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public void Recalculate(bool force = false)
         {
             this.Progress = 1D * this.BytesDownloaded / this.BytesToDownload * 100D;
@@ -315,7 +275,7 @@
             {
                 var speed = (this.bytesDownloaded - this.lastSpeedUpdateDownloaded) / interval;
                 var sb = new StringBuilder();
-                var remaining = new TimeSpan((long)(this.BytesToDownloadRemaining / speed * TimeSpan.TicksPerSecond));
+                var remaining = new TimeSpan((long) (this.BytesToDownloadRemaining / speed * TimeSpan.TicksPerSecond));
                 if (remaining.CompareTo(TimeSpan.Zero) < 0)
                 {
                     remaining = new TimeSpan(0);

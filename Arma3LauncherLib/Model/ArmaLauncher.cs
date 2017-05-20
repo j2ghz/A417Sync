@@ -3,11 +3,13 @@ using System.Diagnostics;
 using System.IO;
 using DerAtrox.Arma3LauncherLib.Exceptions;
 
-namespace DerAtrox.Arma3LauncherLib.Model {
+namespace DerAtrox.Arma3LauncherLib.Model
+{
     /// <summary>
     /// Provides a collection of methods to use with a Arma launcher.
     /// </summary>
-    public class ArmaLauncher {
+    public class ArmaLauncher
+    {
         /// <summary>
         /// Starts Arma 3 with specific settings.
         /// </summary>
@@ -17,7 +19,9 @@ namespace DerAtrox.Arma3LauncherLib.Model {
         /// <param name="arma3TaskName">Custom arma 3 task name.</param>
         /// <exception cref="ArmaRunningException">Is thrown, if checkForRunningTask is true and Arma 3 is running.</exception>
         /// <exception cref="ArmaNotFoundException">Is thrown, if arma3StartPath doesn't exists.</exception>
-        public void Connect(string arma3StartPath, ArmaStartSettings startSettings = null, bool checkForRunningTask = false, string arma3TaskName = "arma3") {
+        public void Connect(string arma3StartPath, ArmaStartSettings startSettings = null,
+            bool checkForRunningTask = false, string arma3TaskName = "arma3")
+        {
             Connect(arma3StartPath, null, startSettings, checkForRunningTask, arma3TaskName);
         }
 
@@ -32,17 +36,23 @@ namespace DerAtrox.Arma3LauncherLib.Model {
         /// <param name="arma3TaskName">Custom arma 3 task name.</param>
         /// <exception cref="ArmaRunningException">Is thrown, if checkForRunningTask is true and Arma 3 is running.</exception>
         /// <exception cref="ArmaNotFoundException">Is thrown, if arma3StartPath doesn't exists.</exception>
-        public void Connect(string arma3StartPath, ArmaServer server, ArmaStartSettings startSettings = null, bool checkForRunningTask = false, string arma3TaskName = "arma3", bool set64bit = false) {
+        public void Connect(string arma3StartPath, ArmaServer server, ArmaStartSettings startSettings = null,
+            bool checkForRunningTask = false, string arma3TaskName = "arma3", bool set64bit = false,
+            bool battleEye = true)
+        {
             if (startSettings == null) startSettings = new ArmaStartSettings();
 
-            if (checkForRunningTask) {
+            if (checkForRunningTask)
+            {
                 var runningGame = Process.GetProcessesByName(arma3TaskName);
-                if (runningGame.Length > 0) {
+                if (runningGame.Length > 0)
+                {
                     throw new ArmaRunningException("Arma 3 is already running.");
                 }
             }
 
-            if (!File.Exists(arma3StartPath)) {
+            if (!File.Exists(arma3StartPath))
+            {
                 throw new ArmaNotFoundException("Specified Arma 3 path could not be found.");
             }
 
@@ -50,61 +60,75 @@ namespace DerAtrox.Arma3LauncherLib.Model {
             args.Add("2");
             args.Add("1");
             args.Add("0");
-            args.Add(set64bit ? "-exe arma3_x64.exe" : "-exe arma3.exe");
+            if (battleEye) args.Add(set64bit ? "-exe arma3_x64.exe" : "-exe arma3.exe");
 
-            if (server != null) {
+            if (server != null)
+            {
                 args.Add("-connect=" + server.ServerAdress);
                 args.Add("-port=" + server.GamePort);
-                if (server.Password != "") {
+                if (server.Password != "")
+                {
                     args.Add("-password=" + server.Password);
                 }
             }
 
-            if (startSettings.NoSplash) {
+            if (startSettings.NoSplash)
+            {
                 args.Add("-nosplash");
             }
 
-            if (startSettings.NoPause) {
+            if (startSettings.NoPause)
+            {
                 args.Add("-nopause");
             }
 
-            if (startSettings.ShowScriptErrors) {
+            if (startSettings.ShowScriptErrors)
+            {
                 args.Add("-showScriptErrors");
             }
 
-            if (startSettings.Windowed) {
+            if (startSettings.Windowed)
+            {
                 args.Add("-window");
             }
 
-            if (startSettings.MaxMemory >= 0) {
+            if (startSettings.MaxMemory >= 0)
+            {
                 args.Add("-maxMem=" + startSettings.MaxMemory);
             }
 
-            if (startSettings.MaxVideoMemory >= 0) {
+            if (startSettings.MaxVideoMemory >= 0)
+            {
                 args.Add("-maxVRAM=" + startSettings.MaxVideoMemory);
             }
 
-            if (startSettings.Mods.Count > 0) {
+            if (startSettings.Mods.Count > 0)
+            {
                 string mods = "-mod=\"";
                 mods += string.Join(";", startSettings.Mods);
                 mods += "\"";
                 args.Add(mods);
-            } else {
+            }
+            else
+            {
                 args.Add("-mod=\"\"");
             }
 
             args.AddRange(startSettings.OtherArgs);
 
-            if (startSettings.Profile != "") {
+            if (startSettings.Profile != "")
+            {
                 args.Add("\"-name=" + startSettings.Profile + "\"");
             }
 
-            var proc = new Process {
-                StartInfo = {
-                            FileName = Path.Combine(arma3StartPath),
-                            Arguments = string.Join(" ", args.ToArray()),
-                            WorkingDirectory = Path.GetDirectoryName(arma3StartPath)
-                        }
+            var proc = new Process
+            {
+                StartInfo =
+                {
+                    FileName = Path.Combine(arma3StartPath),
+                    Arguments = string.Join(" ", args.ToArray()),
+                    WorkingDirectory = Path.GetDirectoryName(arma3StartPath)
+                }
             };
 
             Trace.WriteLine(proc.StartInfo.FileName);

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -15,7 +15,7 @@ namespace A417Sync.Client
 {
     public class MainWindowViewModel : INotifyPropertyChanged
     {
-        private bool _battleEye = true;
+        private bool _battleEye = false;
 
         private long bytesDownloaded;
 

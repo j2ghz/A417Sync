@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Deployment.Application;
     using System.IO;
     using System.Reflection;
     using System.Windows;
@@ -35,7 +34,7 @@
                 {
                     if (!System.Diagnostics.Debugger.IsAttached)
                     {
-                        v = ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
+                        v = Assembly.GetExecutingAssembly().GetName().Version.ToString();
                     }
                 }
                 catch (Exception e)

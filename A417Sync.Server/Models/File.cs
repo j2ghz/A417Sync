@@ -1,6 +1,5 @@
 ﻿namespace A417Sync.Core.Models
 {
-    using System;
     using System.Xml.Serialization;
 
     public class File

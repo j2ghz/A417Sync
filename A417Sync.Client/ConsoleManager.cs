@@ -24,7 +24,7 @@
         [DllImport(Kernel32_DllName)]
         private static extern int GetConsoleOutputCP();
 
-        public static bool HasConsole
+        private static bool HasConsole
         {
             get { return GetConsoleWindow() != IntPtr.Zero; }
         }
@@ -56,7 +56,7 @@
             }
             //#endif
         }
-
+        
         public static void Toggle()
         {
             if (HasConsole)

@@ -28,7 +28,7 @@
     <PackageReference Include="Serilog.Sinks.RollingFile" Version="3.3.0" />
     <PackageReference Include="System.ComponentModel.Composition" Version="6.0.0" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
-    <PackageReference Include="Unofficial.HockeySDK.Core" Version="2017.0213.0222.10" />
+    <PackageReference Include="Unofficial.HockeySDK.Core" Version="2017.10718.12219.14" />
     <PackageReference Include="Unofficial.HockeySDK.WPF" Version="2017.0213.0222.10" />
   </ItemGroup>
 </Project>

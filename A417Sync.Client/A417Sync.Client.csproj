@@ -22,7 +22,7 @@
     <Resource Include="FinalF256.ico" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Serilog" Version="2.4.0" />
+    <PackageReference Include="Serilog" Version="2.12.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="3.2.0" />
     <PackageReference Include="Serilog.Sinks.Literate" Version="2.1.0" />
     <PackageReference Include="Serilog.Sinks.RollingFile" Version="3.3.0" />
